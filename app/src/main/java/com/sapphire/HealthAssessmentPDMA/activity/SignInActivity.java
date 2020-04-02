@@ -53,6 +53,11 @@ public class SignInActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
+
+
+//        Commiting first Changes on 2 April 2020
+
+
         activity = this;
         init();
         progressDialog = new ProgressDialog(activity);
