@@ -1,0 +1,159 @@
+<resources>
+    <string name="app_name">Health Assessment PDMA</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="menu_home">Home</string>
+    <string name="menu_gallery">Gallery</string>
+    <string name="menu_slideshow">Slideshow</string>
+    <string name="menu_tools">Tools</string>
+    <string name="menu_share">Share</string>
+    <string name="menu_send">Send</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="negative_test_res_msg">You don\'t have any symptoms and have low probability of having coronavirus.\n\nPlease take good precautions,wash your hands frequently,avoid touching your face,avoid touching others,and avoid proximity to anyone with a fever or cough.
+        \n
+    </string>
+    <string name="positive_test_res_msg">Please consult a doctor or contact <b>1166.</b>\nor\n<b>021-99204452 / 021-99206565 /\n0316-0111712</b>\n\nPlease try to get tested for coronavirus at your nearest lab.\n\n\n</string>
+
+    <!-- Added By Kamran
+-->
+
+
+    <string name="second_splash_screen_text">\'\'Coronavirus disease (COVID-19) is characterized by mild
+    symptoms including cough, fever, breathing difficulty and body aches. Illness can be more severe
+    for some people and can lead pneumonia.,,</string>
+    <string name="assesment_first_q">کیا آپ کو خشک کھانسی ہے؟</string>
+    <string name="assesment_second_q">کیا آپ کے جسم میں درد ہے؟</string>
+    <string name="assesment_third_q">کیا آپکو سانس لینے میں دشواری ہے؟</string>
+    <string name="assesment_four_q">کیا آپکو بخار(درجہ حرارت 99 ڈگری سے ذیادہ) ہے؟</string>
+    <string name="assesment_five_q">کیا آپ نے پچھلے 14 دنوں میں کسی ملک کا سفر کیا ہے؟</string>
+    <string name="assesment_btn_yes">Yes (ہاں)</string>
+    <string name="assesment_btn_no">No (نہیں)</string>
+
+    <!--Added By Hina-->
+
+    <string name="mobile_no">Mobile # (موبائل)<font color="red">*</font></string>
+    <string name="age">Age (عمر)<font color="red">*</font></string>
+    <string name="gender">Gender (جنس)<font color="red">*</font></string>
+    <string name="mobile_no_text">Mobile # (موبائل)<font color="red">*</font></string>
+    <string name="name_text">Name (نام)<font color="red">*</font></string>
+    <string name="address_text">Address (پتہ)<font color="red">*</font></string>
+    <string name="cnic_text">CNIC (شناختی کارڈ نمبر)</string>
+    <string name="city_text">City (شہر)</string>
+    <string name="dist_text">District (ضلع)<font color="red">*</font></string>
+    <string name="tehsil_text">Tehsil (تحصیل)<font color="red">*</font></string>
+
+    <string name="dispose_tissue_text">استۂمال کے بۂد ٹشو کو مناسب طریقے سے ضاۂح کریں۔</string>
+    <string name="cover_mouth_text">کانسی یا چھینک آنے پر منہ اور ناک کو ٹشو یا آستین سے ڈھانپیں (ہاتھوں سے نہیں)</string>
+    <string name="concern_with_dr_text">بخار،کھانسی اور سانس لینے میں دشواری کی صورت میں ڈاکٹر سے رجوع کریں۔</string>
+    <string name="wash_hands_or_sanitize_text">اپنے ہاتھوں کو باقاعدگی سے صابن اور صاف پانی سے دھوۂیں یا ہاتھ صاف کرنے والا لوشن استۂمال کریں</string>
+    <string name="keep_distance_text">اگر اپ کو نزلہ، زکام ہے تو دوسرے لوگوں سے کم از کم 1 میٹر کے فاصلے پر رہیں۔</string>
+    <string name="stay_at_home_text">علامات کی صورت میں اپنے آفس، سکول یا ہجوم میں جانے کی بجاۂے گھر پر رہیں۔</string>
+    <string name="avoid_huging_text">بیماری کی صورت میں لوگوں سے گلے ملنے یا ہاتھ ملانے سے پرہیز کریں۔</string>
+    <string name="avoid_touching_t_zone_text">آلودہ، گندے ہاتھوں سے آنکھ، ناک یا منہ کو مت چھوہیں۔</string>
+    <string name="provincial_management_authority">PROVINCIAL DISASTER \nMANAGEMENT AUTHORITY &amp; \nHEALTH DEPARTMENT \nSINDH</string>
+
+    <string name="instructionSet2">If you have not received SMS on your mobile then please re-generate then PIN request after 2 minutes </string>
+    <string name="please_enter_the_code_below_to_verify_your_mobile_number">Please enter the code below to verify your Mobile number</string>
+    <string name="taluka">Taluka(تعلقہ)</string>
+
+
+    <string name="cover_mouth_eng_text">Cover nose &amp; mouth when coughing or sneezing with tissue or flexed elbow</string>
+    <string name="dispose_tissue_eng_text">Immediately dispose used tissues properly after use.</string>
+    <string name="concern_with_dr_eng_text">Watch out for fever, cough and difficultly in breathing.</string>
+    <string name="wash_hands_or_sanitize_eng_text">Regularly wash hands with soap and water or Alcohol based hand rub/sanitizer</string>
+    <string name="keep_distance_eng_text">If you have symptoms, keep a distance of at least 1m from other people</string>
+    <string name="stay_at_home_eng_text">If you have symptoms, stay at home. Do not go to work, school or crowded places until you get better</string>
+    <string name="avoid_huging_eng_text">Avoid hugging/shaking hands if you have symptoms of flu</string>
+    <string name="avoid_touching_t_zone_eng_text">Avoid touching eyes, nose or mouth without washing your hands</string>
+    <string name="novel_corona_virus_details">Coronaviruses are the viruses that circulates among animals
+but some of them are also known to affect humans.\n\nThe 2019 novel coronavirus was identified in
+China at the end of 2019 and it has a new strain that has not been seen before in humans.</string>
+
+
+    <string name="country_text">Arrived From (کہاں سے پہنچے)</string>
+    <string name="flight_text">Flight No. (پرواز نمبر)</string>
+    <string name="passport_no">Passport No. (پاسپورٹ نمبر)</string>
+
+
+    <string name="name_text1">Name (نام)</string>
+    <string name="mobile_no1">Mobile # (موبائل)</string>
+
+    <string name="body_aches_eng">Body Aches</string>
+    <string name="difficulty_in_breathing_eng">Difficulty in breathing</string>
+    <string name="cough_eng">Cough</string>
+    <string name="fever_eng">Fever</string>
+
+    <string name="body_aches_urdu">جسم میں \nدرد</string>
+    <string name="difficulty_in_breathing_urdu">سانس لینے میں دشواری</string>
+    <string name="cough_urdu">کھانسی</string>
+    <string name="fever_urdu">بخار</string>
+
+    <string name="body_aches_sindhi">جسم ۾ سُور</string>
+    <string name="difficulty_in_breathing_sindhi">ساھه کڻڻ ۾ ڏکيائي</string>
+    <string name="cough_sindhi">کنگھه</string>
+    <string name="fever_sindhi">بخار</string>
+    
+    
+
+    <string name="mobile_no_sindhi">Mobile # (موبائل)<font color="red">*</font></string>
+    <string name="age_sindhi">Age (عمر)<font color="red">*</font></string>
+    <string name="gender_sindhi">Gender (جنس)<font color="red">*</font></string>
+    <string name="mobile_no_text_sindhi">Mobile # (موبائل)<font color="red">*</font></string>
+    <string name="name_text_sindhi">Name (نالو)<font color="red">*</font></string>
+    <string name="address_text_sindhi">Address (هاڻوڪو پتو)<font color="red">*</font></string>
+    <string name="cnic_text_sindhi">CNIC (قومي سڃاڻپ ڪارڊ نمبر)</string>
+    <string name="city_text_sindhi">City (شهر)</string>
+    <string name="dist_text_sindhi">District (ضلعو)<font color="red">*</font></string>
+    <string name="tehsil_text_sindhi">Tehsil (تعلقو)<font color="red">*</font></string>
+    <string name="country_text_sindhi">Arrived From (ڪٿان پهتو)</string>
+    <string name="flight_text_sindhi">Flight (پرواز نمبر)</string>
+    <string name="passport_no_sindhi">Passport No. (پاسپورٽ نمبر)</string>
+
+
+    <string name="name_text1_sindhi">Name (نالو)</string>
+    <string name="mobile_no1_sindhi">Mobile # (موبائل)</string>
+    <string name="taluka_sindhi">Taluka(تعلقو)</string>
+
+    <string name="corona_awareness">CORONA \nAWARENESS</string>
+    <string name="corona_awareness_urdu">کورونا معلومات</string>
+    <string name="corona_awareness_sindhi">ڪورونا آگاهي</string>
+
+    <string name="assessment_for_self">ASSESSMENT FOR \nMYSELF</string>
+    <string name="assessment_for_self_urdu">اپنے لئے تشخیص</string>
+    <string name="assessment_for_self_sindhi">پنهنجي پرک</string>
+
+    <string name="assessment_for_other">ASSESSMENT FOR \nOTHERS</string>
+    <string name="assessment_for_other_urdu">دوسروں کے لئے تشخیص</string>
+    <string name="assessment_for_other_sindhi">ٻين لاءِ پرک</string>
+
+    <string name="track_assessment">TRACK \nASSESSMENT</string>
+    <string name="track_assessment_urdu">پچھلی تشخیص کا ریکارڈ</string>
+    <string name="track_assessment_sindhi">اڳوڻي پرک جو رڪارڊ</string>
+
+    <string name="corona_novel">CORONA VIRUS</string>
+    <string name="corona_novel_urdu">کورونا وائرس</string>
+    <string name="corona_novel_sindh">ڪورونا وائرس</string>
+
+    <string name="symptoms">SYMPTOMS</string>
+    <string name="symptoms_urdu">علامات</string>
+    <string name="symptoms_sindh">نشانيون</string>
+
+    <string name="prevention">PREVENTION</string>
+    <string name="prevention_urdu">روک تھام</string>
+    <string name="prevention_sindh">روڪ يا رڪاوٽ</string>
+
+    <string name="stay_safe_travel">STAY SAFE/TRAVEL</string>
+    <string name="stay_safe_travel_urdu">سفر کی احتیاط</string>
+    <string name="stay_safe_travel_sindh">محفوظ رهو</string>
+
+    <string name="login_text_confidentiality">Any information you share with us will be kept strictly confidential.\n\n آپ کی فراہم کردہ معلومات کو مکمل رازداری میں رکھا جائیگا۔</string>
+
+</resources>

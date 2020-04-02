@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#F0F0F0</color>
+    <color name="colorPrimaryDark">#F0F0F0</color>
+    <color name="colorAccent">#D81B60</color>
+
+    <color name="appColorBlack">#000000</color>
+    <color name="appColorLightGrey">#D6D6D6</color>
+    <color name="app_color_grey">#6e6e6e</color>
+    <color name="appColorWhite">#FFFFFF</color>
+    <color name="appColorGreen">#6DB03D</color>
+    <color name="requireRedColor">#ffcc0000</color>
+
+    <color name="grey">#b3b3b3</color>
+    <color name="cream_white">#eceff0</color>
+
+    <color name="cream_white_new">#DAECEFF0</color>
+
+    <color name="key_color">#37474f</color>
+    <!-- <color name="keyboard_bg_color">#7529AC29</color>-->
+    <color name="keyboard_bg_color">#96D396</color>
+    <color name="keyboard_key_preview_color">#A429AC29</color>
+    <color name="app_color_white_transparent">#9EFFFFFF</color>
+    <color name="transparent">#00000000</color>
+
+    <color name="light_black">#FC414040</color>
+    <color name="app_color_green">#5b9935</color>
+    <color name="no_btn_color">#BF000000</color>
+    <color name="red_color">#F30100</color>
+    <color name="green_color">#69B714</color>
+    <color name="darkGreenColor">#005700</color>
+    <color name="disableButtonColor">#bfbfbf</color>
+
+    <!--Added By Kamran
+-->
+    <color name="darkGreyColor">#525252</color>
+    <color name="lightGreyColor">#f1f1f1</color>
+
+   <!-- Added BY Hina -->
+    <color name="self_assessment_color">#ed563b</color>
+    <color name="other_assessment_color">#c0ac25</color>
+    <color name="previous_assessment_color">#004300</color>
+    <color name="left_view_green">#74c13d</color>
+    <color name="survey_color">#013300</color>
+    <color name="corona_awareness_color">#20639a</color>
+    <color name="text_color_red">#E85262</color>
+    <color name="keyboard_bg_color_blue">#004870</color>
+
+    <color name="new_color_blue">#8F006285</color>
+</resources>

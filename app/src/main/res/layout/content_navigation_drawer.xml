@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:showIn="@layout/app_bar_navigation_drawer"
+    android:id="@+id/content_navigation_drawer"
+    >
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/header_background"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@+id/content_navigation_drawer"
+        app:layout_constraintLeft_toLeftOf="@+id/content_navigation_drawer"
+        app:layout_constraintStart_toStartOf="@+id/content_navigation_drawer"
+        app:layout_constraintRight_toRightOf="@+id/content_navigation_drawer"
+        app:layout_constraintEnd_toEndOf="@+id/content_navigation_drawer"
+        android:background="@mipmap/header_img"
+        android:paddingTop="25dp"
+        android:paddingBottom="25dp"
+        >
+
+        <TextView
+            android:id="@+id/tv_heading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="MENU"
+            android:textColor="@color/appColorWhite"
+            android:textStyle="bold"
+            android:textSize="22sp"
+            android:textAllCaps="true"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:shadowColor="@color/appColorBlack"
+            android:shadowDy="-5"
+            android:shadowRadius="2"
+            android:fontFamily="@font/myriad_pro_bold"
+
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:id="@+id/fragmentDefault"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/header_background"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:orientation="vertical"
+        android:layout_marginTop="75dp"
+        android:layout_marginBottom="50dp"
+        />
+
+
+    <!--<com.sapphire.HealthAssessmentPDMA.helper.ExpandableHeightGridView
+        android:id="@+id/gridView_Bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:paddingBottom="0dp"
+        android:clipToPadding="false"
+        android:numColumns="4"
+        android:clipChildren="false"
+        android:outlineProvider="bounds"
+        android:background="#e9e9f3"
+        android:verticalSpacing="8dp"
+        android:horizontalSpacing="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:gravity="bottom"
+        app:layout_constraintVertical_bias="1.0"
+        tools:listitem="@layout/custom_awareness_gridview_layout"
+        />-->
+
+    <LinearLayout
+        android:id="@+id/layoutBottomButtons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="#e9e9f3"
+        android:orientation="horizontal"
+        android:weightSum="100"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0">
+
+        <ImageButton
+            android:id="@+id/imgBtnHome"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="25"
+            android:src="@drawable/bottom_gridview_hover"
+            android:background="@null"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            />
+        <ImageButton
+            android:id="@+id/imgBtnProfile"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="25"
+            android:src="@drawable/bottom_gridview_hover_profile"
+            android:background="@null"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+
+            />
+        <ImageButton
+            android:id="@+id/imgBtnNotification"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="25"
+            android:src="@drawable/bottom_gridview_hover_notification"
+            android:background="@null"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+
+            />
+        <ImageButton
+            android:id="@+id/imgBtnMessages"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="25"
+            android:src="@drawable/bottom_gridview_hover_messages"
+            android:background="@null"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            />
+
+    </LinearLayout>
+
+    <android.inputmethodservice.KeyboardView
+        android:id="@+id/keyboard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:paddingLeft="3dp"
+        android:paddingRight="3dp"
+
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:keyPreviewOffset="12dp"
+        android:visibility="gone"
+        android:popupLayout="@layout/keyboard_key_popup_layout"
+        android:layout_alignParentBottom="true"
+        android:background="@color/disableButtonColor"
+        android:keyBackground="@drawable/keyboard_keys_background"
+        android:keyTextSize="26dp"
+        android:keyPreviewHeight="50dp"
+        android:keyPreviewLayout="@layout/keyboard_preview"
+        android:keyTextColor="@color/appColorBlack"
+        android:shadowColor="@color/cream_white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

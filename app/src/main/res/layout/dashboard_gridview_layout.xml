@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardUseCompatPadding="false"
+    app:cardElevation="5dp"
+    >
+
+    <LinearLayout
+        android:id="@+id/linearLayout_DashbGridLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:weightSum="100"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:orientation="horizontal"
+        android:paddingTop="14dp"
+        android:paddingBottom="14dp"
+        >
+        <TextView
+            android:id="@+id/cat_name_txt_DashbGridLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="CORONA\nAWARENESS"
+            android:textAllCaps="true"
+            android:textSize="22sp"
+            android:textColor="@color/appColorWhite"
+            android:layout_weight="60"
+            android:layout_gravity="center_vertical"
+            android:fontFamily="@font/myriad_pro_regular"
+            android:textStyle="bold"
+           android:layout_marginLeft="28dp"
+            android:layout_marginStart="28dp"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:gravity="center_vertical"
+            />
+
+
+            <ImageView
+                android:id="@+id/cat_img_DashbGridLayout"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:src="@mipmap/ic_launcher"
+                android:layout_weight="40"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
+                android:gravity="center_vertical"
+                android:scaleType="fitEnd"
+                android:layout_marginRight="28dp"
+                android:layout_marginEnd="28dp"
+                />
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

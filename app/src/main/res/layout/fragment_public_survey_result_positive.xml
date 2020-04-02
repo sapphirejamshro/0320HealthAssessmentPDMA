@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".fragment.PublicSurveyResultFragment">
+
+    <ScrollView
+        android:id="@+id/scrollView_PSRPosFrag"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="12dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginStart="10dp"
+        android:overScrollMode="never"
+        android:scrollbarAlwaysDrawVerticalTrack="true"
+        android:scrollbarSize="12dp"
+        android:scrollbarStyle="insideOverlay"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:orientation="vertical"
+        android:isScrollContainer="false"
+        android:scrollbars="none">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/innerView_PSRPosFrag"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:focusable="true"
+            android:layout_marginTop="30dp">
+
+            <ImageView
+                android:id="@+id/imageView_screening_PSRPosFrag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/screening_needed_icon"
+                app:layout_constraintTop_toTopOf="@+id/innerView_PSRPosFrag"
+                app:layout_constraintLeft_toLeftOf="@+id/innerView_PSRPosFrag"
+                app:layout_constraintStart_toStartOf="@+id/innerView_PSRPosFrag"
+                app:layout_constraintEnd_toEndOf="@+id/innerView_PSRPosFrag"
+                app:layout_constraintRight_toRightOf="@+id/innerView_PSRPosFrag"
+
+                />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/result_innerView_PSRPosFrag"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/imageView_screening_PSRPosFrag"
+                app:layout_constraintLeft_toLeftOf="@+id/innerView_PSRPosFrag"
+                app:layout_constraintStart_toStartOf="@+id/innerView_PSRPosFrag"
+                app:layout_constraintEnd_toEndOf="@+id/innerView_PSRPosFrag"
+                app:layout_constraintRight_toRightOf="@+id/innerView_PSRPosFrag"
+                android:background="@drawable/positive_survey_res_bg"
+                android:layout_marginTop="30dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
+                android:paddingBottom="15dp"
+                android:paddingTop="15dp"
+
+                >
+
+                <TextView
+                    android:id="@+id/tv_resTitle_PSRPosFrag"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="@+id/result_innerView_PSRPosFrag"
+                    app:layout_constraintLeft_toLeftOf="@+id/result_innerView_PSRPosFrag"
+                    app:layout_constraintStart_toStartOf="@+id/result_innerView_PSRPosFrag"
+                    android:text="RESULT"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/appColorBlack"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="@font/myriad_pro_bold"
+
+                    />
+
+                <TextView
+                    android:id="@+id/tv_resMsg_PSRPosFrag"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_resTitle_PSRPosFrag"
+                    app:layout_constraintLeft_toLeftOf="@+id/result_innerView_PSRPosFrag"
+                    app:layout_constraintStart_toStartOf="@+id/result_innerView_PSRPosFrag"
+                    android:text="@string/positive_test_res_msg"
+                    android:gravity="center"
+                    android:lineSpacingExtra="3dp"
+                    android:textSize="16sp"
+                    android:layout_marginTop="10dp"
+                    android:textColor="@color/appColorBlack"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginEnd="15dp"
+                    android:justificationMode="inter_word"
+                    android:fontFamily="@font/myriad_pro_regular"
+
+
+
+                    />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/tv_actionNeed_PSRNegFrag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/result_innerView_PSRPosFrag"
+                app:layout_constraintLeft_toLeftOf="@+id/result_innerView_PSRPosFrag"
+                app:layout_constraintStart_toStartOf="@+id/result_innerView_PSRPosFrag"
+                app:layout_constraintEnd_toEndOf="@+id/result_innerView_PSRPosFrag"
+                app:layout_constraintRight_toRightOf="@+id/result_innerView_PSRPosFrag"
+                android:layout_marginTop="20sp"
+                android:text="SCREENING NEEDED"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:textColor="@color/red_color"
+                android:fontFamily="@font/myriad_pro_bold"
+                />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                app:layout_constraintTop_toBottomOf="@+id/tv_actionNeed_PSRNegFrag"
+                />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

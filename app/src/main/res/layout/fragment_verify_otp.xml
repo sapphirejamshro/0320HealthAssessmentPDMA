@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".fragment.VerifyOTPFragment">
+
+    <ScrollView
+        android:id="@+id/scrollviewVerifyOTPFrag"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:layout_marginTop="8dp"
+        android:orientation="vertical"
+        android:overScrollMode="never"
+        android:isScrollContainer="true"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        >
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/innerLayoutVerifyOTPFrag"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:focusableInTouchMode="true"
+            >
+
+            <TextView
+                android:id="@+id/tvLabelVerifyOTPFrag"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Confirm your Passcode"
+                android:fontFamily="@font/myriad_pro_bold"
+                android:textSize="28sp"
+                android:textAllCaps="true"
+                android:textAlignment="center"
+                android:textColor="@color/appColorBlack"
+                android:layout_marginTop="45dp"
+                android:paddingEnd="8dp"
+                android:paddingStart="8dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="3dp"
+                android:paddingBottom="3dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                android:gravity="center_horizontal" />
+
+
+            <TextView
+                android:id="@+id/tvOTPErrorVerifyOTPFrag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:paddingTop="2dp"
+                android:paddingBottom="0dp"
+                android:text="OTP is required"
+                android:textColor="@color/text_color_red"
+                android:textSize="12sp"
+                android:visibility="invisible"
+                android:paddingLeft="5dp"
+                android:paddingStart="5dp"
+                android:paddingRight="5dp"
+                android:paddingEnd="5dp"
+                android:fontFamily="@font/myriad_pro_regular"
+                app:layout_constraintBottom_toTopOf="@id/cardViewMobNoVerifyOTPFrag"
+                app:layout_constraintLeft_toLeftOf="@id/cardViewMobNoVerifyOTPFrag"
+                app:layout_constraintStart_toStartOf="@id/cardViewMobNoVerifyOTPFrag"
+
+                app:layout_constraintTop_toBottomOf="@id/tvLabelVerifyOTPFrag" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardViewMobNoVerifyOTPFrag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:elevation="5dp"
+                app:cardElevation="8dp"
+                app:cardCornerRadius="4dp"
+                android:outlineProvider="bounds"
+                app:layout_constraintEnd_toEndOf="@id/tvLabelVerifyOTPFrag"
+                app:layout_constraintLeft_toLeftOf="@id/tvLabelVerifyOTPFrag"
+                app:layout_constraintRight_toRightOf="@id/tvLabelVerifyOTPFrag"
+                app:layout_constraintStart_toStartOf="@id/tvLabelVerifyOTPFrag"
+                app:layout_constraintTop_toBottomOf="@id/tvOTPErrorVerifyOTPFrag" >
+                <EditText
+                    android:id="@+id/edOTPVerifyOTPFrag"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/ed_bg_shadow"
+                    android:inputType="number"
+                    android:lines="1"
+                    android:maxLines="1"
+                    android:paddingStart="26dp"
+                    android:paddingLeft="26dp"
+                    android:paddingTop="10dp"
+                    android:paddingEnd="26dp"
+                    android:paddingRight="26dp"
+                    android:paddingBottom="10dp"
+                    android:text=""
+                    android:hint="-  -  -  -"
+                    android:maxLength="11"
+                    android:textColorHint="@color/appColorBlack"
+                    android:textColor="@color/appColorBlack"
+                    android:textSize="28sp"
+                    android:textStyle="bold"
+                    android:textCursorDrawable="@drawable/cursor_drawable"
+                    android:fontFamily="@font/myriad_pro_regular"
+                    />
+            </androidx.cardview.widget.CardView>
+
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_remaining_time_regenerate_otp_verify_otp_frag"
+                android:text="You can Re-send OTP after 1:45"
+                android:textSize="16sp"
+                android:textColor="@color/appColorBlack"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
+                android:paddingLeft="5dp"
+                android:paddingStart="5dp"
+                android:paddingRight="5dp"
+                android:paddingEnd="5dp"
+                android:visibility="visible"
+                android:textAlignment="center"
+                app:layout_constraintTop_toBottomOf="@+id/cardViewMobNoVerifyOTPFrag"
+                app:layout_constraintStart_toStartOf="@id/cardViewMobNoVerifyOTPFrag"
+                app:layout_constraintLeft_toLeftOf="@id/cardViewMobNoVerifyOTPFrag"
+                app:layout_constraintEnd_toEndOf="@id/cardViewMobNoVerifyOTPFrag"
+                app:layout_constraintRight_toRightOf="@id/cardViewMobNoVerifyOTPFrag"
+                android:gravity="center_horizontal" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardViewButtonsVerifyOTPFrag"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="5"
+                android:elevation="3dp"
+                app:cardElevation="3dp"
+                app:cardCornerRadius="4dp"
+                android:layout_marginBottom="18dp"
+                android:outlineProvider="bounds"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                app:layout_constraintTop_toBottomOf="@id/tv_remaining_time_regenerate_otp_verify_otp_frag"
+                app:layout_constraintLeft_toLeftOf="@id/tv_remaining_time_regenerate_otp_verify_otp_frag"
+                app:layout_constraintStart_toStartOf="@id/tv_remaining_time_regenerate_otp_verify_otp_frag"
+                app:layout_constraintEnd_toEndOf="@id/tv_remaining_time_regenerate_otp_verify_otp_frag"
+                app:layout_constraintRight_toRightOf="@id/tv_remaining_time_regenerate_otp_verify_otp_frag"
+
+                >
+                <Button
+                    android:id="@+id/btnVerifyOTP"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Verify"
+                    android:background="@color/app_color_green"
+                    android:textColor="@color/appColorWhite"
+                    android:textAllCaps="true"
+                    android:textSize="18sp"
+                    android:padding="8dp"
+                    android:layout_marginBottom="0dp"
+                    android:fontFamily="@font/myriad_pro_regular"
+
+                    />
+            </androidx.cardview.widget.CardView>
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardViewButtonsVerifyOTPFrag2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="5"
+                android:elevation="3dp"
+                app:cardElevation="3dp"
+                app:cardCornerRadius="4dp"
+                android:layout_marginBottom="18dp"
+                android:outlineProvider="bounds"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                app:layout_constraintTop_toBottomOf="@id/cardViewButtonsVerifyOTPFrag"
+                app:layout_constraintLeft_toLeftOf="@id/cardViewButtonsVerifyOTPFrag"
+                app:layout_constraintStart_toStartOf="@id/cardViewButtonsVerifyOTPFrag"
+                app:layout_constraintEnd_toEndOf="@id/cardViewButtonsVerifyOTPFrag"
+                app:layout_constraintRight_toRightOf="@id/cardViewButtonsVerifyOTPFrag"
+
+                >
+                <Button
+                    android:id="@+id/btnReGeneratePinOTPFrag"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Re-Generate PIN"
+                    android:background="@color/no_btn_color"
+                    android:textColor="@color/appColorWhite"
+                    android:textAllCaps="true"
+                    android:textSize="18sp"
+                    android:padding="8dp"
+                    android:fontFamily="@font/myriad_pro_regular"
+
+                    />
+            </androidx.cardview.widget.CardView>
+
+            <!-- <LinearLayout
+                 android:id="@+id/llButtonsVerifyOTPFrag"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:weightSum="10"
+                 android:background="@null"
+                 android:layout_marginStart="16dp"
+                 android:layout_marginLeft="16dp"
+                 android:layout_marginTop="30dp"
+                 android:layout_marginEnd="16dp"
+                 android:layout_marginRight="16dp"
+                 app:layout_constraintTop_toBottomOf="@id/tv_remaining_time_regenerate_otp_verify_otp_frag"
+                 app:layout_constraintLeft_toLeftOf="@id/tv_remaining_time_regenerate_otp_verify_otp_frag"
+                 app:layout_constraintStart_toStartOf="@id/tv_remaining_time_regenerate_otp_verify_otp_frag"
+                 app:layout_constraintEnd_toEndOf="@id/tv_remaining_time_regenerate_otp_verify_otp_frag"
+                 app:layout_constraintRight_toRightOf="@id/tv_remaining_time_regenerate_otp_verify_otp_frag"
+
+                 >
+                 <androidx.cardview.widget.CardView
+                     android:id="@+id/cardViewButtonsVerifyOTPFrag"
+                     android:layout_width="0dp"
+                     android:layout_height="match_parent"
+                     android:layout_weight="5"
+                     android:elevation="3dp"
+                     app:cardElevation="3dp"
+                     app:cardCornerRadius="4dp"
+                     android:layout_marginBottom="18dp"
+                     android:outlineProvider="bounds"
+                     android:layout_marginRight="5dp"
+                     android:layout_marginEnd="5dp"
+                     >
+                     <Button
+                         android:id="@+id/btnVerifyOTP"
+                         android:layout_width="match_parent"
+                         android:layout_height="match_parent"
+                         android:text="Verify"
+                         android:background="@color/app_color_green"
+                         android:textColor="@color/appColorWhite"
+                         android:textAllCaps="true"
+                         android:textSize="18sp"
+                         android:padding="8dp"
+                         android:layout_marginBottom="0dp"
+                         android:fontFamily="@font/myriad_pro_regular"
+
+                         />
+                 </androidx.cardview.widget.CardView>
+                 &lt;!&ndash;<View
+                     android:layout_width="0dp"
+                     android:layout_height="match_parent"
+                     android:layout_weight="0.3"
+                     android:background="@color/app_color_white_transparent"
+                     />&ndash;&gt;
+                 <androidx.cardview.widget.CardView
+                     android:id="@+id/cardViewButtonsVerifyOTPFrag2"
+                     android:layout_width="0dp"
+                     android:layout_height="match_parent"
+                     android:layout_weight="5"
+                     android:elevation="3dp"
+                     app:cardElevation="3dp"
+                     app:cardCornerRadius="4dp"
+                     android:layout_marginBottom="18dp"
+                     android:outlineProvider="bounds"
+                     android:layout_marginLeft="5dp"
+                     android:layout_marginStart="5dp"
+                     >
+                     <Button
+                         android:id="@+id/btnReGeneratePinOTPFrag"
+                         android:layout_width="match_parent"
+                         android:layout_height="match_parent"
+                         android:text="Re-Generate PIN"
+                         android:background="@color/no_btn_color"
+                         android:textColor="@color/appColorWhite"
+                         android:textAllCaps="true"
+                         android:textSize="18sp"
+                         android:padding="8dp"
+                         android:fontFamily="@font/myriad_pro_regular"
+
+                         />
+                 </androidx.cardview.widget.CardView>
+             </LinearLayout>-->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                app:layout_constraintTop_toBottomOf="@id/cardViewButtonsVerifyOTPFrag2"
+                />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

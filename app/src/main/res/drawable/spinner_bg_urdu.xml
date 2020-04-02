@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <layer-list>
+            <item>
+                <shape>
+                    <solid  android:color="@color/appColorWhite"
+                        />
+                    <corners android:radius="2dp"/>
+                </shape>
+            </item>
+            <item >
+                <bitmap  android:gravity="center_vertical|left"
+                    android:src="@drawable/icon_spinner_dropdown_arrow" >
+                </bitmap>
+            </item>
+        </layer-list>
+    </item>
+</selector>
