@@ -710,6 +710,11 @@ public class OtherUserInformationFragment extends Fragment  implements GoogleApi
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 genderString = genderAdapter.getItem(position).toString();
+                if (position == 1){
+                    genderString = "Female";
+                }else {
+                    genderString = "Male";
+                }
             }
 
             @Override
