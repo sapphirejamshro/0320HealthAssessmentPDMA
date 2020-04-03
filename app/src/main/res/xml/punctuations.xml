@@ -11,47 +11,47 @@
         <Key android:codes="-101" android:keyIcon="@drawable/globe" android:keyWidth="10%p" android:keyEdgeFlags="right"/>
     </Row>
     <Row android:keyWidth="11%p">
-        <Key android:popupKeyboard="@xml/keyboard_popup_template" android:keyWidth="9.1%p"
+        <Key android:keyWidth="9.1%p"
             android:popupCharacters="+" android:keyLabel="+" android:keyEdgeFlags="left"/>
-        <Key android:popupKeyboard="@xml/keyboard_popup_template" android:keyWidth="9.1%p"
+        <Key android:keyWidth="9.1%p"
             android:popupCharacters="×" android:keyLabel="×"/>
-        <Key android:popupKeyboard="@xml/keyboard_popup_template" android:keyWidth="9.1%p"
+        <Key android:keyWidth="9.1%p"
             android:popupCharacters="÷" android:keyLabel="÷" />
-        <Key android:popupKeyboard="@xml/keyboard_popup_template" android:keyWidth="9.1%p"
+        <Key android:keyWidth="9.1%p"
             android:popupCharacters="=" android:keyLabel="="/>
-        <Key android:popupKeyboard="@xml/keyboard_popup_template" android:keyWidth="9.1%p"
+        <Key android:keyWidth="9.1%p"
             android:popupCharacters="/" android:keyLabel= "/"/>
-        <Key android:popupKeyboard="@xml/keyboard_popup_template" android:keyWidth="9.1%p"
+        <Key android:keyWidth="9.1%p"
             android:popupCharacters="_" android:keyLabel= "_"/>
-        <Key android:popupKeyboard="@xml/keyboard_popup_template" android:keyWidth="9%p"
+        <Key android:keyWidth="9%p"
             android:popupCharacters="€" android:keyLabel="€"/>
-        <Key android:popupKeyboard="@xml/keyboard_popup_template" android:keyWidth="9%p"
+        <Key  android:keyWidth="9%p"
             android:popupCharacters="£" android:keyLabel="£"/>
-        <Key android:popupKeyboard="@xml/keyboard_popup_template" android:keyWidth="9%p"
+        <Key android:keyWidth="9%p"
             android:popupCharacters="¥" android:keyLabel="¥" />
-        <Key android:popupKeyboard="@xml/keyboard_popup_template" android:keyWidth="9%p"
+        <Key  android:keyWidth="9%p"
             android:popupCharacters="₩" android:keyLabel="₩"
             android:keyEdgeFlags="right"/>
 
     </Row>
     <Row android:keyWidth="11%p">
-        <Key android:keyLabel="!" android:keyEdgeFlags="left" android:popupKeyboard="@xml/keyboard_popup_template" android:keyWidth="8.2%p"
+        <Key android:keyLabel="!" android:keyEdgeFlags="left" android:keyWidth="8.2%p"
             android:popupCharacters="!" android:horizontalGap="5.5%p"/>
-        <Key android:popupKeyboard="@xml/keyboard_popup_template" android:keyWidth="8.2%p"
+        <Key  android:keyWidth="8.2%p"
             android:popupCharacters="\@" android:keyLabel="\@"/>
-        <Key android:popupKeyboard="@xml/keyboard_popup_template" android:keyWidth="8.2%p"
+        <Key  android:keyWidth="8.2%p"
             android:popupCharacters="#" android:keyLabel="#"/>
-        <Key android:popupKeyboard="@xml/keyboard_popup_template" android:keyWidth="8.2%p"
+        <Key  android:keyWidth="8.2%p"
             android:popupCharacters="$" android:keyLabel="$"/>
-        <Key android:popupKeyboard="@xml/keyboard_popup_template" android:keyWidth="8.2%p"
+        <Key  android:keyWidth="8.2%p"
             android:popupCharacters="%" android:keyLabel="%" />
-        <Key android:popupKeyboard="@xml/keyboard_popup_template" android:keyWidth="8.2%p"
+        <Key  android:keyWidth="8.2%p"
             android:popupCharacters="^" android:keyLabel="^" />
-        <Key android:popupKeyboard="@xml/keyboard_popup_template" android:keyWidth="8.2%p"
+        <Key  android:keyWidth="8.2%p"
             android:popupCharacters="&amp;" android:keyLabel="&amp;"/>
-        <Key android:popupKeyboard="@xml/keyboard_popup_template" android:keyWidth="8.2%p"
+        <Key  android:keyWidth="8.2%p"
             android:popupCharacters="*" android:keyLabel="*"/>
-        <Key android:popupKeyboard="@xml/keyboard_popup_template" android:keyWidth="8.2%p"
+        <Key  android:keyWidth="8.2%p"
             android:popupCharacters="(" android:keyLabel="(" />
         <Key android:keyLabel=")" android:keyEdgeFlags="right" android:keyWidth="8.2%p"/>
 
@@ -60,17 +60,17 @@
     <Row android:keyWidth="11%p">
         <Key android:codes="510" android:keyLabel="1/2"
             android:keyWidth="14%p" android:keyEdgeFlags="left"/>
-        <Key android:popupKeyboard="@xml/keyboard_popup_template" android:keyWidth="9.1%p"
+        <Key  android:keyWidth="9.1%p"
             android:popupCharacters="-" android:keyLabel="-"/>
-        <Key android:popupKeyboard="@xml/keyboard_popup_template" android:keyWidth="9.1%p"
+        <Key  android:keyWidth="9.1%p"
             android:popupCharacters="'" android:keyLabel="'"/>
-        <Key android:popupKeyboard="@xml/keyboard_popup_template" android:keyWidth="9.1%p"
+        <Key  android:keyWidth="9.1%p"
             android:popupCharacters="&quot;" android:keyLabel="&quot;"/>
-        <Key android:popupKeyboard="@xml/keyboard_popup_template" android:keyWidth="9.1%p"
+        <Key  android:keyWidth="9.1%p"
             android:popupCharacters=":" android:keyLabel=":" />
-        <Key android:popupKeyboard="@xml/keyboard_popup_template" android:keyWidth="9.1%p"
+        <Key  android:keyWidth="9.1%p"
             android:popupCharacters=";" android:keyLabel= ";"/>
-        <Key android:popupKeyboard="@xml/keyboard_popup_template" android:keyWidth="9%p"
+        <Key  android:keyWidth="9%p"
             android:popupCharacters="," android:keyLabel="," />
         <Key android:keyLabel="\?" android:popupCharacters="\?" android:keyWidth="9%p"/>
         <!--<Key android:keyLabel="❝" android:popupCharacters="❝" android:keyWidth="9%p"/>-->
