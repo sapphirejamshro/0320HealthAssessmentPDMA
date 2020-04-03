@@ -2,6 +2,7 @@ package com.sapphire.HealthAssessmentPDMA.fragment;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.location.Address;
 import android.location.Geocoder;
@@ -11,6 +12,7 @@ import androidx.fragment.app.Fragment;
 
 import android.text.SpannableString;
 import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -132,6 +134,14 @@ public class ViewUserDetailsFragment extends Fragment implements OnMapReadyCallb
                     }
                     if (!object.isNull("gender")) {
                         genderString  = object.getString("gender");
+                        if (session.getSelectedLanguage().equalsIgnoreCase("Sindhi") ||
+                                session.getSelectedLanguage().equalsIgnoreCase("urdu")){
+                            if (genderString.equalsIgnoreCase("Male")){
+                                genderString = "مرد";
+                            }else {
+                                genderString = "عورت";
+                            }
+                        }
                     }
                     if (!object.isNull("district_name")) {
                        districtString = object.getString("district_name");
@@ -184,57 +194,146 @@ public class ViewUserDetailsFragment extends Fragment implements OnMapReadyCallb
 
         Typeface fontEng = Typeface.createFromAsset(getActivity().getAssets(),"myriad_pro_regular.ttf");
         Typeface fontUrdu = Typeface.createFromAsset(getActivity().getAssets(),"notonastaliqurdu_regular.ttf");
+        Typeface fontSindhi = Typeface.createFromAsset(getActivity().getAssets(),"sindhi_fonts.ttf");
 
         // for mobile No
-        SpannableString spanStringMob = new SpannableString(tvMobileNo.getText().toString());
-        spanStringMob.setSpan(new CustomTypefaceSpan("",fontEng),0,6, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
-        spanStringMob.setSpan(new CustomTypefaceSpan("",fontUrdu),10,spanStringMob.length()-1,Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
-        tvMobileNo.setText(spanStringMob);
+        if (session.getSelectedLanguage().equalsIgnoreCase("sindhi")) {
+            SpannableString spanStringMob = new SpannableString(activity.getResources().getString(R.string.mobile_no1_sindhi));
+            spanStringMob.setSpan(new CustomTypefaceSpan("",fontEng),0,6,Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            spanStringMob.setSpan(new CustomTypefaceSpan("", fontSindhi), 8, spanStringMob.length() - 1, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            tvMobileNo.setText(spanStringMob);
+            tvMobileNo.setPadding(8,20,8,8);
+        }else {
+            SpannableString spanStringMob = new SpannableString(tvMobileNo.getText().toString());
+            spanStringMob.setSpan(new CustomTypefaceSpan("", fontEng), 0, 9, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            spanStringMob.setSpan(new CustomTypefaceSpan("", fontUrdu), 10, spanStringMob.length() - 1, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            tvMobileNo.setText(spanStringMob);
+        }
 
         // for Age
-        SpannableString spanStringAge = new SpannableString(tvAge.getText().toString());
-        spanStringAge.setSpan(new CustomTypefaceSpan("",fontEng),0,3, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
-        spanStringAge.setSpan(new CustomTypefaceSpan("",fontUrdu),5,spanStringAge.length()-1,Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
-        tvAge.setText(spanStringAge);
-
+        if (session.getSelectedLanguage().equalsIgnoreCase("sindhi")) {
+            SpannableString spanStringAge = new SpannableString(activity.getResources().getString(R.string.age1_sindhi));
+            spanStringAge.setSpan(new CustomTypefaceSpan("",fontEng),0,3,Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            spanStringAge.setSpan(new CustomTypefaceSpan("", fontSindhi), 5, spanStringAge.length() - 1, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            tvAge.setText(spanStringAge);
+            tvAge.setPadding(8,20,8,8);
+        }else {
+            SpannableString spanStringAge = new SpannableString(tvAge.getText().toString());
+            spanStringAge.setSpan(new CustomTypefaceSpan("", fontEng), 0, 3, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            spanStringAge.setSpan(new CustomTypefaceSpan("", fontUrdu), 5, spanStringAge.length() - 1, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            tvAge.setText(spanStringAge);
+        }
         // for Gender
-        SpannableString spanStringGender = new SpannableString(tvGender.getText().toString());
-        spanStringGender.setSpan(new CustomTypefaceSpan("",fontEng),0,6, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
-        spanStringGender.setSpan(new CustomTypefaceSpan("",fontUrdu),8,spanStringGender.length()-1,Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
-        tvGender.setText(spanStringGender);
-
+        if (session.getSelectedLanguage().equalsIgnoreCase("sindhi")) {
+            SpannableString spanStringGender = new SpannableString(activity.getResources().getString(R.string.gender1_sindhi));
+            spanStringGender.setSpan(new CustomTypefaceSpan("",fontEng),0,6,Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            spanStringGender.setSpan(new CustomTypefaceSpan("", fontSindhi), 8, spanStringGender.length() - 1, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            tvGender.setText(spanStringGender);
+            tvGender.setPadding(8,20,8,8);
+        }else {
+            SpannableString spanStringGender = new SpannableString(tvGender.getText().toString());
+            spanStringGender.setSpan(new CustomTypefaceSpan("", fontEng), 0, 6, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            spanStringGender.setSpan(new CustomTypefaceSpan("", fontUrdu), 8, spanStringGender.length() - 1, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            tvGender.setText(spanStringGender);
+        }
         //for Name
-        SpannableString spanStringName = new SpannableString(tvName.getText().toString());
-        spanStringName.setSpan(new CustomTypefaceSpan("",fontEng),0,4,Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
-        spanStringName.setSpan(new CustomTypefaceSpan("",fontUrdu),5,spanStringName.length()-1,Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
-        tvName.setText(spanStringName);
-
+        if (session.getSelectedLanguage().equalsIgnoreCase("sindhi")) {
+            SpannableString spanStringName = new SpannableString(activity.getResources().getString(R.string.name_text1_sindhi));
+            spanStringName.setSpan(new CustomTypefaceSpan("",fontEng),0,4,Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            spanStringName.setSpan(new CustomTypefaceSpan("", fontSindhi), 5, spanStringName.length() - 1, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            tvName.setText(spanStringName);
+            tvName.setPadding(8,20,8,8);
+        }else {
+            SpannableString spanStringName = new SpannableString(tvName.getText().toString());
+            spanStringName.setSpan(new CustomTypefaceSpan("", fontEng), 0, 4, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            spanStringName.setSpan(new CustomTypefaceSpan("", fontUrdu), 5, spanStringName.length() - 1, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            tvName.setText(spanStringName);
+        }
         //for Address
-        SpannableString spanStringAddress = new SpannableString(tvAddress.getText().toString());
-        spanStringAddress.setSpan(new CustomTypefaceSpan("",fontEng),0,7,Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
-        spanStringAddress.setSpan(new CustomTypefaceSpan("",fontUrdu),8,spanStringAddress.length()-1,Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
-        tvAddress.setText(spanStringAddress);
-
+        if (session.getSelectedLanguage().equalsIgnoreCase("sindhi")) {
+            SpannableString spanStringAddress = new SpannableString(activity.getResources().getString(R.string.address_text1_sindhi));
+            spanStringAddress.setSpan(new CustomTypefaceSpan("",fontEng),0,7,Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            spanStringAddress.setSpan(new CustomTypefaceSpan("", fontSindhi), 8, spanStringAddress.length() - 1, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            tvAddress.setText(spanStringAddress);
+            tvAddress.setPadding(8,20,8,8);
+        }else {
+            SpannableString spanStringAddress = new SpannableString(tvAddress.getText().toString());
+            spanStringAddress.setSpan(new CustomTypefaceSpan("", fontEng), 0, 7, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            spanStringAddress.setSpan(new CustomTypefaceSpan("", fontUrdu), 8, spanStringAddress.length() - 1, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            tvAddress.setText(spanStringAddress);
+        }
         // for CNIC
-        SpannableString spanStringCNIC = new SpannableString(tvCNIC.getText().toString());
-        spanStringCNIC.setSpan(new CustomTypefaceSpan("",fontEng),0,4,Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
-        spanStringCNIC.setSpan(new CustomTypefaceSpan("",fontUrdu),6,spanStringCNIC.length()-1,Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
-        tvCNIC.setText(spanStringCNIC);
-
+        if (session.getSelectedLanguage().equalsIgnoreCase("sindhi")) {
+            SpannableString SpannableString = new SpannableString(activity.getResources().getString(R.string.cnic_text_sindhi));
+            SpannableString.setSpan(new CustomTypefaceSpan("",fontEng),0,4,Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            SpannableString.setSpan(new CustomTypefaceSpan("", fontSindhi), 6, SpannableString.length() - 1, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            tvCNIC.setText(SpannableString);
+            tvCNIC.setPadding(8,20,8,8);
+        }else {
+            SpannableString spanStringCNIC = new SpannableString(tvCNIC.getText().toString());
+            spanStringCNIC.setSpan(new CustomTypefaceSpan("", fontEng), 0, 4, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            spanStringCNIC.setSpan(new CustomTypefaceSpan("", fontUrdu), 6, spanStringCNIC.length() - 1, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            tvCNIC.setText(spanStringCNIC);
+        }
         // for Taluka
-        SpannableString spanStringTaluka = new SpannableString(tvTaluka.getText().toString());
-        spanStringTaluka.setSpan(new CustomTypefaceSpan("",fontEng),0,6,Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
-        spanStringTaluka.setSpan(new CustomTypefaceSpan("",fontUrdu),7,spanStringTaluka.length()-1,Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
-        tvTaluka.setText(spanStringTaluka);
+        if (session.getSelectedLanguage().equalsIgnoreCase("sindhi")) {
+            SpannableString spanStringTaluka = new SpannableString(activity.getResources().getString(R.string.taluka_sindhi));
+            spanStringTaluka.setSpan(new CustomTypefaceSpan("",fontEng),0,6,Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            spanStringTaluka.setSpan(new CustomTypefaceSpan("", fontSindhi), 7, spanStringTaluka.length() - 1, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            tvTaluka.setText(spanStringTaluka);
+            tvTaluka.setPadding(8,20,8,8);
+        }else {
+            SpannableString spanStringTaluka = new SpannableString(tvTaluka.getText().toString());
+            spanStringTaluka.setSpan(new CustomTypefaceSpan("", fontEng), 0, 6, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            spanStringTaluka.setSpan(new CustomTypefaceSpan("", fontUrdu), 7, spanStringTaluka.length() - 1, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            tvTaluka.setText(spanStringTaluka);
+        }
 
         //for District
-        SpannableString spanStringDistrict = new SpannableString(tvDistrict.getText().toString());
-        spanStringDistrict.setSpan(new CustomTypefaceSpan("",fontEng),0,8,Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
-        spanStringDistrict.setSpan(new CustomTypefaceSpan("",fontUrdu),10,spanStringDistrict.length()-1,Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
-        tvDistrict.setText(spanStringDistrict);
+        if (session.getSelectedLanguage().equalsIgnoreCase("sindhi")) {
+            SpannableString spanStringDistrict = new SpannableString(activity.getResources().getString(R.string.dist_text1_sindhi));
+            spanStringDistrict.setSpan(new CustomTypefaceSpan("",fontEng),0,8,Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            spanStringDistrict.setSpan(new CustomTypefaceSpan("", fontSindhi), 10, spanStringDistrict.length() - 1, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            tvDistrict.setText(spanStringDistrict);
+            tvDistrict.setPadding(8,20,8,8);
+        }else {
+            SpannableString spanStringDistrict = new SpannableString(tvDistrict.getText().toString());
+            spanStringDistrict.setSpan(new CustomTypefaceSpan("", fontEng), 0, 8, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            spanStringDistrict.setSpan(new CustomTypefaceSpan("", fontUrdu), 10, spanStringDistrict.length() - 1, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            tvDistrict.setText(spanStringDistrict);
+        }
     }
 
     private void setValues(){
+        Typeface fontEng = Typeface.createFromAsset(getActivity().getAssets(),"myriad_pro_regular.ttf");
+        Typeface fontUrdu = Typeface.createFromAsset(getActivity().getAssets(),"notonastaliqurdu_regular.ttf");
+        Typeface fontSindhi = Typeface.createFromAsset(getActivity().getAssets(),"sindhi_fonts.ttf");
+
+        if (session.getSelectedLanguage().equalsIgnoreCase("Sindhi")){
+            tvNameValue.setTypeface(fontSindhi);
+            tvNameValue.setPadding(8,20,8,8);
+            tvGenderValue.setTypeface(fontSindhi);
+            tvGenderValue.setPadding(8,20,8,8);
+            tvAddressValue.setTypeface(fontSindhi);
+            tvAddressValue.setPadding(8,20,8,8);
+        }else if (session.getSelectedLanguage().equalsIgnoreCase("urdu")){
+            tvNameValue.setTypeface(fontUrdu);
+            tvGenderValue.setTypeface(fontUrdu);
+            tvAddressValue.setTypeface(fontUrdu);
+        }else{
+            tvNameValue.setTypeface(fontEng);
+            tvNameValue.setPadding(8,20,8,8);
+            tvGenderValue.setTypeface(fontEng);
+            tvGenderValue.setPadding(8,20,8,8);
+            tvAddressValue.setTypeface(fontEng);
+            tvAddressValue.setPadding(8,20,8,8);
+
+        }
+        tvMobileNoValue.setTypeface(fontEng);
+        tvAgeValue.setTypeface(fontEng);
+        tvDistrictValue.setTypeface(fontEng);
+        tvTalukaValue.setTypeface(fontEng);
+        tvCNICValue.setTypeface(fontEng);
         tvNameValue.setText(nameString);
         tvMobileNoValue.setText(mobNoString);
         tvAgeValue.setText(ageString);

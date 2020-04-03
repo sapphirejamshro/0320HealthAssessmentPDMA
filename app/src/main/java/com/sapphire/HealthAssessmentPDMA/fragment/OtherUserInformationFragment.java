@@ -218,15 +218,18 @@ public class OtherUserInformationFragment extends Fragment  implements GoogleApi
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus){
+                    NavigationDrawerActivity.layoutBottomButtons.setVisibility(View.VISIBLE);
                     edName.setFocusable(true);
                     edName.setFocusableInTouchMode(true);
                     commonCode.hideKeyboard(v);
                 }else {
                     hideCustomKeyboard();
+                    NavigationDrawerActivity.layoutBottomButtons.setVisibility(View.GONE);
                     InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                     if (imm != null) {
                         imm.showSoftInput(edMobileNumber, InputMethodManager.SHOW_IMPLICIT);
                     }
+                    showKeyboard(v);
                 }
             }
         });
@@ -467,12 +470,15 @@ public class OtherUserInformationFragment extends Fragment  implements GoogleApi
                 if (!hasFocus){
                     commonCode.hideKeyboard(v);
                     spGender.requestFocus();
+                    NavigationDrawerActivity.layoutBottomButtons.setVisibility(View.VISIBLE);
                     spGender.setFocusable(true);
                     spGender.setFocusableInTouchMode(true);
                    /* edName.setFocusable(true);
                     edName.setFocusableInTouchMode(true);*/
                 }else {
                     hideCustomKeyboard();
+                    showKeyboard(v);
+                    NavigationDrawerActivity.layoutBottomButtons.setVisibility(View.GONE);
                 }
             }
         });
@@ -1536,8 +1542,11 @@ public class OtherUserInformationFragment extends Fragment  implements GoogleApi
             isCnic = false;
         }*/
 
+        if (tvCnicError.getVisibility() == View.VISIBLE){
+            isCnic = false;
+        }
         return (isName && isMobileNo && isAge && isDistrict &&
-                isTehsil && isAddress );
+                isTehsil && isAddress && isCnic );
     }
 
     @Override
@@ -1826,6 +1835,18 @@ public class OtherUserInformationFragment extends Fragment  implements GoogleApi
                     // keyboard is opened
                     System.out.println("=====keyboard open");
 
+                    if(edAge.hasFocus()){
+                        /*ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) viewSpacing.getLayoutParams();
+                        layoutParams.height = (10-(edAge.getHeight()/2));
+                        mainScrollView.smoothScrollTo(0,viewSpacing.getBottom());*/
+                        mainScrollView.smoothScrollTo(0,edAge.getTop());
+                    }
+                    if(edMobileNumber.hasFocus()){
+                        /*ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) viewSpacing.getLayoutParams();
+                        layoutParams.height = (10-(edMobileNumber.getHeight()/2));
+                        mainScrollView.smoothScrollTo(0,viewSpacing.getBottom());*/
+                        mainScrollView.smoothScrollTo(0,edMobileNumber.getTop());
+                    }
 
                     if(edCnic.hasFocus()){
                         NavigationDrawerActivity.layoutBottomButtons.setVisibility(View.GONE);

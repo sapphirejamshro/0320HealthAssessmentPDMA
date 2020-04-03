@@ -11,46 +11,29 @@
         <Key android:codes="-101" android:keyIcon="@drawable/globe" android:keyWidth="10%p" android:keyEdgeFlags="right"/>
     </Row>
     <Row android:keyWidth="11%p">
-        <Key android:popupKeyboard="@xml/keyboard_popup_template" android:keyWidth="9.1%p"
-            android:popupCharacters="ق" android:keyLabel="ق" android:keyEdgeFlags="left"/>
-        <Key android:popupKeyboard="@xml/keyboard_popup_template" android:keyWidth="9.1%p"
-            android:popupCharacters="ؤو" android:keyLabel="و"/>
-        <Key android:popupKeyboard="@xml/keyboard_popup_template" android:keyWidth="9.1%p"
-            android:popupCharacters="ع" android:keyLabel="ع" />
-        <Key android:popupKeyboard="@xml/keyboard_popup_template" android:keyWidth="9.1%p"
-            android:popupCharacters="ڑ" android:keyLabel="ڑ"/>
-        <Key android:popupKeyboard="@xml/keyboard_popup_template" android:keyWidth="9.1%p"
-            android:popupCharacters="ٹ" android:keyLabel= "ٹ"/>
-        <Key android:popupKeyboard="@xml/keyboard_popup_template" android:keyWidth="9.1%p"
-            android:popupCharacters="ے" android:keyLabel= "ے"/>
-        <Key android:popupKeyboard="@xml/keyboard_popup_template" android:keyWidth="9%p"
-            android:popupCharacters="‍‌ء" android:keyLabel="‍‌ء"/>
-        <Key android:popupKeyboard="@xml/keyboard_popup_template" android:keyWidth="9%p"
-            android:popupCharacters="ی" android:keyLabel="ی"/>
-        <Key android:popupKeyboard="@xml/keyboard_popup_template" android:keyWidth="9%p"
-            android:popupCharacters="ہ" android:keyLabel="ہ" />
-        <Key android:popupKeyboard="@xml/keyboard_popup_template" android:keyWidth="9%p"
-            android:popupCharacters="پ" android:keyLabel="پ"
+        <Key android:keyWidth="9.1%p" android:keyLabel="ق" android:keyEdgeFlags="left"/>
+        <Key android:keyWidth="9.1%p" android:keyLabel="و"/>
+        <Key android:keyWidth="9.1%p" android:keyLabel="ع" />
+        <Key android:keyWidth="9.1%p" android:keyLabel="ڑ"/>
+        <Key android:keyWidth="9.1%p" android:keyLabel= "ٹ"/>
+        <Key android:keyWidth="9.1%p" android:keyLabel= "ے"/>
+        <Key android:keyWidth="9%p" android:keyLabel="‍‌ء"/>
+        <Key android:keyWidth="9%p" android:keyLabel="ی"/>
+        <Key android:keyWidth="9%p" android:keyLabel="ہ" />
+        <Key android:keyWidth="9%p" android:keyLabel="پ"
             android:keyEdgeFlags="right"/>
 
     </Row>
     <Row android:keyWidth="11%p">
-        <Key android:keyLabel="آ" android:horizontalGap="5.5%p"  android:keyEdgeFlags="left" android:popupKeyboard="@xml/keyboard_popup_template"
-            android:popupCharacters="آ" android:keyWidth="9.1%p"/>
-        <Key android:popupKeyboard="@xml/keyboard_popup_template" android:keyWidth="9.1%p"
-            android:popupCharacters="ش" android:keyLabel="ش"/>
-        <Key android:popupKeyboard="@xml/keyboard_popup_template" android:keyWidth="9.1%p"
-            android:popupCharacters="ڈ" android:keyLabel="ڈ"/>
-        <Key android:popupKeyboard="@xml/keyboard_popup_template" android:keyWidth="9.1%p"
-            android:popupCharacters="ف" android:keyLabel="ف" />
-        <Key android:popupKeyboard="@xml/keyboard_popup_template" android:keyWidth="9.1%p"
-            android:popupCharacters="غ" android:keyLabel="غ" />
-        <Key android:popupKeyboard="@xml/keyboard_popup_template" android:keyWidth="9.1%p"
-            android:popupCharacters="ح" android:keyLabel="ح"/>
-        <Key android:popupKeyboard="@xml/keyboard_popup_template" android:keyWidth="9.1%p"
-            android:popupCharacters="ژ" android:keyLabel="ژ"/>
-        <Key android:popupKeyboard="@xml/keyboard_popup_template" android:keyWidth="9.1%p"
-            android:popupCharacters="خ" android:keyLabel="خ" />
+        <Key android:keyLabel="آ" android:horizontalGap="5.5%p"  android:keyEdgeFlags="left"
+             android:keyWidth="9.1%p"/>
+        <Key android:keyWidth="9.1%p" android:keyLabel="ش"/>
+        <Key android:keyWidth="9.1%p" android:keyLabel="ڈ"/>
+        <Key android:keyWidth="9.1%p" android:keyLabel="ف" />
+        <Key android:keyWidth="9.1%p" android:keyLabel="غ" />
+        <Key android:keyWidth="9.1%p" android:keyLabel="ح"/>
+        <Key android:keyWidth="9.1%p" android:keyLabel="ژ"/>
+        <Key android:keyWidth="9.1%p" android:keyLabel="خ" />
         <Key android:keyLabel="ل" android:keyEdgeFlags="right" android:keyWidth="9.1%p"/>
 
     </Row>
@@ -58,19 +41,14 @@
     <Row android:keyWidth="11%p">
         <Key android:codes="-1" android:keyIcon="@drawable/shift_up" android:keyWidth="14%p"
             android:keyEdgeFlags="left"/>
-        <Key android:popupKeyboard="@xml/keyboard_popup_template" android:keyWidth="9.1%p"
-            android:popupCharacters="ذ" android:keyLabel="ذ"/>
-        <Key android:popupKeyboard="@xml/keyboard_popup_template" android:keyWidth="9.1%p"
-            android:popupCharacters="ض" android:keyLabel="ض"/>
-        <Key android:popupKeyboard="@xml/keyboard_popup_template" android:keyWidth="9.1%p"
-            android:popupCharacters="ث" android:keyLabel="ث"/>
-        <Key android:popupKeyboard="@xml/keyboard_popup_template" android:keyWidth="9.1%p"
-            android:popupCharacters="ظ" android:keyLabel="ظ" />
-        <Key android:popupKeyboard="@xml/keyboard_popup_template" android:keyWidth="9.1%p"
-            android:popupCharacters="ب" android:keyLabel= "ب"/>
-        <Key android:popupKeyboard="@xml/keyboard_popup_template" android:keyWidth="9.1%p"
-            android:popupCharacters="ں" android:keyLabel="ں" />
-        <Key android:keyLabel="م" android:popupCharacters="م" android:keyWidth="9.1%p"/>
+        <Key android:keyWidth="9.1%p"
+             android:keyLabel="ذ"/>
+        <Key android:keyWidth="9.1%p" android:keyLabel="ض"/>
+        <Key android:keyWidth="9.1%p" android:keyLabel="ث"/>
+        <Key android:keyWidth="9.1%p" android:keyLabel="ظ" />
+        <Key android:keyWidth="9.1%p" android:keyLabel= "ب"/>
+        <Key android:keyWidth="9.1%p" android:keyLabel="ں" />
+        <Key android:keyLabel="م" android:keyWidth="9.1%p"/>
         <Key android:codes="-5" android:keyIcon="@drawable/ic_back_urdu_sindhi" android:keyWidth="13.7%p"
             android:isRepeatable="true" android:keyEdgeFlags="right"/>
 

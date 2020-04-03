@@ -838,6 +838,7 @@ public class UserInformationFragment extends Fragment  implements GoogleApiClien
                     edName.setFocusableInTouchMode(true);*/
                 }else {
                     hideCustomKeyboard();
+                    showKeyboard(v);
                 }
             }
         });
@@ -1119,7 +1120,6 @@ public class UserInformationFragment extends Fragment  implements GoogleApiClien
 
             @Override
             public void onRelease(int primaryCode) {
-
             }
 
             @Override
@@ -1473,6 +1473,7 @@ public class UserInformationFragment extends Fragment  implements GoogleApiClien
                             bundle.putString("longitude", longitude);
                             bundle.putString("userType",userType);
                             bundle.putString("screen","register");
+                            bundle.putString("hashKey",hashKeyString);
                             new CommonCode(activity).showErrorORSuccessAlert(activity,"success","Registration Successful! Enter OTP for verification",getActivity().getSupportFragmentManager(),bundle);
                         }else if(statusDescription.length()>0
                                 && statusDescription.equalsIgnoreCase("Record already Exists")){
@@ -1547,9 +1548,11 @@ public class UserInformationFragment extends Fragment  implements GoogleApiClien
             tvCnicError.setVisibility(View.VISIBLE);
             isCnic = false;
         }*/
-
+        if (tvCnicError.getVisibility() == View.VISIBLE){
+            isCnic = false;
+        }
         return (isName && isMobileNo && isAge && isDistrict &&
-                isTehsil && isAddress );
+                isTehsil && isAddress && isCnic);
     }
 
     @Override
@@ -1836,6 +1839,12 @@ public class UserInformationFragment extends Fragment  implements GoogleApiClien
                     // keyboard is opened
                     System.out.println("=====keyboard open");
 
+
+                    if(edAge.hasFocus()){
+                       // ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) spacingView.getLayoutParams();
+                        //layoutParams.height = (10-(edAge.getHeight()/2));
+                        mainScrollView.smoothScrollTo(0,edAge.getTop());
+                    }
 
                     if(edCnic.hasFocus()){
                         System.out.println("=====edName::"+edCnic.getTop()+"----"+edCnic.getHeight()+" --- "+edCnic.getTop());

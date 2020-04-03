@@ -141,26 +141,26 @@ public class AssessmentAdapter extends RecyclerView.Adapter<AssessmentAdapter.As
         // for Flight No
         if (selectedLanguage.equalsIgnoreCase("Sindhi")){
             SpannableString spanStringFlightNo = new SpannableString(context.getResources().getString(R.string.flight_text_sindhi));
-            spanStringFlightNo.setSpan(new CustomTypefaceSpan("",fontEng),0,7, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
-            spanStringFlightNo.setSpan(new CustomTypefaceSpan("",fontSindhi),8,spanStringFlightNo.length()-1,Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            spanStringFlightNo.setSpan(new CustomTypefaceSpan("",fontEng),0,10, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            spanStringFlightNo.setSpan(new CustomTypefaceSpan("",fontSindhi),11,spanStringFlightNo.length()-1,Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
             holder.tvFlightNoLabel.setText(spanStringFlightNo);
         }else {
             SpannableString spanStringFlightNo = new SpannableString(holder.tvFlightNoLabel.getText().toString());
-            spanStringFlightNo.setSpan(new CustomTypefaceSpan("",fontEng),0,7, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
-            spanStringFlightNo.setSpan(new CustomTypefaceSpan("",fontUrdu),8,spanStringFlightNo.length()-1,Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            spanStringFlightNo.setSpan(new CustomTypefaceSpan("",fontEng),0,10, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            spanStringFlightNo.setSpan(new CustomTypefaceSpan("",fontUrdu),11,spanStringFlightNo.length()-1,Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
             holder.tvFlightNoLabel.setText(spanStringFlightNo);
         }
 
         // for Passport No
         if (selectedLanguage.equalsIgnoreCase("Sindhi")){
             SpannableString spanStringPassportNo = new SpannableString(context.getResources().getString(R.string.passport_no_sindhi));
-            spanStringPassportNo.setSpan(new CustomTypefaceSpan("",fontEng),0,7, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
-            spanStringPassportNo.setSpan(new CustomTypefaceSpan("",fontSindhi),8,spanStringPassportNo.length()-1,Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            spanStringPassportNo.setSpan(new CustomTypefaceSpan("",fontEng),0,11, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            spanStringPassportNo.setSpan(new CustomTypefaceSpan("",fontSindhi),12,spanStringPassportNo.length()-1,Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
             holder.tvPassportLabel.setText(spanStringPassportNo);
         }else {
             SpannableString spanStringPassportNo = new SpannableString(holder.tvPassportLabel.getText().toString());
-            spanStringPassportNo.setSpan(new CustomTypefaceSpan("",fontEng),0,7, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
-            spanStringPassportNo.setSpan(new CustomTypefaceSpan("",fontUrdu),8,spanStringPassportNo.length()-1,Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            spanStringPassportNo.setSpan(new CustomTypefaceSpan("",fontEng),0,11, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            spanStringPassportNo.setSpan(new CustomTypefaceSpan("",fontUrdu),12,spanStringPassportNo.length()-1,Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
             holder.tvPassportLabel.setText(spanStringPassportNo);
         }
 

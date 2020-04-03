@@ -32,13 +32,14 @@ public class OTPService {
         this.progressDialog = new ProgressDialog(context);
     }
 
-    public void resendOTP (String mobileNo,
+    public void resendOTP (String mobileNo, String screenName, String hashKey,
                            final VolleyCallback callback){
         JSONObject jsonObject = new JSONObject();
         try {
             mobileNo = mobileNo.replace("+92","0");
             jsonObject.put("mobile",mobileNo);
-            //jsonObject.put("token_type",tokenType);
+            jsonObject.put("page_name",screenName);
+            jsonObject.put("hash_key",hashKey);
 
         } catch (Exception e) {
 

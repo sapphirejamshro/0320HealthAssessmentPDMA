@@ -85,6 +85,10 @@ China at the end of 2019 and it has a new strain that has not been seen before i
 
     <string name="name_text1">Name (نام)</string>
     <string name="mobile_no1">Mobile # (موبائل)</string>
+    <string name="age1">Age (عمر)</string>
+    <string name="gender1">Gender (جنس)</string>
+    <string name="dist_text1">District (ضلع)</string>
+    <string name="address_text1">Address (پتہ)</string>
 
     <string name="body_aches_eng">Body Aches</string>
     <string name="difficulty_in_breathing_eng">Difficulty in breathing</string>
@@ -114,13 +118,18 @@ China at the end of 2019 and it has a new strain that has not been seen before i
     <string name="dist_text_sindhi">District (ضلعو)<font color="red">*</font></string>
     <string name="tehsil_text_sindhi">Tehsil (تعلقو)<font color="red">*</font></string>
     <string name="country_text_sindhi">Arrived From (ڪٿان پهتو)</string>
-    <string name="flight_text_sindhi">Flight (پرواز نمبر)</string>
+    <string name="flight_text_sindhi">Flight No. (پرواز نمبر)</string>
     <string name="passport_no_sindhi">Passport No. (پاسپورٽ نمبر)</string>
 
 
     <string name="name_text1_sindhi">Name (نالو)</string>
     <string name="mobile_no1_sindhi">Mobile # (موبائل)</string>
     <string name="taluka_sindhi">Taluka(تعلقو)</string>
+    <string name="age1_sindhi">Age (عمر)</string>
+    <string name="gender1_sindhi">Gender (جنس)</string>
+    <string name="dist_text1_sindhi">District (ضلعو)</string>
+    <string name="address_text1_sindhi">Address (هاڻوڪو پتو)</string>
+
 
     <string name="corona_awareness">CORONA \nAWARENESS</string>
     <string name="corona_awareness_urdu">کورونا معلومات</string>

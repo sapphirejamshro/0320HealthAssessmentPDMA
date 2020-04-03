@@ -22,6 +22,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.VolleyError;
+import com.sapphire.HealthAssessmentPDMA.AppSignature.AppSignatureHashHelper;
 import com.sapphire.HealthAssessmentPDMA.R;
 import com.sapphire.HealthAssessmentPDMA.helper.CommonCode;
 import com.sapphire.HealthAssessmentPDMA.helper.CustomTypefaceSpan;
@@ -43,12 +44,13 @@ public class SignInActivity extends AppCompatActivity {
     private String mobileNoString="", userIdString="",nameString="",cnicString=""
             ,genderString="", ageString="",districtIdString="",districtNameString,selectedLanguage="",
             tehsilNameString="",tehsilIdString="",latitude="",longitude="",userStatus="",userType="",
-            ucIdString="",addressString="";
+            ucIdString="",addressString="",hashKeyString="";
     private Activity activity;
     private ProgressDialog progressDialog;
     private CommonCode commonCode;
     private ScrollView mainScrollView;
     private UserSession session;
+    private AppSignatureHashHelper appSignatureHashHelper;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,6 +65,8 @@ public class SignInActivity extends AppCompatActivity {
         progressDialog = new ProgressDialog(activity);
         commonCode = new CommonCode(activity);
         session = new UserSession(activity);
+        appSignatureHashHelper = new AppSignatureHashHelper(activity);
+        hashKeyString = appSignatureHashHelper.getAppSignatures().get(0);
         scrollViewListener();
         SpannableString spannableString = new SpannableString(getResources().getString(R.string.provincial_management_authority));
         spannableString.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.darkGreenColor)),spannableString.length()-5,spannableString.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
@@ -265,9 +269,18 @@ public class SignInActivity extends AppCompatActivity {
                                     session.createSession(selectedLanguage);
                                     session.createUserSession(userIdString, nameString, mobileNoString, ageString, genderString, districtNameString,
                                             tehsilNameString, addressString, cnicString,latitude,longitude,userType);
-                                    commonCode.showErrorORSuccessAlert(activity, "success", "Login Successfully", getSupportFragmentManager(), null);
+
+                                    Bundle bundle = new Bundle();
+                                    bundle.putString("mobileNo",mobileNoString);
+                                    bundle.putString("screen","VerifiedLogin");
+                                    bundle.putString("hashKey",hashKeyString);
+                                    Intent intent = new Intent(activity, NavigationDrawerActivity.class);
+                                    intent.putExtras(bundle);
+                                    activity.startActivity(intent);
+                                   // commonCode.showErrorORSuccessAlert(activity, "success", "Login Successfully", getSupportFragmentManager(), null);
                                 }else {
                                     //VerifyOTPFragment verifyOTPFragment = new VerifyOTPFragment();
+                                    session.createSession(selectedLanguage);
                                     Bundle bundle = new Bundle();
                                     bundle.putString("userId",userIdString);
                                     bundle.putString("name",nameString);
@@ -283,6 +296,7 @@ public class SignInActivity extends AppCompatActivity {
                                     bundle.putString("longitude", longitude);
                                     bundle.putString("userType",userType);
                                     bundle.putString("screen","SignInActivityNotVerified");
+                                    bundle.putString("hashKey",hashKeyString);
 
                                     Intent intent = new Intent(activity, NavigationDrawerActivity.class);
                                     intent.putExtras(bundle);

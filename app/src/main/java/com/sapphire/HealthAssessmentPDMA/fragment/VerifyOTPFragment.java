@@ -62,6 +62,7 @@ public class VerifyOTPFragment extends Fragment implements SMSBroadcastReceiverA
     private TextWatcher optCodeTextWatcher;
     private int totalDash = 4;
     SMSBroadcastReceiverAPI smsBroadcastReceiver;
+    private String hashKey="", screenNameForOTPRegenerate="";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -78,9 +79,10 @@ public class VerifyOTPFragment extends Fragment implements SMSBroadcastReceiverA
       // Toast.makeText(activity,"hash I l  key "+appSignatureHashHelper.getAppSignatures().get(0),Toast.LENGTH_SHORT).show();
         if (getArguments() != null){
             screenName = getArguments().getString("screen");
+            hashKey = getArguments().getString("hashKey");
             if (screenName != null && screenName.length()>0
                     && screenName.equalsIgnoreCase("register")){
-
+                screenNameForOTPRegenerate = "register";
                 name = getArguments().getString("name");
                 userId = getArguments().getString("userId");
                 mobileNo = getArguments().getString("mobileNo");
@@ -94,7 +96,7 @@ public class VerifyOTPFragment extends Fragment implements SMSBroadcastReceiverA
                 longitude = getArguments().getString("longitude");
                 userType = getArguments().getString("user_type");
             }else if (screenName!= null && screenName.equalsIgnoreCase("SignInActivityNotVerified")){
-
+                screenNameForOTPRegenerate = "register";
                 name = getArguments().getString("name");
                 userId = getArguments().getString("userId");
                 mobileNo = getArguments().getString("mobileNo");
@@ -110,7 +112,17 @@ public class VerifyOTPFragment extends Fragment implements SMSBroadcastReceiverA
 
                 commonCode.hideKeyboard(view);
                 if (commonCode.isNetworkAvailable()) {
-                    regenerateOTP(mobileNo, screenName);
+                    //screenName = "register"
+                    regenerateOTP(mobileNo, "register",hashKey);
+                }else {
+                    commonCode.showErrorORSuccessAlert(activity,"error","Please Connect to Internet!",getActivity().getSupportFragmentManager(),null);
+                }
+            }else {
+                commonCode.hideKeyboard(view);
+                screenNameForOTPRegenerate = "login";
+                mobileNo = getArguments().getString("mobileNo");
+                if (commonCode.isNetworkAvailable()) {
+                    regenerateOTP(mobileNo, "login",hashKey);
                 }else {
                     commonCode.showErrorORSuccessAlert(activity,"error","Please Connect to Internet!",getActivity().getSupportFragmentManager(),null);
                 }
@@ -150,7 +162,7 @@ public class VerifyOTPFragment extends Fragment implements SMSBroadcastReceiverA
             public void onClick(View v) {
                 commonCode.hideKeyboard(view);
                 if (commonCode.isNetworkAvailable()) {
-                    regenerateOTP(mobileNo, screenName);
+                    regenerateOTP(mobileNo, screenNameForOTPRegenerate,hashKey);
                 }else {
                     commonCode.showErrorORSuccessAlert(activity,"error","Please Connect to Internet!",getActivity().getSupportFragmentManager(),null);
                 }
@@ -251,7 +263,22 @@ public class VerifyOTPFragment extends Fragment implements SMSBroadcastReceiverA
                                         }
 
                                             CommonCode.updateDisplay(new DashboardFragment(), getActivity().getSupportFragmentManager());
-                                    }else {
+                                    }else if (screenName.length()>0 && screenName.equalsIgnoreCase("VerifiedLogin")){
+                                        if(countDownTimer!=null){
+                                            countDownTimer.cancel();
+                                        }
+                                        // Remove current Fragment
+                                        Fragment userFrag = getActivity().getSupportFragmentManager().findFragmentByTag("VerifyOTPFragment");
+
+                                        if (userFrag != null && userFrag.isAdded()) {
+                                            getActivity().getSupportFragmentManager().beginTransaction().remove(userFrag).commit();
+                                            getActivity().getSupportFragmentManager().popBackStack();
+                                        }
+
+                                        CommonCode.updateDisplay(new DashboardFragment(), getActivity().getSupportFragmentManager());
+
+                                    }
+                                    else {
                                         new UserSession(activity).createUserSession(userId, name, mobileNo,ageString,genderString,districtNameString,
                                                 tehsilNameString,addressString,cnicString,latitude,longitude,userType);
                                         if(countDownTimer!=null){
@@ -342,8 +369,8 @@ public class VerifyOTPFragment extends Fragment implements SMSBroadcastReceiverA
         }
         ((LockDrawer)getActivity()).unLockDrawer();
     }
-    private void regenerateOTP(String mobileNo,String tokenType){
-        new OTPService(activity).resendOTP(mobileNo, new VolleyCallback() {
+    private void regenerateOTP(String mobileNo,String screenName, String hashKey){
+        new OTPService(activity).resendOTP(mobileNo,screenName,hashKey, new VolleyCallback() {
             @Override
             public void onSuccess(JSONObject response) {
                 if (response != null && response.length()>0){

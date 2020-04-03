@@ -10,7 +10,7 @@
         android:id="@+id/tv_name_person_CILayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/name_text1"
+        android:text="@string/name_text"
         android:textColor="@color/appColorBlack"
         android:textSize="16sp"
         android:includeFontPadding="false"

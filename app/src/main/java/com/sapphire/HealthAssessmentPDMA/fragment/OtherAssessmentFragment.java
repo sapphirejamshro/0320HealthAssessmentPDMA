@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.inputmethodservice.Keyboard;
 import android.inputmethodservice.KeyboardView;
@@ -22,6 +23,7 @@ import android.text.InputType;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextWatcher;
+import android.text.style.ForegroundColorSpan;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -1149,54 +1151,58 @@ public class OtherAssessmentFragment extends Fragment {
 
         // for Country
         if (selectedLanguage.equalsIgnoreCase("Sindhi")){
-            SpannableString spanStringCountry = new SpannableString(activity.getResources().getString(R.string.country_text_sindhi));
+            SpannableString spanStringCountry = new SpannableString(activity.getResources().getString(R.string.country_text_sindhi)+"*");
             spanStringCountry.setSpan(new CustomTypefaceSpan("",fontEng),0,12, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
             spanStringCountry.setSpan(new CustomTypefaceSpan("",fontSindhi),13,spanStringCountry.length()-1,Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            spanStringCountry.setSpan(new ForegroundColorSpan(Color.RED),spanStringCountry.length()-1,spanStringCountry.length(),Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
             tvCountry.setText(spanStringCountry);
 
         }else {
-            SpannableString spanStringCountry = new SpannableString(tvCountry.getText().toString());
+            SpannableString spanStringCountry = new SpannableString(tvCountry.getText().toString()+"*");
             spanStringCountry.setSpan(new CustomTypefaceSpan("",fontEng),0,12, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
             spanStringCountry.setSpan(new CustomTypefaceSpan("",fontUrdu),13,spanStringCountry.length()-1,Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            spanStringCountry.setSpan(new ForegroundColorSpan(Color.RED),spanStringCountry.length()-1,spanStringCountry.length(),Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
             tvCountry.setText(spanStringCountry);
         }
 
         // for Flight No
         if (selectedLanguage.equalsIgnoreCase("Sindhi")){
             SpannableString spanStringFlightNo = new SpannableString(activity.getResources().getString(R.string.flight_text_sindhi));
-            spanStringFlightNo.setSpan(new CustomTypefaceSpan("",fontEng),0,7, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
-            spanStringFlightNo.setSpan(new CustomTypefaceSpan("",fontSindhi),8,spanStringFlightNo.length()-1,Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            spanStringFlightNo.setSpan(new CustomTypefaceSpan("",fontEng),0,10, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            spanStringFlightNo.setSpan(new CustomTypefaceSpan("",fontSindhi),11,spanStringFlightNo.length()-1,Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
             tvFlightNo.setText(spanStringFlightNo);
         }else {
             SpannableString spanStringFlightNo = new SpannableString(tvFlightNo.getText().toString());
-            spanStringFlightNo.setSpan(new CustomTypefaceSpan("",fontEng),0,7, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
-            spanStringFlightNo.setSpan(new CustomTypefaceSpan("",fontUrdu),8,spanStringFlightNo.length()-1,Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            spanStringFlightNo.setSpan(new CustomTypefaceSpan("",fontEng),0,10, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            spanStringFlightNo.setSpan(new CustomTypefaceSpan("",fontUrdu),11,spanStringFlightNo.length()-1,Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
             tvFlightNo.setText(spanStringFlightNo);
         }
 
         // for Passport No
         if (selectedLanguage.equalsIgnoreCase("Sindhi")){
             SpannableString spanStringPassportNo = new SpannableString(activity.getResources().getString(R.string.passport_no_sindhi));
-            spanStringPassportNo.setSpan(new CustomTypefaceSpan("",fontEng),0,7, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
-            spanStringPassportNo.setSpan(new CustomTypefaceSpan("",fontSindhi),8,spanStringPassportNo.length()-1,Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            spanStringPassportNo.setSpan(new CustomTypefaceSpan("",fontEng),0,12, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            spanStringPassportNo.setSpan(new CustomTypefaceSpan("",fontSindhi),13,spanStringPassportNo.length()-1,Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
             tvPassportNo.setText(spanStringPassportNo);
         }else {
             SpannableString spanStringPassportNo = new SpannableString(tvPassportNo.getText().toString());
-            spanStringPassportNo.setSpan(new CustomTypefaceSpan("",fontEng),0,7, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
-            spanStringPassportNo.setSpan(new CustomTypefaceSpan("",fontUrdu),8,spanStringPassportNo.length()-1,Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            spanStringPassportNo.setSpan(new CustomTypefaceSpan("",fontEng),0,12, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            spanStringPassportNo.setSpan(new CustomTypefaceSpan("",fontUrdu),13,spanStringPassportNo.length()-1,Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
             tvPassportNo.setText(spanStringPassportNo);
         }
 
         // for Name
         if (selectedLanguage.equalsIgnoreCase("Sindhi")){
-            SpannableString spanStringName = new SpannableString(activity.getResources().getString(R.string.name_text1_sindhi));
+            SpannableString spanStringName = new SpannableString(activity.getResources().getString(R.string.name_text_sindhi));
             spanStringName.setSpan(new CustomTypefaceSpan("",fontEng),0,4, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
             spanStringName.setSpan(new CustomTypefaceSpan("",fontSindhi),5,spanStringName.length()-1,Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            spanStringName.setSpan(new ForegroundColorSpan(Color.RED),spanStringName.length()-1,spanStringName.length(),Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
             tvName.setText(spanStringName);
         }else {
             SpannableString spanStringName = new SpannableString(tvName.getText().toString());
             spanStringName.setSpan(new CustomTypefaceSpan("",fontEng),0,4, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
             spanStringName.setSpan(new CustomTypefaceSpan("",fontUrdu),5,spanStringName.length()-1,Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            spanStringName.setSpan(new ForegroundColorSpan(Color.RED),spanStringName.length()-1,spanStringName.length(),Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
             tvName.setText(spanStringName);
         }
 
@@ -1337,7 +1343,7 @@ public class OtherAssessmentFragment extends Fragment {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if(s.toString()==null || s.toString().equalsIgnoreCase("") || s.toString().isEmpty()){
-                    tvNameError.setVisibility(View.VISIBLE);
+                    //tvNameError.setVisibility(View.VISIBLE);
                 }
                 else {
                     tvNameError.setVisibility(View.GONE);
@@ -1908,6 +1914,7 @@ public class OtherAssessmentFragment extends Fragment {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if(!hasFocus || !edMobileNo.requestFocus()){
+                    NavigationDrawerActivity.layoutBottomButtons.setVisibility(View.VISIBLE);
                     edMobileNo.clearFocus();
                     commonCode.hideKeyboard(v);
                     ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) spacingViewPersonInfoLayout.getLayoutParams();
@@ -1917,6 +1924,7 @@ public class OtherAssessmentFragment extends Fragment {
                 }
                 else{
                     hideCustomKeyboard();
+                    NavigationDrawerActivity.layoutBottomButtons.setVisibility(View.GONE);
                     ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) spacingViewPersonInfoLayout.getLayoutParams();
                     layoutParams.height = 400;
                     spacingViewPersonInfoLayout.setLayoutParams(layoutParams);

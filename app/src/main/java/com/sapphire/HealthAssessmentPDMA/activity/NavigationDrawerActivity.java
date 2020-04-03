@@ -144,7 +144,8 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
             //For Testing SMS API
            // CommonCode.updateDisplay(new VerifyOTPFragment(),getSupportFragmentManager());
 
-        }else if (screenName!=null && screenName.equalsIgnoreCase("SignInActivityNotVerified")){
+        }else if (screenName!=null && (screenName.equalsIgnoreCase("SignInActivityNotVerified") ||
+                screenName.equalsIgnoreCase("VerifiedLogin"))){
 
             VerifyOTPFragment verifyOTPFragment = new VerifyOTPFragment();
             verifyOTPFragment.setArguments(bundle);
