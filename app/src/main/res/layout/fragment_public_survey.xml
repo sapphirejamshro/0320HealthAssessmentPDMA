@@ -64,7 +64,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
+                app:layout_constraintTop_toTopOf="parent"
+                android:gravity="center_horizontal" />
             <TextView
                 android:id="@+id/tv_urduMsg_PSF"
                 android:layout_width="match_parent"
@@ -270,6 +271,7 @@
                     android:paddingEnd="10dp"
                     android:paddingRight="10dp"
                     android:fontFamily="@font/myriad_pro_regular"
+                    android:textDirection="inherit"
                     />
 
             </androidx.cardview.widget.CardView>

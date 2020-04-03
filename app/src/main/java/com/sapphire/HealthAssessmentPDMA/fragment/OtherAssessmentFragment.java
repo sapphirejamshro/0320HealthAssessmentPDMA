@@ -24,6 +24,8 @@ import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextWatcher;
 import android.text.style.ForegroundColorSpan;
+import android.util.DisplayMetrics;
+import android.text.style.ForegroundColorSpan;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -106,6 +108,7 @@ public class OtherAssessmentFragment extends Fragment {
     private Boolean isBackButtonClicked=false,isFifthQuesYes=false;
     private AutoCompleteTextView commonAutoCompleteTv;
     private HashMap<String,String> countryMap;
+    private int screenHeight = 0;
 
     public OtherAssessmentFragment() {
 
@@ -126,6 +129,8 @@ public class OtherAssessmentFragment extends Fragment {
         isForthQuesYesClick = false;
         isBackButtonClicked = false;
         isFifthQuesYes = false;
+        screenHeight =  getHeight();
+
 
         linearLayoutAnswers.setVisibility(View.GONE);
         // Add for testing
@@ -1529,12 +1534,24 @@ public class OtherAssessmentFragment extends Fragment {
                         layoutParams.height = 100;
 
                     }
+                    final int height =  btnNextFlight.getHeight()*2;
                     spacingViewFlighLayout.setLayoutParams(layoutParams);
                     spacingViewFlighLayout.setVisibility(View.VISIBLE);
                     spacingViewFlighLayout.postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            mainScrollView.smoothScrollTo(0,mainScrollView.getBottom());
+                            if(screenHeight>1280){
+                                mainScrollView.smoothScrollTo(0,mainScrollView.getBottom());
+                            }
+                            else{
+                                if(selectedLanguage.equalsIgnoreCase("Urdu")){
+                                    mainScrollView.smoothScrollTo(0,screenHeight);
+                                }
+                                else{
+                                    mainScrollView.smoothScrollTo(0,(screenHeight-height));
+                                }
+
+                            }
                         }
                     },250);
                 }
@@ -1558,7 +1575,17 @@ public class OtherAssessmentFragment extends Fragment {
                     spacingViewFlighLayout.postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            mainScrollView.smoothScrollTo(0,mainScrollView.getBottom());
+                            if(screenHeight>1280){
+                                mainScrollView.smoothScrollTo(0,mainScrollView.getBottom());
+                            }
+                            else{
+                                if(selectedLanguage.equalsIgnoreCase("Urdu")){
+                                    mainScrollView.smoothScrollTo(0,screenHeight-(btnNextFlight.getHeight()*2));
+                                }
+                                else{
+                                    mainScrollView.smoothScrollTo(0,mainScrollView.getBottom());
+                                }
+                            }
                         }
                     },250);
 
@@ -1610,7 +1637,18 @@ public class OtherAssessmentFragment extends Fragment {
                     spacingViewPersonInfoLayout.postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            mainScrollView.smoothScrollTo(0,tvMobileNo.getBottom() +keyboardview.getHeight());
+                            if(screenHeight>1280){
+                                mainScrollView.smoothScrollTo(0,tvMobileNo.getBottom() +keyboardview.getHeight());
+                            }
+                            else{
+                                if(selectedLanguage.equalsIgnoreCase("Urdu")){
+                                    mainScrollView.smoothScrollTo(0,screenHeight-tvMobileNo.getBottom());
+                                }
+                                else{
+                                    mainScrollView.smoothScrollTo(0,tvMobileNo.getBottom() +keyboardview.getHeight());
+                                }
+                            }
+
                         }
                     }, 250);
                 }
@@ -1631,7 +1669,19 @@ public class OtherAssessmentFragment extends Fragment {
                     viewEmptySubmit.postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            mainScrollView.smoothScrollTo(0,mainScrollView.getBottom()-btnBack.getHeight() - btnSubmit.getHeight());
+                            if(screenHeight>1280){
+                                mainScrollView.smoothScrollTo(0,mainScrollView.getBottom()-btnBack.getHeight() - btnSubmit.getHeight());
+                            }
+                            else{
+                                if(selectedLanguage.equalsIgnoreCase("Urdu")){
+                                    int height = screenHeight-btnBack.getHeight() - btnSubmit.getHeight();
+                                    mainScrollView.smoothScrollTo(0,height);
+                                }
+                                else{
+                                    int height = mainScrollView.getBottom()-(btnSubmit.getHeight()/2);
+                                    mainScrollView.smoothScrollTo(0,height);
+                                }
+                            }
                         }
                     }, 250);
                 }
@@ -1931,7 +1981,14 @@ public class OtherAssessmentFragment extends Fragment {
                     spacingViewPersonInfoLayout.postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            mainScrollView.smoothScrollTo(0,spacingViewPersonInfoLayout.getBottom());
+                            if(screenHeight<=1280 && selectedLanguage.equalsIgnoreCase("Urdu")){
+                                mainScrollView.smoothScrollTo(0,screenHeight);
+
+                            }
+                            else{
+                                mainScrollView.smoothScrollTo(0,spacingViewPersonInfoLayout.getBottom());
+
+                            }
 
                         }
                     }, 250);
@@ -2689,5 +2746,12 @@ public class OtherAssessmentFragment extends Fragment {
         if(keyboardview.getVisibility() == View.VISIBLE || viewKeyboard.getVisibility() == View.VISIBLE){
             hideCustomKeyboard();
         }
+    }
+
+    private int getHeight(){
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        activity.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        int height = displayMetrics.heightPixels;
+        return height;
     }
 }

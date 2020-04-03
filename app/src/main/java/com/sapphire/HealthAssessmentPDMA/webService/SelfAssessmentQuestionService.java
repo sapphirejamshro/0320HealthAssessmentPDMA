@@ -116,7 +116,7 @@ public class SelfAssessmentQuestionService {
                     || optionListQuest8.get(i).trim().equalsIgnoreCase("ٻي ڪا بيماري")){
                         obj.put(String.valueOf(i),optionListQuest8.get(i));
 
-                        obj.put("1",otherDiseaseName);
+                        obj.put("1",otherDiseaseName.trim());
                     }else {
                         obj.put(String.valueOf(i),optionListQuest8.get(i));
                     }
