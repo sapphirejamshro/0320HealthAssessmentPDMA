@@ -22,6 +22,7 @@ import com.google.android.gms.common.internal.service.Common;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
+import com.google.gson.Gson;
 import com.sapphire.HealthAssessmentPDMA.R;
 import com.sapphire.HealthAssessmentPDMA.adapter.NavigationDrawerAdapter;
 import com.sapphire.HealthAssessmentPDMA.bean.NavigationDrawerBean;
@@ -218,7 +219,7 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
             //Removed for Testing
             CommonCode.updateDisplay(verifyOTPFragment,getSupportFragmentManager());
             //Added for testing
-//            CommonCode.updateDisplay(new DashboardFragment(),getSupportFragmentManager());
+           //CommonCode.updateDisplay(new DashboardFragment(),getSupportFragmentManager());
 
         }else {
             CommonCode.updateDisplay(new UserInformationFragment(), getSupportFragmentManager());
@@ -368,7 +369,9 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
                             CommonCode.updateDisplay(new OtherUserListingFragment(),getSupportFragmentManager());
                         }
 
-
+                    }
+                    else{
+                        super.onBackPressed();
                     }
                 }
                 else {
