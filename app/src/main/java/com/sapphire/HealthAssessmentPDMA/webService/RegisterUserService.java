@@ -53,7 +53,6 @@ public class RegisterUserService {
             String mobileNum = userModel.getMobileNumber().replace("+92","0");
             jsonObject.put("mobile",mobileNum);
             jsonObject.put("age",userModel.getAge());
-            System.out.println("===========gender "+userModel.getGender());
             jsonObject.put("gender",userModel.getGender());
             jsonObject.put("district_id",userModel.getDistrict());
             jsonObject.put("taluka_id",userModel.getTehsil());

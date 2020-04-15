@@ -4,9 +4,8 @@ public class PreventionRVAdapterBean {
     private int img;
     private int text;
 
-    public PreventionRVAdapterBean(int img, int text) {
+    public PreventionRVAdapterBean(int img) {
         this.img = img;
-        this.text = text;
     }
 
     public int getImg() {

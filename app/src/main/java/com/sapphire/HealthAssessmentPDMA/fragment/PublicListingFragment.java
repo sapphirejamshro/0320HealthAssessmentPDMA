@@ -120,7 +120,7 @@ public class PublicListingFragment extends Fragment implements PublicListingRVAd
         progressDialog.show();
         beanList = new ArrayList<>();
 
-        new UserService(activity).getUsersHavingAssessments(userId,new VolleyCallback() {
+        new UserService(activity).getUsersHavingAssessments(userId,null,new VolleyCallback() {
             @Override
             public void onSuccess(JSONObject response) {
                 if(response != null && response.length() > 0 && !response.isNull("statusDescription")){
@@ -146,14 +146,16 @@ public class PublicListingFragment extends Fragment implements PublicListingRVAd
                                             // Positive if 'now' is later than 'then',
                                             // negative if 'then' is later than 'now'
                                             long minutes = TimeUnit.MILLISECONDS.toMinutes(now - then);
-                                            if (minutes >= 120){
+                                            if (!innerObj.isNull("scoring_status") && innerObj.getString("scoring_status").equalsIgnoreCase("safe")){
+                                                beanList.add(new PublicListingRVAdapterBean(userIdString,name,0,assessmentDate,screeningNeeded));
+                                            }
+                                            else if (minutes >= 120){
                                                 beanList.add(new PublicListingRVAdapterBean(userIdString,name,0,assessmentDate,screeningNeeded));
 
                                             }else {
-                                                beanList.add(new PublicListingRVAdapterBean(userIdString,name,0,assessmentDate,"IN PROGRESS"));
+                                                beanList.add(new PublicListingRVAdapterBean(userIdString, name, 0, assessmentDate, "IN PROGRESS"));
 
-                                          //  }
-                                        }
+                                            }
                                     }else {
                                         i--;
                                     }
@@ -252,5 +254,6 @@ public class PublicListingFragment extends Fragment implements PublicListingRVAd
         }
         return isSetAutomatic;
     }
+
 
 }

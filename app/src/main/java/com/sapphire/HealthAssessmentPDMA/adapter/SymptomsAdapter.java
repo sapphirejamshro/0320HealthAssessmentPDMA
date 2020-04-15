@@ -13,15 +13,12 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.constraintlayout.widget.ConstraintLayout;
-
 import com.sapphire.HealthAssessmentPDMA.R;
 import com.sapphire.HealthAssessmentPDMA.bean.SymptomsBean;
 import com.sapphire.HealthAssessmentPDMA.fragment.SymptomsFragment;
 import com.sapphire.HealthAssessmentPDMA.helper.ExpandableHeightGridView;
 import com.sapphire.HealthAssessmentPDMA.sessionManagement.UserSession;
 
-import java.lang.reflect.TypeVariable;
 import java.util.List;
 
 public class SymptomsAdapter extends BaseAdapter {
@@ -62,7 +59,7 @@ public class SymptomsAdapter extends BaseAdapter {
             view = inflater.inflate(R.layout.custom_symtoms_layout,null);
             ImageView img = view.findViewById(R.id.imgViewCustomSymptoms);
             final TextView imgName = view.findViewById(R.id.tvNameCustomSymptoms);
-            gridView = SymptomsFragment.view.findViewById(R.id.gridView_symptomsFrag);
+            /*gridView = SymptomsFragment.view.findViewById(R.id.gridView_symptomsFrag);*/
 
             SymptomsBean bean = symptomsBeanList.get(position);
             if(bean!=null){

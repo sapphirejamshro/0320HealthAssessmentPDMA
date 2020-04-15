@@ -92,6 +92,8 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toEndOf="@+id/tv_name_user_detTab"
         app:layout_constraintLeft_toRightOf="@+id/tv_name_user_detTab"
+        android:longClickable="false"
+        android:contextClickable="false"
         />
 
 
@@ -143,6 +145,8 @@
         app:layout_constraintStart_toEndOf="@id/tv_mobileNo_user_detTab"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintRight_toRightOf="parent"
+        android:longClickable="false"
+        android:contextClickable="false"
         />
 
     <View
@@ -194,6 +198,8 @@
         app:layout_constraintStart_toEndOf="@id/tv_age_user_detTab"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintRight_toRightOf="parent"
+        android:longClickable="false"
+        android:contextClickable="false"
         />
 
     <View
@@ -243,6 +249,8 @@
         app:layout_constraintStart_toEndOf="@id/tv_gender_user_detTab"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintRight_toRightOf="parent"
+        android:longClickable="false"
+        android:contextClickable="false"
 
         />
 
@@ -295,6 +303,8 @@
         app:layout_constraintStart_toEndOf="@id/tv_district_user_detTab"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintRight_toRightOf="parent"
+        android:longClickable="false"
+        android:contextClickable="false"
         />
 
     <View
@@ -346,6 +356,8 @@
         app:layout_constraintStart_toEndOf="@id/tv_taluka_user_detTab"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintRight_toRightOf="parent"
+        android:longClickable="false"
+        android:contextClickable="false"
 
         />
 
@@ -368,38 +380,54 @@
         />
 
 
-    <TextView
-        android:id="@+id/tv_address_user_detTab"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/ll_address_container_user_detTab"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/address_text1"
-        android:textSize="12sp"
-        android:textColor="@color/appColorBlack"
-        android:includeFontPadding="false"
-        android:layout_marginStart="15dp"
-        android:layout_marginLeft="15dp"
+        android:orientation="horizontal"
         app:layout_constraintTop_toBottomOf="@+id/view_separator6_view_user_info_frag"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-
-        />
-    <TextView
-        android:id="@+id/tv_addressNo_Value_user_detTab"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="House#1548, Block 2, Ghulshane Iqbal Karachi"
-        android:textSize="12sp"
-        android:fontFamily="@font/myriad_pro_regular"
-        android:layout_marginStart="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginEnd="15dp"
-        android:layout_marginRight="15dp"
-        app:layout_constraintTop_toBottomOf="@+id/view_separator6_view_user_info_frag"
-        app:layout_constraintLeft_toRightOf="@+id/tv_address_user_detTab"
-        app:layout_constraintStart_toEndOf="@id/tv_address_user_detTab"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        />
+        >
+
+
+        <TextView
+            android:id="@+id/tv_address_user_detTab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/address_text1"
+            android:textSize="12sp"
+            android:textColor="@color/appColorBlack"
+            android:includeFontPadding="false"
+            android:layout_marginStart="15dp"
+            android:layout_marginLeft="15dp"
+
+
+            />
+        <TextView
+            android:id="@+id/tv_addressNo_Value_user_detTab"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="House#1548, Block 2, Ghulshane Iqbal Karachi asfa asdas sfasvf dnfsadf sf asdfksd flsdf salf asd fasd dflsaddfjksadf lsadl fsa;f sakf lasdjf lasddjfl askddjfl;sdajflasdfj;lsadlk;f aslf jsadflasf salkf sdlfjsadl;fjsaldfja;sldfjksldfjsla;dfksadf;lasdjfsaddf asd fsa fl sdf sdf   s f sadflsa fsadl fsad fa sdf sadfasdlfjsalfksa lkfsajflsakddf;jsadfjsadflksadj;lasdkjf;lkdsfjsldfjfs;dlkfj;sdsljasflksaddjfsadfjasdld; fjsfsldfjsdl fl kdsfklsdjfslddfj;sldfjklsdfksdlf;sdljkfsjdlfl;ksdfjlksdlfkjsad;lfsdal;kfsl;kdflksdsfj;sdlkfjsdl;ksjdf;lskdf sdf sad fs fsal f sf lsajfklsa lfsd fsa "
+            android:textSize="12sp"
+            android:fontFamily="@font/myriad_pro_regular"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginRight="15dp"
+            app:layout_constraintTop_toBottomOf="@+id/view_separator6_view_user_info_frag"
+            app:layout_constraintLeft_toRightOf="@+id/tv_address_user_detTab"
+            app:layout_constraintStart_toEndOf="@id/tv_address_user_detTab"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_address_user_detTab"
+            android:longClickable="false"
+            android:contextClickable="false"
+            />
+    </LinearLayout>
+
 
 
     <View
@@ -412,7 +440,7 @@
         android:layout_marginEnd="10dp"
         android:layout_marginRight="10dp"
         android:layerType="software"
-        app:layout_constraintTop_toBottomOf="@+id/tv_address_user_detTab"
+        app:layout_constraintTop_toBottomOf="@+id/ll_address_container_user_detTab"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -450,7 +478,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="ADDITIONAL INFORMATION"
+            android:text="OPTIONAL INFORMATION"
             android:textStyle="bold"
             android:textSize="15sp"
             android:textColor="@color/appColorGreen"
@@ -516,6 +544,8 @@
         app:layout_constraintStart_toEndOf="@id/tv_cnicNo_user_detTab"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintRight_toRightOf="parent"
+        android:longClickable="false"
+        android:contextClickable="false"
 
         />
 

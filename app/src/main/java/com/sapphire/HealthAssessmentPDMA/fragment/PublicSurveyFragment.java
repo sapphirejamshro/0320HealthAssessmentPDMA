@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Rect;
@@ -21,7 +22,9 @@ import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextWatcher;
 import android.text.style.ForegroundColorSpan;
+import android.text.style.RelativeSizeSpan;
 import android.util.DisplayMetrics;
+import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -38,11 +41,13 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
@@ -60,6 +65,7 @@ import com.sapphire.HealthAssessmentPDMA.interfaces.VolleyCallback;
 import com.sapphire.HealthAssessmentPDMA.sessionManagement.UserSession;
 import com.sapphire.HealthAssessmentPDMA.webService.LocationService;
 import com.sapphire.HealthAssessmentPDMA.webService.SelfAssessmentQuestionService;
+import com.sapphire.HealthAssessmentPDMA.webService.UserService;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -132,8 +138,6 @@ public class PublicSurveyFragment extends Fragment {
         isForthQuesYesClick = false;
         isFifthQuesYes = false;
         screenHeight =  getHeight();
-        System.out.println("======screenHeight:"+screenHeight);
-
 
         linearLayoutAnswers.setVisibility(View.GONE);
         progressDialog = new ProgressDialog(activity);
@@ -188,7 +192,7 @@ public class PublicSurveyFragment extends Fragment {
                             getAllCountries();
                         }
                         else{
-                            commonCode.showErrorORSuccessAlert(activity,"error","Something went wrong, please check your internet connection.",getActivity().getSupportFragmentManager(),null);
+                            commonCode.showErrorORSuccessAlert(activity,"error","Something went wrong, please check your internet connection.",getActivity().getSupportFragmentManager(),null,false);
                         }
                     }
 
@@ -219,7 +223,6 @@ public class PublicSurveyFragment extends Fragment {
                         yesCount++;
                         setAnswersOptions();
                         setQuestionNum((msgCounter + 1),questionList.size());
-                        System.out.println("===================msg counter "+msgCounter+" === "+isForthQuesYesClick+" --- "+isBackButtonClicked);
                         if (msgCounter == 3 && isForthQuesYesClick && isBackButtonClicked){
                             setCountryAdapter();
                         }
@@ -233,7 +236,7 @@ public class PublicSurveyFragment extends Fragment {
                             addAssessmentData();
                         }
                         else{
-                            commonCode.showErrorORSuccessAlert(activity,"error","Something went wrong, please check your internet connection.",getActivity().getSupportFragmentManager(),null);
+                            commonCode.showErrorORSuccessAlert(activity,"error","Something went wrong, please check your internet connection.",getActivity().getSupportFragmentManager(),null,false);
                         }
                     }
                 }
@@ -249,9 +252,15 @@ public class PublicSurveyFragment extends Fragment {
 
                 msgCounter++;
                 if (msgCounter == 4){
+                    countryIdString = "";
+                    countryString="";
+                    passportNoString="";
+                    flightNoString="";
                     isForthQuesYesClick = false;
                 }
                 if (msgCounter == 5){
+                    nameString="";
+                    mobileNoString="";
                     isFifthQuesYes = false;
                 }
                 if(msgCounter<questionList.size()){
@@ -279,7 +288,7 @@ public class PublicSurveyFragment extends Fragment {
                         addAssessmentData();
                     }
                     else{
-                        commonCode.showErrorORSuccessAlert(activity,"error","Something went wrong, please check your internet connection.",getActivity().getSupportFragmentManager(),null);
+                        commonCode.showErrorORSuccessAlert(activity,"error","Something went wrong, please check your internet connection.",getActivity().getSupportFragmentManager(),null,false);
                     }
                 }
             }
@@ -301,10 +310,12 @@ public class PublicSurveyFragment extends Fragment {
                     if(edOtherDisease != null && edOtherDisease.hasFocus()){
                         edOtherDisease.clearFocus();
                     }
-                    addAssessmentData();
+//                    addAssessmentData();
+                    showSubmitDialog("Confirmation","Are you sure, you want to submit Assessment or you want to change something?");
+
                 }
                 else{
-                    commonCode.showErrorORSuccessAlert(activity,"error","Something went wrong, please check your internet connection.",getActivity().getSupportFragmentManager(),null);
+                    commonCode.showErrorORSuccessAlert(activity,"error","Something went wrong, please check your internet connection.",getActivity().getSupportFragmentManager(),null,false);
                 }
 
                 /*if (yesCount>noCount){
@@ -429,6 +440,9 @@ public class PublicSurveyFragment extends Fragment {
             public void onClick(View v) {
                 hideCustomKeyboard();
                 commonCode.hideKeyboard(v);
+                if(edMobileNo.hasFocus()){
+                    edMobileNo.clearFocus();
+                }
                 if(personInfoValidate()){
                     msgCounter++;
                     if (msgCounter < questionList.size()) {
@@ -530,6 +544,9 @@ public class PublicSurveyFragment extends Fragment {
         cardViewOtherDiseasePSF = view.findViewById(R.id.cardViewOtherDiseasePSF);
         viewEmptySubmit = view.findViewById(R.id.viewEmptySubmit);
         tvOtherDiseaseError = view.findViewById(R.id.tvOtherDiseaseError);
+        // Added By Hina on 7th-April-2020
+        edMobileNo.setLongClickable(false);
+        edMobileNo.setTextIsSelectable(false);
     }
 
     private void setAnswersOptions(){
@@ -593,8 +610,9 @@ public class PublicSurveyFragment extends Fragment {
                         //edOtherDisease.setTypeface(fontUrdu);
                     }else if (selectedLanguage.equalsIgnoreCase("Sindhi")) {
                         cb.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
-                        Typeface fontSindhi = Typeface.createFromAsset(getActivity().getAssets(),"sindhi_fonts.ttf");
+                        Typeface fontSindhi = Typeface.createFromAsset(getActivity().getAssets(),"myriad_pro_regular.ttf");
                         cb.setTypeface(fontSindhi);
+                        cb.setTextSize(TypedValue.COMPLEX_UNIT_SP,24);
 
                         edOtherDisease.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
                         // edOtherDisease.setTypeface(fontSindhi);
@@ -647,14 +665,14 @@ public class PublicSurveyFragment extends Fragment {
                             //break;
                         }else  if ((cb.getText().toString().trim().equalsIgnoreCase("None of the Above")
                                 || cb.getText().toString().trim().equalsIgnoreCase("کوئي بيماری نہیں")
-                                || cb.getText().toString().trim().equalsIgnoreCase("بيماري ڪونهي")) && cb.isChecked() ) {
+                                || cb.getText().toString().trim().equalsIgnoreCase("بيماري ڪونھي")) && cb.isChecked() ) {
                             isTrue = true;
                             if (selectedLanguage.equalsIgnoreCase("en")) {
                                 disableCheckBoxex(linearLayoutAnswers, "None of the Above");
                             }else if (selectedLanguage.equalsIgnoreCase("urdu")){
                                 disableCheckBoxex(linearLayoutAnswers,"کوئي بيماری نہیں");
                             }else if (selectedLanguage.equalsIgnoreCase("sindhi")) {
-                                disableCheckBoxex(linearLayoutAnswers, "بيماري ڪونهي");
+                                disableCheckBoxex(linearLayoutAnswers, "بيماري ڪونھي");
                             }
 
                         }else if (isTrue){
@@ -677,7 +695,7 @@ public class PublicSurveyFragment extends Fragment {
                                     cb.getText().toString().trim().equalsIgnoreCase("ٻي ڪا بيماري") ||
                                     cb.getText().toString().trim().equalsIgnoreCase("None Of the Above") ||
                                     cb.getText().toString().trim().equalsIgnoreCase("کوئي بيماری نہیں")
-                                    || cb.getText().toString().trim().equalsIgnoreCase("بيماري ڪونهي")
+                                    || cb.getText().toString().trim().equalsIgnoreCase("بيماري ڪونھي")
                             ){
                                 optionListQuest8.clear();
                             }
@@ -700,13 +718,13 @@ public class PublicSurveyFragment extends Fragment {
                                 setSubmitButtonMargin();
                             }else if (cb.getText().toString().trim().equalsIgnoreCase("None Of the Above") ||
                                     cb.getText().toString().trim().equalsIgnoreCase("کوئي بيماری نہیں")
-                                    || cb.getText().toString().trim().equalsIgnoreCase("بيماري ڪونهي")){
+                                    || cb.getText().toString().trim().equalsIgnoreCase("بيماري ڪونھي")){
                                 if (selectedLanguage.equalsIgnoreCase("en")) {
                                     disableCheckBoxex(linearLayoutAnswers, "None of the Above");
                                 }else if (selectedLanguage.equalsIgnoreCase("urdu")) {
                                     disableCheckBoxex(linearLayoutAnswers, "کوئي بيماری نہیں");
                                 }else if (selectedLanguage.equalsIgnoreCase("sindhi")) {
-                                    disableCheckBoxex(linearLayoutAnswers, "بيماري ڪونهي");
+                                    disableCheckBoxex(linearLayoutAnswers, "بيماري ڪونھي");
                                 }
                             }
                         }
@@ -963,14 +981,21 @@ public class PublicSurveyFragment extends Fragment {
         }
 
         if(selectedLanguage.equalsIgnoreCase("Sindhi")){
-            Typeface fontSindhi = Typeface.createFromAsset(getActivity().getAssets(),"sindhi_fonts.ttf");
+            Typeface fontSindhi = Typeface.createFromAsset(getActivity().getAssets(),"myriad_pro_regular.ttf");
             btnYes.setTypeface(fontSindhi);
             btnNo.setTypeface(fontSindhi);
-            tvQuestionNo.setTypeface(fontSindhi);
-            tvQuestionNo.setPadding(0,8,0,-20);
+            btnYes.setTextSize(TypedValue.COMPLEX_UNIT_SP,32);
+            btnNo.setTextSize(TypedValue.COMPLEX_UNIT_SP,32);
+            btnYes.setPadding(0,-3,0,-3);
+            btnNo.setPadding(0,-3,0,-3);
+
+            tvQuestionNo.setTypeface(fontSindhi,Typeface.BOLD);
+            tvQuestionNo.setTextSize(TypedValue.COMPLEX_UNIT_SP,24);
+
             if(questionList!=null && questionList.size()>0){
                 tvQuestion.setText((msgCounter+1)+")  "+questionList.get(msgCounter));
                 tvQuestion.setTypeface(fontSindhi);
+                tvQuestion.setTextSize(TypedValue.COMPLEX_UNIT_SP,24);
                 setAnswersOptions();
                 setQuestionNum((msgCounter + 1),questionList.size());
             }
@@ -1055,7 +1080,7 @@ public class PublicSurveyFragment extends Fragment {
                         if(progressDialog.isShowing()){
                             progressDialog.dismiss();
                         }
-                        commonCode.showErrorORSuccessAlertWithBack(activity,"error","Something went wrong, please try again!",getActivity().getSupportFragmentManager());
+                        commonCode.showErrorORSuccessAlert(activity,"error","Something went wrong, please try again!",getActivity().getSupportFragmentManager(),null,false);
 
                     }
                 }
@@ -1067,7 +1092,7 @@ public class PublicSurveyFragment extends Fragment {
                 if(progressDialog.isShowing()){
                     progressDialog.dismiss();
                 }
-                commonCode.showErrorORSuccessAlertWithBack(activity,"error","Something went wrong, please check your internet connection.",getActivity().getSupportFragmentManager());
+                commonCode.showErrorORSuccessAlert(activity,"error","Something went wrong, please check your internet connection.",getActivity().getSupportFragmentManager(),null,false);
 
             }
         });
@@ -1111,19 +1136,23 @@ public class PublicSurveyFragment extends Fragment {
     private void setCustomFonts() {
         Typeface fontEng = Typeface.createFromAsset(getActivity().getAssets(),"myriad_pro_regular.ttf");
         Typeface fontUrdu = Typeface.createFromAsset(getActivity().getAssets(),"notonastaliqurdu_regular.ttf");
-        Typeface fontSindhi = Typeface.createFromAsset(getActivity().getAssets(),"sindhi_fonts.ttf");
+        Typeface fontSindhi = Typeface.createFromAsset(getActivity().getAssets(),"myriad_pro_regular.ttf");
+
+        edOtherDisease.setTypeface(fontSindhi);
+        edOtherDisease.setTextSize(TypedValue.COMPLEX_UNIT_SP,24);
 
         // for Country
         if (selectedLanguage.equalsIgnoreCase("Sindhi")){
-            SpannableString spanStringCountry = new SpannableString(activity.getResources().getString(R.string.country_text_sindhi)+"*");
+            SpannableString spanStringCountry = new SpannableString(activity.getResources().getString(R.string.country_text_sindhi));
             spanStringCountry.setSpan(new CustomTypefaceSpan("",fontEng),0,12, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
             spanStringCountry.setSpan(new CustomTypefaceSpan("",fontSindhi),13,spanStringCountry.length()-1,Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            spanStringCountry.setSpan(new RelativeSizeSpan(1.3f), 13,spanStringCountry.length()-1, 0);
             spanStringCountry.setSpan(new ForegroundColorSpan(Color.RED),spanStringCountry.length()-1,spanStringCountry.length(),Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
 
             tvCountry.setText(spanStringCountry);
 
         }else {
-            SpannableString spanStringCountry = new SpannableString(tvCountry.getText().toString()+"*");
+            SpannableString spanStringCountry = new SpannableString(tvCountry.getText().toString());
             spanStringCountry.setSpan(new CustomTypefaceSpan("",fontEng),0,12, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
             spanStringCountry.setSpan(new CustomTypefaceSpan("",fontUrdu),13,spanStringCountry.length()-1,Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
             spanStringCountry.setSpan(new ForegroundColorSpan(Color.RED),spanStringCountry.length()-1,spanStringCountry.length(),Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
@@ -1135,6 +1164,8 @@ public class PublicSurveyFragment extends Fragment {
             SpannableString spanStringFlightNo = new SpannableString(activity.getResources().getString(R.string.flight_text_sindhi));
             spanStringFlightNo.setSpan(new CustomTypefaceSpan("",fontEng),0,10, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
             spanStringFlightNo.setSpan(new CustomTypefaceSpan("",fontSindhi),11,spanStringFlightNo.length()-1,Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            spanStringFlightNo.setSpan(new RelativeSizeSpan(1.3f), 11,spanStringFlightNo.length()-1, 0);
+
             tvFlightNo.setText(spanStringFlightNo);
         }else {
             SpannableString spanStringFlightNo = new SpannableString(tvFlightNo.getText().toString());
@@ -1149,6 +1180,7 @@ public class PublicSurveyFragment extends Fragment {
             SpannableString spanStringPassportNo = new SpannableString(activity.getResources().getString(R.string.passport_no_sindhi));
             spanStringPassportNo.setSpan(new CustomTypefaceSpan("",fontEng),0,12, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
             spanStringPassportNo.setSpan(new CustomTypefaceSpan("",fontSindhi),13,spanStringPassportNo.length()-1,Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            spanStringPassportNo.setSpan(new RelativeSizeSpan(1.3f), 13,spanStringPassportNo.length()-1, 0);
             tvPassportNo.setText(spanStringPassportNo);
         }else {
             SpannableString spanStringPassportNo = new SpannableString(tvPassportNo.getText().toString());
@@ -1163,6 +1195,7 @@ public class PublicSurveyFragment extends Fragment {
             spanStringName.setSpan(new CustomTypefaceSpan("",fontEng),0,4, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
             spanStringName.setSpan(new CustomTypefaceSpan("",fontSindhi),5,spanStringName.length()-1,Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
             spanStringName.setSpan(new ForegroundColorSpan(Color.RED),spanStringName.length()-1,spanStringName.length(),Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            spanStringName.setSpan(new RelativeSizeSpan(1.3f), 5,spanStringName.length()-1, 0);
 
             tvName.setText(spanStringName);
         }else {
@@ -1178,6 +1211,8 @@ public class PublicSurveyFragment extends Fragment {
             SpannableString spanStringMobile = new SpannableString(activity.getResources().getString(R.string.mobile_no1_sindhi));
             spanStringMobile.setSpan(new CustomTypefaceSpan("",fontEng),0,6, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
             spanStringMobile.setSpan(new CustomTypefaceSpan("",fontSindhi),7,spanStringMobile.length()-1,Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            spanStringMobile.setSpan(new RelativeSizeSpan(1.3f), 7,spanStringMobile.length()-1, 0);
+
             tvMobileNo.setText(spanStringMobile);
         }else {
             SpannableString spanStringMobile = new SpannableString(tvMobileNo.getText().toString());
@@ -1194,7 +1229,6 @@ public class PublicSurveyFragment extends Fragment {
         progressDialog.setCancelable(false);
         progressDialog.setCanceledOnTouchOutside(false);
         progressDialog.show();
-        System.out.println("===================check "+countryIdString+" -- "+flightNoString+" -- "+passportNoString);
 
         new SelfAssessmentQuestionService(activity).addAssessmentData(questionsResultHashMap, countryIdString, passportNoString,
                 flightNoString,optionListQuest8,otherDiseaseName, nameString,mobileNoString,null,"Self",new VolleyCallback() {
@@ -1213,6 +1247,11 @@ public class PublicSurveyFragment extends Fragment {
 
                                     }
                                     if(statusDescription.equalsIgnoreCase("Success")){
+                                        Fragment assessmentFrag  = getActivity().getSupportFragmentManager().findFragmentByTag(PublicSurveyFragment.class.getSimpleName());
+                                        if(assessmentFrag!=null){
+                                            getActivity().getSupportFragmentManager().beginTransaction().remove(assessmentFrag).commit();
+                                            getActivity().getSupportFragmentManager().popBackStack();
+                                        }
                                         PublicSurveyResultFragment fragment =  new PublicSurveyResultFragment();
                                         Bundle bundle = new Bundle();
                                         bundle.putString("surveyResult","NegativeResult");
@@ -1221,7 +1260,7 @@ public class PublicSurveyFragment extends Fragment {
                                         CommonCode.updateDisplay(fragment,getActivity().getSupportFragmentManager());
                                     }
                                     else{
-                                        commonCode.showErrorORSuccessAlert(activity,"error","Sorry! your form could not be submitted at that moment. Please try again!",getActivity().getSupportFragmentManager(),null);
+                                        commonCode.showErrorORSuccessAlert(activity,"error","Sorry! your form could not be submitted at that moment. Please try again!",getActivity().getSupportFragmentManager(),null,false);
                                         /*PublicSurveyResultFragment fragment =  new PublicSurveyResultFragment();
                                         Bundle bundle = new Bundle();
                                         bundle.putString("surveyResult","NegativeResult");
@@ -1878,11 +1917,31 @@ public class PublicSurveyFragment extends Fragment {
                     hideCustomKeyboard();
                     NavigationDrawerActivity.layoutBottomButtons.setVisibility(View.GONE);
                     ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) spacingViewPersonInfoLayout.getLayoutParams();
+                    layoutParams.height = 400;
+                    spacingViewPersonInfoLayout.setLayoutParams(layoutParams);
+                    spacingViewPersonInfoLayout.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(screenHeight<=1280 && selectedLanguage.equalsIgnoreCase("Urdu")){
+                                mainScrollView.smoothScrollTo(0,screenHeight);
+
+                            }
+                            else{
+                                mainScrollView.smoothScrollTo(0,spacingViewPersonInfoLayout.getBottom());
+
+                            }
+
+                        }
+                    }, 250);
+                    InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+                    inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+                    /*NavigationDrawerActivity.layoutBottomButtons.setVisibility(View.GONE);
+                    ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) spacingViewPersonInfoLayout.getLayoutParams();
                    //layoutParams.height = (edMobileNo.getHeight()/2);
                     layoutParams.height = (edMobileNo.getHeight()*3);
-                    /*mainScrollView.smoothScrollTo(0,spacingViewPersonInfoLayout.getBottom());
+                    *//*mainScrollView.smoothScrollTo(0,spacingViewPersonInfoLayout.getBottom());
                     ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) spacingViewPersonInfoLayout.getLayoutParams();
-                    layoutParams.height = 400;*/
+                    layoutParams.height = 400;*//*
                     spacingViewPersonInfoLayout.setLayoutParams(layoutParams);
                     spacingViewPersonInfoLayout.postDelayed(new Runnable() {
                         @Override
@@ -1897,7 +1956,7 @@ public class PublicSurveyFragment extends Fragment {
                             }
 
                         }
-                    }, 250);
+                    }, 250);*/
 //                    showKeyboard(v);
 
                     /*                            InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -1911,9 +1970,7 @@ public class PublicSurveyFragment extends Fragment {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if(hasFocus){
-
                     commonEditText = edPassportNo;
-
                     keyboardQwertyFirst =new Keyboard(activity,R.xml.qwerty_english);
                     keyboardQwertySecond = new Keyboard(activity,R.xml.qwerty_english_upper_casse);
                     keyboardNumbers = new Keyboard(activity,R.xml.numbers_english);
@@ -2027,7 +2084,7 @@ public class PublicSurveyFragment extends Fragment {
                 }else if (!hasFocus){
                     edPassportNo.setFocusable(true);
                     edPassportNo.setFocusableInTouchMode(true);
-                    //hideCustomKeyboard();
+                    hideCustomKeyboard();
                     ConstraintLayout.LayoutParams layoutParams =(ConstraintLayout.LayoutParams) spacingViewFlighLayout.getLayoutParams();
                     if(layoutParams.height > 100){
                         layoutParams.height = 100;
@@ -2115,7 +2172,7 @@ public class PublicSurveyFragment extends Fragment {
                 }else if (!hasFocus){
                     edFlightNo.setFocusable(true);
                     edFlightNo.setFocusableInTouchMode(true);
-                    //hideCustomKeyboard();
+                    hideCustomKeyboard();
                     ConstraintLayout.LayoutParams layoutParams =(ConstraintLayout.LayoutParams) spacingViewFlighLayout.getLayoutParams();
                     if(layoutParams.height > 100){
                         layoutParams.height = 100;
@@ -2448,6 +2505,9 @@ public class PublicSurveyFragment extends Fragment {
 
                 }else{
                     hideCustomKeyboard();
+                    ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) viewEmptySubmit.getLayoutParams();
+                    layoutParams.height = 100;
+                    viewEmptySubmit.setLayoutParams(layoutParams);
                 }
             }
         });
@@ -2943,7 +3003,37 @@ public class PublicSurveyFragment extends Fragment {
 
             }
         });
+    }
 
+    private void showSubmitDialog(String title,String msg){
+        AlertDialog dialog;
+        final AlertDialog.Builder confirmDialog = new AlertDialog.Builder(activity,R.style.LogoutDialogTheme);
+        confirmDialog.setTitle(title);
+        LayoutInflater inflater = getLayoutInflater();
+        View viewTitle=inflater.inflate(R.layout.logout_title_bar, null);
+        ((TextView)viewTitle.findViewById(R.id.tv_title_logout_title_bar)).setText(title);
+        ImageView icon = viewTitle.findViewById(R.id.imgV_icon_logout_title_bar);
+        icon.setVisibility(View.GONE);
+        confirmDialog.setCustomTitle(viewTitle);
+        confirmDialog.setMessage(msg)
+                .setCancelable(true)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        addAssessmentData();
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+        dialog = confirmDialog.show();
+        TextView textView = dialog.findViewById(android.R.id.message);
+        Typeface typeface = Typeface.createFromAsset(activity.getAssets(),"myriad_pro_regular.ttf");
+        textView.setTypeface(typeface);
+        dialog.setCanceledOnTouchOutside(false);
     }
 
     private int getHeight(){
@@ -2952,4 +3042,5 @@ public class PublicSurveyFragment extends Fragment {
         int height = displayMetrics.heightPixels;
         return height;
     }
+
 }

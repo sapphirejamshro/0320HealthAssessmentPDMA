@@ -13,6 +13,8 @@ import androidx.fragment.app.Fragment;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
+import android.text.style.RelativeSizeSpan;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -194,13 +196,15 @@ public class ViewUserDetailsFragment extends Fragment implements OnMapReadyCallb
 
         Typeface fontEng = Typeface.createFromAsset(getActivity().getAssets(),"myriad_pro_regular.ttf");
         Typeface fontUrdu = Typeface.createFromAsset(getActivity().getAssets(),"notonastaliqurdu_regular.ttf");
-        Typeface fontSindhi = Typeface.createFromAsset(getActivity().getAssets(),"sindhi_fonts.ttf");
+        Typeface fontSindhi = Typeface.createFromAsset(getActivity().getAssets(),"myriad_pro_regular.ttf");
 
         // for mobile No
         if (session.getSelectedLanguage().equalsIgnoreCase("sindhi")) {
             SpannableString spanStringMob = new SpannableString(activity.getResources().getString(R.string.mobile_no1_sindhi));
             spanStringMob.setSpan(new CustomTypefaceSpan("",fontEng),0,6,Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
             spanStringMob.setSpan(new CustomTypefaceSpan("", fontSindhi), 8, spanStringMob.length() - 1, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            spanStringMob.setSpan(new RelativeSizeSpan(1.2f), 0,spanStringMob.length()-1, 0);
+
             tvMobileNo.setText(spanStringMob);
             tvMobileNo.setPadding(8,20,8,8);
         }else {
@@ -215,6 +219,8 @@ public class ViewUserDetailsFragment extends Fragment implements OnMapReadyCallb
             SpannableString spanStringAge = new SpannableString(activity.getResources().getString(R.string.age1_sindhi));
             spanStringAge.setSpan(new CustomTypefaceSpan("",fontEng),0,3,Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
             spanStringAge.setSpan(new CustomTypefaceSpan("", fontSindhi), 5, spanStringAge.length() - 1, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            spanStringAge.setSpan(new RelativeSizeSpan(1.2f), 0,spanStringAge.length()-1, 0);
+
             tvAge.setText(spanStringAge);
             tvAge.setPadding(8,20,8,8);
         }else {
@@ -228,6 +234,8 @@ public class ViewUserDetailsFragment extends Fragment implements OnMapReadyCallb
             SpannableString spanStringGender = new SpannableString(activity.getResources().getString(R.string.gender1_sindhi));
             spanStringGender.setSpan(new CustomTypefaceSpan("",fontEng),0,6,Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
             spanStringGender.setSpan(new CustomTypefaceSpan("", fontSindhi), 8, spanStringGender.length() - 1, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            spanStringGender.setSpan(new RelativeSizeSpan(1.2f), 0,spanStringGender.length()-1, 0);
+
             tvGender.setText(spanStringGender);
             tvGender.setPadding(8,20,8,8);
         }else {
@@ -241,6 +249,8 @@ public class ViewUserDetailsFragment extends Fragment implements OnMapReadyCallb
             SpannableString spanStringName = new SpannableString(activity.getResources().getString(R.string.name_text1_sindhi));
             spanStringName.setSpan(new CustomTypefaceSpan("",fontEng),0,4,Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
             spanStringName.setSpan(new CustomTypefaceSpan("", fontSindhi), 5, spanStringName.length() - 1, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            spanStringName.setSpan(new RelativeSizeSpan(1.2f), 0,spanStringName.length()-1, 0);
+
             tvName.setText(spanStringName);
             tvName.setPadding(8,20,8,8);
         }else {
@@ -254,6 +264,8 @@ public class ViewUserDetailsFragment extends Fragment implements OnMapReadyCallb
             SpannableString spanStringAddress = new SpannableString(activity.getResources().getString(R.string.address_text1_sindhi));
             spanStringAddress.setSpan(new CustomTypefaceSpan("",fontEng),0,7,Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
             spanStringAddress.setSpan(new CustomTypefaceSpan("", fontSindhi), 8, spanStringAddress.length() - 1, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            spanStringAddress.setSpan(new RelativeSizeSpan(1.2f), 0,spanStringAddress.length()-1, 0);
+
             tvAddress.setText(spanStringAddress);
             tvAddress.setPadding(8,20,8,8);
         }else {
@@ -267,6 +279,8 @@ public class ViewUserDetailsFragment extends Fragment implements OnMapReadyCallb
             SpannableString SpannableString = new SpannableString(activity.getResources().getString(R.string.cnic_text_sindhi));
             SpannableString.setSpan(new CustomTypefaceSpan("",fontEng),0,4,Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
             SpannableString.setSpan(new CustomTypefaceSpan("", fontSindhi), 6, SpannableString.length() - 1, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            SpannableString.setSpan(new RelativeSizeSpan(1.2f), 0,SpannableString.length()-1, 0);
+
             tvCNIC.setText(SpannableString);
             tvCNIC.setPadding(8,20,8,8);
         }else {
@@ -280,6 +294,8 @@ public class ViewUserDetailsFragment extends Fragment implements OnMapReadyCallb
             SpannableString spanStringTaluka = new SpannableString(activity.getResources().getString(R.string.taluka_sindhi));
             spanStringTaluka.setSpan(new CustomTypefaceSpan("",fontEng),0,6,Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
             spanStringTaluka.setSpan(new CustomTypefaceSpan("", fontSindhi), 7, spanStringTaluka.length() - 1, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            spanStringTaluka.setSpan(new RelativeSizeSpan(1.2f), 0,spanStringTaluka.length()-1, 0);
+
             tvTaluka.setText(spanStringTaluka);
             tvTaluka.setPadding(8,20,8,8);
         }else {
@@ -294,6 +310,7 @@ public class ViewUserDetailsFragment extends Fragment implements OnMapReadyCallb
             SpannableString spanStringDistrict = new SpannableString(activity.getResources().getString(R.string.dist_text1_sindhi));
             spanStringDistrict.setSpan(new CustomTypefaceSpan("",fontEng),0,8,Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
             spanStringDistrict.setSpan(new CustomTypefaceSpan("", fontSindhi), 10, spanStringDistrict.length() - 1, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            spanStringDistrict.setSpan(new RelativeSizeSpan(1.2f), 0,spanStringDistrict.length()-1, 0);
             tvDistrict.setText(spanStringDistrict);
             tvDistrict.setPadding(8,20,8,8);
         }else {
@@ -307,19 +324,44 @@ public class ViewUserDetailsFragment extends Fragment implements OnMapReadyCallb
     private void setValues(){
         Typeface fontEng = Typeface.createFromAsset(getActivity().getAssets(),"myriad_pro_regular.ttf");
         Typeface fontUrdu = Typeface.createFromAsset(getActivity().getAssets(),"notonastaliqurdu_regular.ttf");
-        Typeface fontSindhi = Typeface.createFromAsset(getActivity().getAssets(),"sindhi_fonts.ttf");
+        Typeface fontSindhi = Typeface.createFromAsset(getActivity().getAssets(),"myriad_pro_regular.ttf");
 
         if (session.getSelectedLanguage().equalsIgnoreCase("Sindhi")){
             tvNameValue.setTypeface(fontSindhi);
+            tvNameValue.setTextSize(TypedValue.COMPLEX_UNIT_SP,20);
             tvNameValue.setPadding(8,20,8,8);
             tvGenderValue.setTypeface(fontSindhi);
+            tvGenderValue.setTextSize(TypedValue.COMPLEX_UNIT_SP,20);
             tvGenderValue.setPadding(8,20,8,8);
             tvAddressValue.setTypeface(fontSindhi);
+            tvAddressValue.setTextSize(TypedValue.COMPLEX_UNIT_SP,20);
             tvAddressValue.setPadding(8,20,8,8);
+
+            tvMobileNoValue.setTypeface(fontEng);
+            tvMobileNoValue.setTextSize(TypedValue.COMPLEX_UNIT_SP,18);
+            //tvMobileNoValue.setPadding(8,20,8,8);
+            tvAgeValue.setTypeface(fontEng);
+            tvAgeValue.setTextSize(TypedValue.COMPLEX_UNIT_SP,18);
+//            tvAgeValue.setPadding(8,20,8,8);
+            tvDistrictValue.setTypeface(fontEng);
+            tvDistrictValue.setTextSize(TypedValue.COMPLEX_UNIT_SP,18);
+//            tvDistrictValue.setPadding(8,20,8,8);
+            tvTalukaValue.setTypeface(fontEng);
+            tvTalukaValue.setTextSize(TypedValue.COMPLEX_UNIT_SP,18);
+//            tvTalukaValue.setPadding(8,20,8,8);
+            tvCNICValue.setTypeface(fontEng);
+            tvCNICValue.setTextSize(TypedValue.COMPLEX_UNIT_SP,18);
+//            tvCNICValue.setPadding(8,20,8,8);
         }else if (session.getSelectedLanguage().equalsIgnoreCase("urdu")){
             tvNameValue.setTypeface(fontUrdu);
             tvGenderValue.setTypeface(fontUrdu);
             tvAddressValue.setTypeface(fontUrdu);
+
+            tvMobileNoValue.setTypeface(fontEng);
+            tvAgeValue.setTypeface(fontEng);
+            tvDistrictValue.setTypeface(fontEng);
+            tvTalukaValue.setTypeface(fontEng);
+            tvCNICValue.setTypeface(fontEng);
         }else{
             tvNameValue.setTypeface(fontEng);
             tvNameValue.setPadding(8,20,8,8);
@@ -328,12 +370,14 @@ public class ViewUserDetailsFragment extends Fragment implements OnMapReadyCallb
             tvAddressValue.setTypeface(fontEng);
             tvAddressValue.setPadding(8,20,8,8);
 
+            tvMobileNoValue.setTypeface(fontEng);
+            tvAgeValue.setTypeface(fontEng);
+            tvDistrictValue.setTypeface(fontEng);
+            tvTalukaValue.setTypeface(fontEng);
+            tvCNICValue.setTypeface(fontEng);
+
         }
-        tvMobileNoValue.setTypeface(fontEng);
-        tvAgeValue.setTypeface(fontEng);
-        tvDistrictValue.setTypeface(fontEng);
-        tvTalukaValue.setTypeface(fontEng);
-        tvCNICValue.setTypeface(fontEng);
+
         tvNameValue.setText(nameString);
         tvMobileNoValue.setText(mobNoString);
         tvAgeValue.setText(ageString);

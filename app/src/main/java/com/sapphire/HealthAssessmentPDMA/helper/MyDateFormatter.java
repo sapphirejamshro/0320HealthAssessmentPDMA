@@ -70,4 +70,8 @@ public class MyDateFormatter {
         return timeFormat.format(date.getTime());
 
     }
+
+    public static Long getLongFromStringTimeStamp(String time){
+        return MyDateFormatter.stringToTimeStampWithTime(time).getTime();
+    }
 }

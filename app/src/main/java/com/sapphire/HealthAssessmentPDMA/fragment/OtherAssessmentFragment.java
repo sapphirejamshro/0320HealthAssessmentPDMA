@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -13,6 +15,7 @@ import android.media.AudioManager;
 import android.os.Build;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
@@ -24,8 +27,10 @@ import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextWatcher;
 import android.text.style.ForegroundColorSpan;
+import android.text.style.RelativeSizeSpan;
 import android.util.DisplayMetrics;
 import android.text.style.ForegroundColorSpan;
+import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -42,6 +47,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.Spinner;
@@ -50,6 +56,7 @@ import android.widget.TextView;
 import com.android.volley.VolleyError;
 import com.sapphire.HealthAssessmentPDMA.R;
 import com.sapphire.HealthAssessmentPDMA.activity.NavigationDrawerActivity;
+import com.sapphire.HealthAssessmentPDMA.activity.SignInActivity;
 import com.sapphire.HealthAssessmentPDMA.helper.BackPressAwareAutoTextview;
 import com.sapphire.HealthAssessmentPDMA.helper.BackPressAwareEdittext;
 import com.sapphire.HealthAssessmentPDMA.helper.CommonCode;
@@ -191,7 +198,7 @@ public class OtherAssessmentFragment extends Fragment {
                             getAllCountries();
                         }
                         else{
-                            commonCode.showErrorORSuccessAlert(activity,"error","Something went wrong, please check your internet connection.",getActivity().getSupportFragmentManager(),null);
+                            commonCode.showErrorORSuccessAlert(activity,"error","Something went wrong, please check your internet connection.",getActivity().getSupportFragmentManager(),null,false);
                         }
                     }
 
@@ -233,7 +240,7 @@ public class OtherAssessmentFragment extends Fragment {
                             addAssessmentData();
                         }
                         else{
-                            commonCode.showErrorORSuccessAlert(activity,"error","Something went wrong, please check your internet connection.",getActivity().getSupportFragmentManager(),null);
+                            commonCode.showErrorORSuccessAlert(activity,"error","Something went wrong, please check your internet connection.",getActivity().getSupportFragmentManager(),null,false);
                         }
                     }
                 }
@@ -249,9 +256,15 @@ public class OtherAssessmentFragment extends Fragment {
 
                 msgCounter++;
                 if (msgCounter == 4){
+                    countryIdString = "";
+                    countryString="";
+                    passportNoString="";
+                    flightNoString="";
                     isForthQuesYesClick = false;
                 }
                 if (msgCounter == 5){
+                    nameString="";
+                    mobileNoString="";
                     isFifthQuesYes = false;
                 }
                 if(msgCounter<questionList.size()){
@@ -279,7 +292,7 @@ public class OtherAssessmentFragment extends Fragment {
                         addAssessmentData();
                     }
                     else{
-                        commonCode.showErrorORSuccessAlert(activity,"error","Something went wrong, please check your internet connection.",getActivity().getSupportFragmentManager(),null);
+                        commonCode.showErrorORSuccessAlert(activity,"error","Something went wrong, please check your internet connection.",getActivity().getSupportFragmentManager(),null,false);
                     }
                 }
             }
@@ -302,10 +315,10 @@ public class OtherAssessmentFragment extends Fragment {
                     if(edOtherDisease != null && edOtherDisease.hasFocus()){
                         edOtherDisease.clearFocus();
                     }
-                    addAssessmentData();
+                    showSubmitDialog("Confirmation","Are you sure, you want to submit Assessment or you want to change something?");
                 }
                 else{
-                    commonCode.showErrorORSuccessAlert(activity,"error","Something went wrong, please check your internet connection.",getActivity().getSupportFragmentManager(),null);
+                    commonCode.showErrorORSuccessAlert(activity,"error","Something went wrong, please check your internet connection.",getActivity().getSupportFragmentManager(),null,false);
                 }
 
 
@@ -468,6 +481,9 @@ public class OtherAssessmentFragment extends Fragment {
             public void onClick(View v) {
                 hideCustomKeyboard();
                 commonCode.hideKeyboard(v);
+                if(edMobileNo.hasFocus()){
+                    edMobileNo.clearFocus();
+                }
                 if(personInfoValidate()){
                     msgCounter++;
                     if (msgCounter < questionList.size()) {
@@ -569,6 +585,9 @@ public class OtherAssessmentFragment extends Fragment {
         cardViewOtherDiseasePSF = view.findViewById(R.id.cardViewOtherDiseasePSFOAF);
         viewEmptySubmit = view.findViewById(R.id.viewEmptySubmit);
         tvOtherDiseaseError = view.findViewById(R.id.tvOtherDiseaseErrorOAFrag);
+        // Added By Hina on 7th-April-2020
+        edMobileNo.setLongClickable(false);
+        edMobileNo.setTextIsSelectable(false);
     }
 
 
@@ -633,10 +652,11 @@ public class OtherAssessmentFragment extends Fragment {
                             //edOtherDisease.setTypeface(fontUrdu);
                     }else if (selectedLanguage.equalsIgnoreCase("Sindhi")) {
                         cb.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
-                        Typeface fontSindhi = Typeface.createFromAsset(getActivity().getAssets(),"sindhi_fonts.ttf");
+                        Typeface fontSindhi = Typeface.createFromAsset(getActivity().getAssets(),"myriad_pro_regular.ttf");
                         cb.setTypeface(fontSindhi);
+                        cb.setTextSize(TypedValue.COMPLEX_UNIT_SP,24);
 
-                            edOtherDisease.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+                        edOtherDisease.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
                            // edOtherDisease.setTypeface(fontSindhi);
                     }else {
                         Typeface fontEng = Typeface.createFromAsset(getActivity().getAssets(),"myriad_pro_regular.ttf");
@@ -1004,14 +1024,21 @@ public class OtherAssessmentFragment extends Fragment {
         }
 
         if(selectedLanguage.equalsIgnoreCase("Sindhi")){
-            Typeface fontSindhi = Typeface.createFromAsset(getActivity().getAssets(),"sindhi_fonts.ttf");
+            Typeface fontSindhi = Typeface.createFromAsset(getActivity().getAssets(),"myriad_pro_regular.ttf");
             btnYes.setTypeface(fontSindhi);
             btnNo.setTypeface(fontSindhi);
-            tvQuestionNo.setTypeface(fontSindhi);
-            tvQuestionNo.setPadding(0,8,0,-20);
+            btnYes.setTextSize(TypedValue.COMPLEX_UNIT_SP,32);
+            btnNo.setTextSize(TypedValue.COMPLEX_UNIT_SP,32);
+            btnYes.setPadding(0,-3,0,-3);
+            btnNo.setPadding(0,-3,0,-3);
+
+            tvQuestionNo.setTypeface(fontSindhi,Typeface.BOLD);
+            tvQuestionNo.setTextSize(TypedValue.COMPLEX_UNIT_SP,24);
+
             if(questionList!=null && questionList.size()>0){
                 tvQuestion.setText((msgCounter+1)+")  "+questionList.get(msgCounter));
                 tvQuestion.setTypeface(fontSindhi);
+                tvQuestion.setTextSize(TypedValue.COMPLEX_UNIT_SP,24);
                 setAnswersOptions();
                 setQuestionNum((msgCounter + 1),questionList.size());
             }
@@ -1152,18 +1179,21 @@ public class OtherAssessmentFragment extends Fragment {
         Typeface fontEng = Typeface.createFromAsset(getActivity().getAssets(),"myriad_pro_regular.ttf");
         Typeface fontUrdu = Typeface.createFromAsset(getActivity().getAssets(),"notonastaliqurdu_regular.ttf");
 
-        Typeface fontSindhi = Typeface.createFromAsset(getActivity().getAssets(),"sindhi_fonts.ttf");
+        Typeface fontSindhi = Typeface.createFromAsset(getActivity().getAssets(),"myriad_pro_regular.ttf");
 
+        edOtherDisease.setTypeface(fontSindhi);
+        edOtherDisease.setTextSize(TypedValue.COMPLEX_UNIT_SP,24);
         // for Country
         if (selectedLanguage.equalsIgnoreCase("Sindhi")){
-            SpannableString spanStringCountry = new SpannableString(activity.getResources().getString(R.string.country_text_sindhi)+"*");
+            SpannableString spanStringCountry = new SpannableString(activity.getResources().getString(R.string.country_text_sindhi));
             spanStringCountry.setSpan(new CustomTypefaceSpan("",fontEng),0,12, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
             spanStringCountry.setSpan(new CustomTypefaceSpan("",fontSindhi),13,spanStringCountry.length()-1,Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            spanStringCountry.setSpan(new RelativeSizeSpan(1.3f), 13,spanStringCountry.length()-1, 0);
             spanStringCountry.setSpan(new ForegroundColorSpan(Color.RED),spanStringCountry.length()-1,spanStringCountry.length(),Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
             tvCountry.setText(spanStringCountry);
 
         }else {
-            SpannableString spanStringCountry = new SpannableString(tvCountry.getText().toString()+"*");
+            SpannableString spanStringCountry = new SpannableString(tvCountry.getText().toString());
             spanStringCountry.setSpan(new CustomTypefaceSpan("",fontEng),0,12, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
             spanStringCountry.setSpan(new CustomTypefaceSpan("",fontUrdu),13,spanStringCountry.length()-1,Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
             spanStringCountry.setSpan(new ForegroundColorSpan(Color.RED),spanStringCountry.length()-1,spanStringCountry.length(),Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
@@ -1175,6 +1205,8 @@ public class OtherAssessmentFragment extends Fragment {
             SpannableString spanStringFlightNo = new SpannableString(activity.getResources().getString(R.string.flight_text_sindhi));
             spanStringFlightNo.setSpan(new CustomTypefaceSpan("",fontEng),0,10, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
             spanStringFlightNo.setSpan(new CustomTypefaceSpan("",fontSindhi),11,spanStringFlightNo.length()-1,Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            spanStringFlightNo.setSpan(new RelativeSizeSpan(1.3f), 11,spanStringFlightNo.length()-1, 0);
+
             tvFlightNo.setText(spanStringFlightNo);
         }else {
             SpannableString spanStringFlightNo = new SpannableString(tvFlightNo.getText().toString());
@@ -1188,6 +1220,7 @@ public class OtherAssessmentFragment extends Fragment {
             SpannableString spanStringPassportNo = new SpannableString(activity.getResources().getString(R.string.passport_no_sindhi));
             spanStringPassportNo.setSpan(new CustomTypefaceSpan("",fontEng),0,12, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
             spanStringPassportNo.setSpan(new CustomTypefaceSpan("",fontSindhi),13,spanStringPassportNo.length()-1,Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            spanStringPassportNo.setSpan(new RelativeSizeSpan(1.3f), 13,spanStringPassportNo.length()-1, 0);
             tvPassportNo.setText(spanStringPassportNo);
         }else {
             SpannableString spanStringPassportNo = new SpannableString(tvPassportNo.getText().toString());
@@ -1202,6 +1235,8 @@ public class OtherAssessmentFragment extends Fragment {
             spanStringName.setSpan(new CustomTypefaceSpan("",fontEng),0,4, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
             spanStringName.setSpan(new CustomTypefaceSpan("",fontSindhi),5,spanStringName.length()-1,Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
             spanStringName.setSpan(new ForegroundColorSpan(Color.RED),spanStringName.length()-1,spanStringName.length(),Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            spanStringName.setSpan(new RelativeSizeSpan(1.3f), 5,spanStringName.length()-1, 0);
+
             tvName.setText(spanStringName);
         }else {
             SpannableString spanStringName = new SpannableString(tvName.getText().toString());
@@ -1216,6 +1251,8 @@ public class OtherAssessmentFragment extends Fragment {
             SpannableString spanStringMobile = new SpannableString(activity.getResources().getString(R.string.mobile_no1_sindhi));
             spanStringMobile.setSpan(new CustomTypefaceSpan("",fontEng),0,6, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
             spanStringMobile.setSpan(new CustomTypefaceSpan("",fontSindhi),7,spanStringMobile.length()-1,Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            spanStringMobile.setSpan(new RelativeSizeSpan(1.3f), 7,spanStringMobile.length()-1, 0);
+
             tvMobileNo.setText(spanStringMobile);
         }else {
             SpannableString spanStringMobile = new SpannableString(tvMobileNo.getText().toString());
@@ -1252,15 +1289,21 @@ public class OtherAssessmentFragment extends Fragment {
 
                                     }
                                     if(statusDescription.equalsIgnoreCase("Success")){
+                                        Fragment assessmentFrag  = getActivity().getSupportFragmentManager().findFragmentByTag(OtherAssessmentFragment.class.getSimpleName());
+                                        if(assessmentFrag!=null){
+                                            getActivity().getSupportFragmentManager().beginTransaction().remove(assessmentFrag).commit();
+                                            getActivity().getSupportFragmentManager().popBackStack();
+                                        }
                                         PublicSurveyResultFragment fragment =  new PublicSurveyResultFragment();
                                         Bundle bundle = new Bundle();
                                         bundle.putString("surveyResult","NegativeResult");
                                         bundle.putString("surveyMessage",data);
+                                        bundle.putBoolean("isOtherAssessment",true);
                                         fragment.setArguments(bundle);
                                         CommonCode.updateDisplay(fragment,getActivity().getSupportFragmentManager());
                                     }
                                     else{
-                                        commonCode.showErrorORSuccessAlert(activity,"error","Sorry! your form could not be submitted at that moment. Please try again!",getActivity().getSupportFragmentManager(),null);
+                                        commonCode.showErrorORSuccessAlert(activity,"error","Sorry! your form could not be submitted at that moment. Please try again!",getActivity().getSupportFragmentManager(),null,false);
                                         /*PublicSurveyResultFragment fragment =  new PublicSurveyResultFragment();
                                         Bundle bundle = new Bundle();
                                         bundle.putString("surveyResult","NegativeResult");
@@ -1610,14 +1653,23 @@ public class OtherAssessmentFragment extends Fragment {
                         layoutParams.height = keyboardview.getHeight() - (120 + (btnNextFlight.getHeight()*2));
                     }
                     spacingViewFlighLayout.setLayoutParams(layoutParams);
-                    spacingViewFlighLayout.setVisibility(View.VISIBLE);
+//                    spacingViewFlighLayout.setVisibility(View.VISIBLE);
+                    spacingViewFlighLayout.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            mainScrollView.smoothScrollTo(0,(spacingViewFlighLayout.getBottom()));
+                            spCountry.showDropDown();
+
+                        }
+                    },100);
+/*spacingViewFlighLayout.setVisibility(View.VISIBLE);
                     spacingViewFlighLayout.postDelayed(new Runnable() {
                         @Override
                         public void run() {
                             mainScrollView.smoothScrollTo(0,(mainScrollView.getBottom()-50));
                         }
                     },250);
-                    spCountry.showDropDown();
+                    spCountry.showDropDown();*/
                 }
             });
         }
@@ -2122,7 +2174,7 @@ public class OtherAssessmentFragment extends Fragment {
                 }else if (!hasFocus){
                     edPassportNo.setFocusable(true);
                     edPassportNo.setFocusableInTouchMode(true);
-                    //hideCustomKeyboard();
+                    hideCustomKeyboard();
                     ConstraintLayout.LayoutParams layoutParams =(ConstraintLayout.LayoutParams) spacingViewFlighLayout.getLayoutParams();
                     if(layoutParams.height > 100){
                         layoutParams.height = 100;
@@ -2182,9 +2234,7 @@ public class OtherAssessmentFragment extends Fragment {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if(hasFocus){
-
                     commonAutoCompleteTv = spCountry;
-
                     keyboardQwertyFirst =new Keyboard(activity,R.xml.qwerty_english);
                     keyboardQwertySecond = new Keyboard(activity,R.xml.qwerty_english_upper_casse);
                     keyboardNumbers = new Keyboard(activity,R.xml.numbers_english);
@@ -2210,7 +2260,7 @@ public class OtherAssessmentFragment extends Fragment {
                 }else if (!hasFocus){
                     edFlightNo.setFocusable(true);
                     edFlightNo.setFocusableInTouchMode(true);
-                    //hideCustomKeyboard();
+                    hideCustomKeyboard();
                     ConstraintLayout.LayoutParams layoutParams =(ConstraintLayout.LayoutParams) spacingViewFlighLayout.getLayoutParams();
                     if(layoutParams.height > 100){
                         layoutParams.height = 100;
@@ -2229,15 +2279,13 @@ public class OtherAssessmentFragment extends Fragment {
                 commonAutoCompleteTv = spCountry;
                 if (edPassportNo.hasFocus()){
                     edPassportNo.clearFocus();
-                    spCountry.requestFocus();
-                    spCountry.setFocusableInTouchMode(true);
-                    spCountry.setFocusable(true);
+
                 } else if (edFlightNo.hasFocus()){
                     edFlightNo.clearFocus();
-                    spCountry.requestFocus();
-                    spCountry.setFocusableInTouchMode(true);
-                    spCountry.setFocusable(true);
-                }
+                 }
+                spCountry.requestFocus();
+                spCountry.setFocusableInTouchMode(true);
+                spCountry.setFocusable(true);
                 keyboardQwertyFirst =new Keyboard(activity,R.xml.qwerty_english);
                 keyboardQwertySecond = new Keyboard(activity,R.xml.qwerty_english_upper_casse);
                 keyboardNumbers = new Keyboard(activity,R.xml.numbers_english);
@@ -2739,7 +2787,6 @@ public class OtherAssessmentFragment extends Fragment {
         });
     }
 
-
     @Override
     public void onPause() {
         super.onPause();
@@ -2753,5 +2800,36 @@ public class OtherAssessmentFragment extends Fragment {
         activity.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         int height = displayMetrics.heightPixels;
         return height;
+    }
+
+    private void showSubmitDialog(String title,String msg){
+        AlertDialog dialog;
+        final AlertDialog.Builder confirmDialog = new AlertDialog.Builder(activity,R.style.LogoutDialogTheme);
+        confirmDialog.setTitle(title);
+        LayoutInflater inflater = getLayoutInflater();
+        View viewTitle=inflater.inflate(R.layout.logout_title_bar, null);
+        ((TextView)viewTitle.findViewById(R.id.tv_title_logout_title_bar)).setText(title);
+        ImageView icon = viewTitle.findViewById(R.id.imgV_icon_logout_title_bar);
+        icon.setVisibility(View.GONE);
+        confirmDialog.setCustomTitle(viewTitle);
+        confirmDialog.setMessage(msg)
+                .setCancelable(true)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        addAssessmentData();
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+        dialog = confirmDialog.show();
+        TextView textView = dialog.findViewById(android.R.id.message);
+        Typeface typeface = Typeface.createFromAsset(activity.getAssets(),"myriad_pro_regular.ttf");
+        textView.setTypeface(typeface);
+        dialog.setCanceledOnTouchOutside(false);
     }
 }

@@ -21,7 +21,7 @@ public class ActionFragment extends Fragment {
     private TextView tvMessage;
     private Activity activity;
     private View view;
-    private String assessmentMessage="";
+    private String assessmentMessage="",scoringStatus="";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -35,14 +35,20 @@ public class ActionFragment extends Fragment {
         }else {
             assessmentMessage="In Progress";
         }
-
+        if (getArguments().getString("scoringStatus") != null ){
+            scoringStatus = getArguments().getString("scoringStatus");
+        }
+        System.out.println("================socring status "+scoringStatus+" -- "+assessmentMessage);
         Timestamp timestamp = MyDateFormatter.stringToTimeStampWithTime(getArguments().getString("assessment_date"));
         long now = System.currentTimeMillis(); // See note below
         long then = timestamp.getTime();
         // Positive if 'now' is later than 'then',
         // negative if 'then' is later than 'now'
         long minutes = TimeUnit.MILLISECONDS.toMinutes(now - then);
-        if (minutes >= 120 && assessmentMessage != null && assessmentMessage.length()>0) {
+        if (scoringStatus.length()>0 && scoringStatus.equalsIgnoreCase("safe")
+                && assessmentMessage != null && assessmentMessage.length()>0){
+            tvMessage.setText(assessmentMessage);
+        }else if (minutes >= 120 && assessmentMessage != null && assessmentMessage.length()>0) {
             tvMessage.setText(assessmentMessage);
         }else {
             tvMessage.setText("In Progress");

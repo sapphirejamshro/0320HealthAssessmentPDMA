@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
@@ -13,7 +15,9 @@ import android.widget.TextView;
 
 import com.sapphire.HealthAssessmentPDMA.R;
 import com.sapphire.HealthAssessmentPDMA.adapter.SymptomsAdapter;
+import com.sapphire.HealthAssessmentPDMA.adapter.SymptomsInfoRVAdapter;
 import com.sapphire.HealthAssessmentPDMA.bean.SymptomsBean;
+import com.sapphire.HealthAssessmentPDMA.bean.SymptomsInfoBean;
 import com.sapphire.HealthAssessmentPDMA.helper.ExpandableHeightGridView;
 import com.sapphire.HealthAssessmentPDMA.sessionManagement.UserSession;
 
@@ -25,11 +29,15 @@ public class SymptomsFragment extends Fragment {
     private ExpandableHeightGridView gridView;
     private TextView tvPrecautionPoint1, tvPrecautionPoint2,tvPrecautionPoint3, tvPrecautionPoint4;
     private View view1, view2, view3, view4;
-    public static View view;
+    public  View view;
     private Activity activity;
     public static List<SymptomsBean> symptomsBeanList;
     private SymptomsAdapter symptomsAdapter;
     private int getWidth;
+    private RecyclerView recyclerView;
+    private List<SymptomsInfoBean> infoBeanList;
+    private SymptomsInfoRVAdapter adapter;
+    private String selectedLanguage="";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -37,86 +45,91 @@ public class SymptomsFragment extends Fragment {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_symptoms, container, false);
         activity = (Activity) getContext();
+        infoBeanList = new ArrayList<>();
+        selectedLanguage = new UserSession(activity).getSelectedLanguage();
         init();
-        symptomsBeanList = new ArrayList<>();
-        String selectedLanguage = new UserSession(activity).getSelectedLanguage();
-        if(selectedLanguage.equalsIgnoreCase("Urdu")){
-            symptomsBeanList.add(new SymptomsBean(R.string.body_aches_urdu,R.mipmap.body_ache_icon));
-            symptomsBeanList.add(new SymptomsBean(R.string.difficulty_in_breathing_urdu,R.mipmap.difficulty_in_breathing_icon));
-            symptomsBeanList.add(new SymptomsBean(R.string.cough_urdu,R.mipmap.cough_icon));
-            symptomsBeanList.add(new SymptomsBean(R.string.fever_urdu,R.mipmap.fever_icon));
-        }else if(selectedLanguage.equalsIgnoreCase("Sindhi")){
-            symptomsBeanList.add(new SymptomsBean(R.string.body_aches_sindhi,R.mipmap.body_ache_icon));
-            symptomsBeanList.add(new SymptomsBean(R.string.difficulty_in_breathing_sindhi,R.mipmap.difficulty_in_breathing_icon));
-            symptomsBeanList.add(new SymptomsBean(R.string.cough_sindhi,R.mipmap.cough_icon));
-            symptomsBeanList.add(new SymptomsBean(R.string.fever_sindhi,R.mipmap.fever_icon));
-        }else if(selectedLanguage.equalsIgnoreCase("en")){
-            symptomsBeanList.add(new SymptomsBean(R.string.body_aches_eng,R.mipmap.body_ache_icon));
-            symptomsBeanList.add(new SymptomsBean(R.string.difficulty_in_breathing_eng,R.mipmap.difficulty_in_breathing_icon));
-            symptomsBeanList.add(new SymptomsBean(R.string.cough_eng,R.mipmap.cough_icon));
-            symptomsBeanList.add(new SymptomsBean(R.string.fever_eng,R.mipmap.fever_icon));
-        }
-
-        symptomsAdapter = new SymptomsAdapter(activity,symptomsBeanList,true);
-        gridView.setAdapter(symptomsAdapter);
-        gridView.setExpanded(true);
-
-        tvPrecautionPoint1.post(new Runnable() {
-            @Override
-            public void run() {
-                getWidth =  tvPrecautionPoint1.getWidth();
-            }
-        });
-        view1.getLayoutParams().width = getTextViewHeight(tvPrecautionPoint1.getWidth());
-        tvPrecautionPoint2.post(new Runnable() {
-            @Override
-            public void run() {
-                getWidth =  tvPrecautionPoint2.getWidth();
-            }
-        });
-        view2.getLayoutParams().width = getTextViewHeight(tvPrecautionPoint2.getWidth());
-        tvPrecautionPoint3.post(new Runnable() {
-            @Override
-            public void run() {
-                getWidth =  tvPrecautionPoint3.getWidth();
-            }
-        });
-        view3.getLayoutParams().width = getTextViewHeight(tvPrecautionPoint3.getWidth());
-        tvPrecautionPoint4.post(new Runnable() {
-            @Override
-            public void run() {
-                getWidth =  tvPrecautionPoint4.getWidth();
-            }
-        });
-        view4.getLayoutParams().width = getTextViewHeight(tvPrecautionPoint4.getWidth());
-
+        recyclerView.setLayoutManager(new LinearLayoutManager(activity));
+        recyclerView.setHasFixedSize(true);
+        setUpData();
         return view;
+
     }
 
-    private void init(){
-        gridView = view.findViewById(R.id.gridView_symptomsFrag);
-        tvPrecautionPoint1 = view.findViewById(R.id.tvPrecautionPoint1);
-        tvPrecautionPoint2 = view.findViewById(R.id.tvPrecautionPoint2);
-        tvPrecautionPoint3 = view.findViewById(R.id.tvPrecautionPoint3);
-        tvPrecautionPoint4 = view.findViewById(R.id.tvPrecautionPoint4);
-        view1 = view.findViewById(R.id.viewLinePoint1);
-        view2 = view.findViewById(R.id.viewLinePoint2);
-        view3 = view.findViewById(R.id.viewLinePoint3);
-        view4 = view.findViewById(R.id.viewLinePoint4);
+
+
+    private void init() {
+        recyclerView = view.findViewById(R.id.recyclerview_SymptomsFrag);
     }
 
-    private int getTextViewHeight(float fontSize){
-        int height = 0;
-        DisplayMetrics metrics = new DisplayMetrics();
-        activity.getWindowManager().getDefaultDisplay().getMetrics(metrics);
-        int screenHeight = metrics.widthPixels;
-        if(screenHeight>0 && screenHeight<1300){
-            height = (int) ((int)(fontSize*3.5)-(fontSize/3.5));
+    private void setUpData() {
+        String[] seekMedicalArray = null;
+        String[] spreedArray = null;
+        if(selectedLanguage.equalsIgnoreCase("en")){
+             seekMedicalArray = getResources().getStringArray(R.array.seekMedicalAttention);
+             spreedArray = getResources().getStringArray(R.array.howItSpreadList);
         }
-        else {
-            height = (int) ((int) (fontSize*3.5)+(fontSize/2.5));
+        else if(selectedLanguage.equalsIgnoreCase("Urdu")){
+            seekMedicalArray = getResources().getStringArray(R.array.seekMedicalAttentionUrdu);
+            spreedArray = getResources().getStringArray(R.array.howItSpreadListUrdu);
         }
-        return height;
+        else if(selectedLanguage.equalsIgnoreCase("Sindhi")){
+            seekMedicalArray = getResources().getStringArray(R.array.seekMedicalAttentionSindhi);
+            spreedArray = getResources().getStringArray(R.array.howItSpreadListSindhi);
+        }
 
+        // for Medical Seek
+         if(seekMedicalArray!=null && seekMedicalArray.length>0){
+            if(selectedLanguage.equalsIgnoreCase("en")) {
+                SymptomsInfoBean bean = new SymptomsInfoBean("When to seek Medical Attention",null,seekMedicalArray[0]);
+                infoBeanList.add(bean);
+            }
+            else if(selectedLanguage.equalsIgnoreCase("Urdu")){
+                SymptomsInfoBean bean = new SymptomsInfoBean("طبی توجہ کے علامات",null,seekMedicalArray[0]);
+                infoBeanList.add(bean);
+            }
+            else if(selectedLanguage.equalsIgnoreCase("Sindhi")){
+                SymptomsInfoBean bean = new SymptomsInfoBean("طبئ توجھ جون علامتون",null,seekMedicalArray[0]);
+                infoBeanList.add(bean);
+            }
+
+            for(int i = 1;i<seekMedicalArray.length;i++){
+                SymptomsInfoBean b = new SymptomsInfoBean(null,null,seekMedicalArray[i]);
+                if(i==(seekMedicalArray.length-1)){
+                    // last item
+                    b.setIsBottomVisible(true);
+                }
+                infoBeanList.add(b);
+
+            }
+        }
+
+       // For Spread
+        if(spreedArray!=null && spreedArray.length>0){
+            if(selectedLanguage.equalsIgnoreCase("en")){
+                SymptomsInfoBean bean = new SymptomsInfoBean("How it Spreads",getString(R.string.howItSpreadText),spreedArray[0]);
+                infoBeanList.add(bean);
+            }
+            else if(selectedLanguage.equalsIgnoreCase("Urdu")){
+                SymptomsInfoBean bean = new SymptomsInfoBean("پھیلاؤ",getString(R.string.howItSpreadTextUrdu),spreedArray[0]);
+                infoBeanList.add(bean);
+            }
+            else if(selectedLanguage.equalsIgnoreCase("Sindhi")){
+                SymptomsInfoBean bean = new SymptomsInfoBean("ڦحلاءُ",getString(R.string.howItSpreadTextSindhi),spreedArray[0]);
+                infoBeanList.add(bean);
+            }
+
+            for(int i = 1;i<spreedArray.length;i++){
+                SymptomsInfoBean b = new SymptomsInfoBean(null,null,spreedArray[i]);
+                if(i==(spreedArray.length-1)){
+                    b.setIsBottomVisible(true);
+                }
+                infoBeanList.add(b);
+
+            }
+        }
+
+        adapter = new SymptomsInfoRVAdapter(activity,infoBeanList,selectedLanguage);
+        recyclerView.setAdapter(adapter);
     }
+
 }

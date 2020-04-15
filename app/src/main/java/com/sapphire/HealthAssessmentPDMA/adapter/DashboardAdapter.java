@@ -1,5 +1,6 @@
 package com.sapphire.HealthAssessmentPDMA.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.text.SpannableString;
@@ -15,18 +16,26 @@ import android.widget.TextView;
 
 import com.sapphire.HealthAssessmentPDMA.R;
 import com.sapphire.HealthAssessmentPDMA.bean.DashboardBean;
+import com.sapphire.HealthAssessmentPDMA.fragment.AwarenessFragment;
+import com.sapphire.HealthAssessmentPDMA.fragment.DashboardFragment;
+import com.sapphire.HealthAssessmentPDMA.helper.ExpandableHeightGridView;
 
 import java.util.List;
 
 public class DashboardAdapter extends BaseAdapter {
 
-    private Context ctx;
+    private Activity ctx;
     private List<DashboardBean> dashboardBeanList;
     private String selectedLanguage;
-    public DashboardAdapter(Context ctx, List<DashboardBean> dashboardBeanList,String selectedLanguage) {
+    static Integer getHeight=0;
+    private ExpandableHeightGridView gridView;
+    private Boolean isFirst;
+
+    public DashboardAdapter(Activity ctx, List<DashboardBean> dashboardBeanList,String selectedLanguage,Boolean isFirst) {
         this.ctx = ctx;
         this.dashboardBeanList = dashboardBeanList;
         this.selectedLanguage = selectedLanguage;
+        this.isFirst = isFirst;
     }
 
     @Override
@@ -55,7 +64,9 @@ public class DashboardAdapter extends BaseAdapter {
                 view = inflater.inflate(R.layout.dashboard_gridview_layout_sindhi_urdu, null);
             }
             ImageView img = view.findViewById(R.id.cat_img_DashbGridLayout);
-            TextView imgName = view.findViewById(R.id.cat_name_txt_DashbGridLayout);
+            final TextView imgName = view.findViewById(R.id.cat_name_txt_DashbGridLayout);
+            gridView = DashboardFragment.view.findViewById(R.id.gridView_dashboard);
+
 
             //ConstraintLayout constraintLayout = view.findViewById(R.id.constraintLayout_DashbGridLayout);
             LinearLayout linearLayout = view.findViewById(R.id.linearLayout_DashbGridLayout);
@@ -68,9 +79,18 @@ public class DashboardAdapter extends BaseAdapter {
                     SpannableString spannableString = new SpannableString(imgName.getText().toString());
                     spannableString.setSpan(new RelativeSizeSpan(1.6f),0,spannableString.length(),0);
                     imgName.setText(spannableString, TextView.BufferType.SPANNABLE);
-                    Typeface fontSindhi = Typeface.createFromAsset(ctx.getAssets(),"sindhi_fonts.ttf");
+                    Typeface fontSindhi = Typeface.createFromAsset(ctx.getAssets(),"myriad_pro_regular.ttf");
                     imgName.setTypeface(fontSindhi);
-                    linearLayout.setPadding(0,14,0,-8);
+                    imgName.setLineSpacing(0,0.95f);
+                    linearLayout.setPadding(0,8,0,14);
+
+                    /*SpannableString spannableString = new SpannableString(imgName.getText().toString());
+                    spannableString.setSpan(new RelativeSizeSpan(1.6f),0,spannableString.length(),0);
+                    spannableString.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), 0, spannableString.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    imgName.setText(spannableString, TextView.BufferType.SPANNABLE);
+                    Typeface fontSindhi = Typeface.createFromAsset(ctx.getAssets(),"LateefRegOT.ttf");
+                    imgName.setTypeface(fontSindhi);
+                    linearLayout.setPadding(0,12,0,12);*/
                 }else if (selectedLanguage.equalsIgnoreCase("urdu")){
                     Typeface fontUrdu = Typeface.createFromAsset(ctx.getAssets(),"notonastaliqurdu_regular.ttf");
                     imgName.setTypeface(fontUrdu);
@@ -89,6 +109,30 @@ public class DashboardAdapter extends BaseAdapter {
                 }
                 linearLayout.setBackgroundColor(linearLayout.getResources().getColor(bean.getColorId()));
             }
+
+            // Added on 11-April
+            if (dashboardBeanList.size()==4 && position == (dashboardBeanList.size()-1) && isFirst){
+                imgName.post(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        gridView.setAdapter(new DashboardAdapter(ctx, DashboardFragment.dashboardBeanList, selectedLanguage,false));
+                    }
+                });
+
+            }
+            if (!isFirst){
+                imgName.getLayoutParams().height = getHeight;
+            }
+            imgName.post(new Runnable() {
+                @Override
+                public void run() {
+                    int h = imgName.getHeight();
+                    if(isFirst && h>getHeight){
+                        getHeight = h;
+                    }
+                }
+            });
 
         }
 

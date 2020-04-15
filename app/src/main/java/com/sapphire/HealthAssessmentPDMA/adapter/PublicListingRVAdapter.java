@@ -2,8 +2,10 @@ package com.sapphire.HealthAssessmentPDMA.adapter;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,11 +45,13 @@ public class PublicListingRVAdapter extends RecyclerView.Adapter<PublicListingRV
     private List<PublicListingRVAdapterBean> beanList;
     private PublicListingRVItemClickListener publicListingRVItemClickListener;
     private ProgressDialog progressDialog;
+    private UserSession session;
 
     public PublicListingRVAdapter(Context context,List<PublicListingRVAdapterBean> beanList){
         this.context = context;
         this.beanList = beanList;
         progressDialog = new ProgressDialog(context);
+        session = new UserSession(context);
     }
 
 
@@ -67,6 +71,17 @@ public class PublicListingRVAdapter extends RecyclerView.Adapter<PublicListingRV
             holder.nameTV.setText(bean.getName());
             //holder.surveryNoTV.setText("SURVEY "+beanList.get(position).getSurveryNo());
             holder.dateTV.setText(bean.getDate());
+            Typeface fontEng = Typeface.createFromAsset(context.getAssets(),"myriad_pro_regular.ttf");
+            Typeface fontUrdu = Typeface.createFromAsset(context.getAssets(),"notonastaliqurdu_regular.ttf");
+
+
+            if (session.getSelectedLanguage().equalsIgnoreCase("urdu")){
+                holder.nameTV.setTypeface(fontUrdu);
+            }else{
+                holder.nameTV.setTypeface(fontEng,Typeface.BOLD);
+            }
+
+
             if(bean.getResult().equalsIgnoreCase("1")){
                 holder.resutlTV.setText("SCREENING NEEDED");
                holder.resutlTV.setTextColor(holder.resutlTV.getContext().getResources().getColor(R.color.red_color));
@@ -108,7 +123,7 @@ public class PublicListingRVAdapter extends RecyclerView.Adapter<PublicListingRV
                     getAssessmentDetails(beanList.get(position).getUserId(),activity);
                 }
                 else{
-                    new CommonCode(context).showErrorORSuccessAlert(activity,"error","Something went wrong, please check your internet connection.",activity.getSupportFragmentManager(),null);
+                    new CommonCode(context).showErrorORSuccessAlert(activity,"error","Something went wrong, please check your internet connection.",activity.getSupportFragmentManager(),null,false);
                 }
 
             }
@@ -169,7 +184,9 @@ public class PublicListingRVAdapter extends RecyclerView.Adapter<PublicListingRV
                                                                 // Positive if 'now' is later than 'then',
                                                                 // negative if 'then' is later than 'now'
                                                                 long minutes = TimeUnit.MILLISECONDS.toMinutes(now - then);
-                                                                if (minutes >= 120){
+                                                                if (!obj.isNull("scoring_status") && obj.getString("scoring_status").equalsIgnoreCase("safe")){
+                                                                    bean.setAssessmentResult(obj.getString("screening_needed"));
+                                                                }else if (minutes >= 120){
                                                                     if(!obj.isNull("screening_needed") && !obj.getString("screening_needed").equalsIgnoreCase("")){
                                                                         bean.setAssessmentResult(obj.getString("screening_needed"));
                                                                     }
@@ -205,7 +222,7 @@ public class PublicListingRVAdapter extends RecyclerView.Adapter<PublicListingRV
                         if(progressDialog.isShowing()){
                             progressDialog.dismiss();
                         }
-                        new CommonCode(context).showErrorORSuccessAlert(activity,"error","Something went wrong, please try again!",activity.getSupportFragmentManager(),null);
+                        new CommonCode(context).showErrorORSuccessAlert(activity,"error","Something went wrong, please try again!",activity.getSupportFragmentManager(),null,false);
 
                     }
                 }
@@ -216,7 +233,7 @@ public class PublicListingRVAdapter extends RecyclerView.Adapter<PublicListingRV
                 if(progressDialog.isShowing()){
                     progressDialog.dismiss();
                 }
-                new CommonCode(context).showErrorORSuccessAlert(activity,"error","Something went wrong, please check your internet connection.",activity.getSupportFragmentManager(),null);
+                new CommonCode(context).showErrorORSuccessAlert(activity,"error","Something went wrong, please check your internet connection.",activity.getSupportFragmentManager(),null,false);
 
             }
         });

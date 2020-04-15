@@ -4,8 +4,10 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Typeface;
+import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.RelativeSizeSpan;
+import android.text.style.StyleSpan;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -27,7 +29,7 @@ public class AwarenessAdapter extends BaseAdapter {
 
     private Activity ctx;
     private List<AwarenessBean> awarenessBeanList;
-    static Integer getHeight;
+    static Integer getHeight=0;
     private ExpandableHeightGridView gridView;
     private Boolean isFirst;
 
@@ -73,21 +75,37 @@ public class AwarenessAdapter extends BaseAdapter {
 
                     Typeface fontUrdu = Typeface.createFromAsset(ctx.getAssets(),"notonastaliqurdu_regular.ttf");
                     imgName.setTypeface(fontUrdu);
+                    imgName.setIncludeFontPadding(false);
+                    imgName.setLineSpacing(0,0.7f);
+
                 }else if (new UserSession(ctx).getSelectedLanguage().equalsIgnoreCase("sindhi")) {
                     SpannableString spannableString = new SpannableString(imgName.getText().toString());
-                    spannableString.setSpan(new RelativeSizeSpan(1.4f),0,spannableString.length(),0);
+                    spannableString.setSpan(new RelativeSizeSpan(1.5f),0,spannableString.length(),0);
+                    spannableString.setSpan(new StyleSpan(Typeface.BOLD), 0, spannableString.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                     imgName.setText(spannableString, TextView.BufferType.SPANNABLE);
-
-                    Typeface fontSindhi = Typeface.createFromAsset(ctx.getAssets(),"sindhi_fonts.ttf");
+                    Typeface fontSindhi = Typeface.createFromAsset(ctx.getAssets(),"myriad_pro_regular.ttf");
                     imgName.setTypeface(fontSindhi);
+                    imgName.setIncludeFontPadding(false);
+                    imgName.setLineSpacing(0,0.85f);
+
                 }
             }
-            if (awarenessBeanList.size()==4 && position == (awarenessBeanList.size()-1) && isFirst){
-                imgName.post(new Runnable() {
+            if (awarenessBeanList.size()==5 && position == (awarenessBeanList.size()-1) && isFirst){
+                    /*imgName.post(new Runnable() {
                     @Override
                     public void run() {
                         getHeight =  imgName.getHeight();
+                        imgName.getLayoutParams().height = getHeight;
+                        imgName.getLayoutParams().height = getTextViewHeight(imgName.getTextSize());
                         gridView.setAdapter(new AwarenessAdapter(ctx, AwarenessFragment.awarenessBeanList,false));
+                    }
+                });*/
+                imgName.post(new Runnable() {
+                    @Override
+                    public void run() {
+//                        getHeight =  imgName.getHeight();
+
+                        gridView.setAdapter(new AwarenessAdapter(ctx, AwarenessFragment.awarenessBeanList, false));
                     }
                 });
 
@@ -95,10 +113,19 @@ public class AwarenessAdapter extends BaseAdapter {
             if (!isFirst){
                 imgName.getLayoutParams().height = getHeight;
                 //if(getHeight==0){
-                imgName.getLayoutParams().height = getTextViewHeight(imgName.getTextSize());
+               // imgName.getLayoutParams().height = getTextViewHeight(imgName.getTextSize());
 
                 //}
             }
+            imgName.post(new Runnable() {
+                @Override
+                public void run() {
+                    int h = imgName.getHeight();
+                    if(isFirst && h>getHeight){
+                        getHeight = h;
+                    }
+                }
+            });
         }
 
         return view;

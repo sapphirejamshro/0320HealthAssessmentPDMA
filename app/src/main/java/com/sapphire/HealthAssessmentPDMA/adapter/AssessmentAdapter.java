@@ -4,6 +4,8 @@ import android.content.Context;
 import android.graphics.Typeface;
 import android.text.SpannableString;
 import android.text.Spanned;
+import android.text.style.RelativeSizeSpan;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,6 +65,8 @@ public class AssessmentAdapter extends RecyclerView.Adapter<AssessmentAdapter.As
                 holder.trContactedPersonName.setVisibility(View.VISIBLE);
             }
             if (beanList.get(position).getContactedPersonMobNo().length()>0){
+                System.out.println("=====come in bean list::"+beanList.get(position).getContactedPersonMobNo().length());
+                holder.tbContactedPerson.setVisibility(View.VISIBLE);
                 holder.trContactedPersonMobNo.setVisibility(View.VISIBLE);
             }
         }
@@ -122,13 +126,15 @@ public class AssessmentAdapter extends RecyclerView.Adapter<AssessmentAdapter.As
     private void setCustomFonts(AssessmentViewHolder holder) {
         Typeface fontEng = Typeface.createFromAsset(context.getAssets(),"myriad_pro_regular.ttf");
         Typeface fontUrdu = Typeface.createFromAsset(context.getAssets(),"notonastaliqurdu_regular.ttf");
-        Typeface fontSindhi = Typeface.createFromAsset(context.getAssets(),"sindhi_fonts.ttf");
+        Typeface fontSindhi = Typeface.createFromAsset(context.getAssets(),"myriad_pro_regular.ttf");
 
         // for Country
         if (selectedLanguage.equalsIgnoreCase("Sindhi")){
-            SpannableString spanStringCountry = new SpannableString(context.getResources().getString(R.string.country_text_sindhi));
+            SpannableString spanStringCountry = new SpannableString(context.getResources().getString(R.string.country_text_sindhi1));
             spanStringCountry.setSpan(new CustomTypefaceSpan("",fontEng),0,12, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
             spanStringCountry.setSpan(new CustomTypefaceSpan("",fontSindhi),13,spanStringCountry.length()-1,Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            spanStringCountry.setSpan(new RelativeSizeSpan(1.0f), 13,spanStringCountry.length()-1, 0);
+
             holder.tvCountryLabel.setText(spanStringCountry);
 
         }else {
@@ -143,6 +149,7 @@ public class AssessmentAdapter extends RecyclerView.Adapter<AssessmentAdapter.As
             SpannableString spanStringFlightNo = new SpannableString(context.getResources().getString(R.string.flight_text_sindhi));
             spanStringFlightNo.setSpan(new CustomTypefaceSpan("",fontEng),0,10, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
             spanStringFlightNo.setSpan(new CustomTypefaceSpan("",fontSindhi),11,spanStringFlightNo.length()-1,Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            spanStringFlightNo.setSpan(new RelativeSizeSpan(1.0f), 11,spanStringFlightNo.length()-1, 0);
             holder.tvFlightNoLabel.setText(spanStringFlightNo);
         }else {
             SpannableString spanStringFlightNo = new SpannableString(holder.tvFlightNoLabel.getText().toString());
@@ -156,6 +163,7 @@ public class AssessmentAdapter extends RecyclerView.Adapter<AssessmentAdapter.As
             SpannableString spanStringPassportNo = new SpannableString(context.getResources().getString(R.string.passport_no_sindhi));
             spanStringPassportNo.setSpan(new CustomTypefaceSpan("",fontEng),0,11, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
             spanStringPassportNo.setSpan(new CustomTypefaceSpan("",fontSindhi),12,spanStringPassportNo.length()-1,Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            spanStringPassportNo.setSpan(new RelativeSizeSpan(1.0f), 12,spanStringPassportNo.length()-1, 0);
             holder.tvPassportLabel.setText(spanStringPassportNo);
         }else {
             SpannableString spanStringPassportNo = new SpannableString(holder.tvPassportLabel.getText().toString());
@@ -169,6 +177,8 @@ public class AssessmentAdapter extends RecyclerView.Adapter<AssessmentAdapter.As
             SpannableString spanStringName = new SpannableString(context.getResources().getString(R.string.name_text1_sindhi));
             spanStringName.setSpan(new CustomTypefaceSpan("",fontEng),0,4, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
             spanStringName.setSpan(new CustomTypefaceSpan("",fontSindhi),5,spanStringName.length()-1,Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            spanStringName.setSpan(new RelativeSizeSpan(1.3f), 0,spanStringName.length()-1, 0);
+
             holder.tvContactedPersonLabel.setText(spanStringName);
         }else {
             SpannableString spanStringName = new SpannableString(holder.tvContactedPersonLabel.getText().toString());
@@ -182,12 +192,14 @@ public class AssessmentAdapter extends RecyclerView.Adapter<AssessmentAdapter.As
             SpannableString spanStringMobile = new SpannableString(context.getResources().getString(R.string.mobile_no1_sindhi));
             spanStringMobile.setSpan(new CustomTypefaceSpan("",fontEng),0,6, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
             spanStringMobile.setSpan(new CustomTypefaceSpan("",fontSindhi),7,spanStringMobile.length()-1,Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            spanStringMobile.setSpan(new RelativeSizeSpan(1.3f), 0,spanStringMobile.length()-1, 0);
             holder.tvContactedPersonMobNoVal.setText(spanStringMobile);
         }else {
-            SpannableString spanStringMobile = new SpannableString(holder.tvContactedPersonMobNoVal.getText().toString());
-            spanStringMobile.setSpan(new CustomTypefaceSpan("",fontEng),0,6, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
-            spanStringMobile.setSpan(new CustomTypefaceSpan("",fontUrdu),7,spanStringMobile.length()-1,Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
-            holder.tvContactedPersonMobNoVal.setText(spanStringMobile);
+
+            SpannableString spanStringMobile = new SpannableString(holder.tvContactedPersonMobNoLabel.getText().toString());
+            spanStringMobile.setSpan(new CustomTypefaceSpan("",fontEng),0,8, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            spanStringMobile.setSpan(new CustomTypefaceSpan("",fontUrdu),9,spanStringMobile.length()-1,Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            holder.tvContactedPersonMobNoLabel.setText(spanStringMobile);
         }
 
         if (selectedLanguage.equalsIgnoreCase("en")){
@@ -200,12 +212,19 @@ public class AssessmentAdapter extends RecyclerView.Adapter<AssessmentAdapter.As
             holder.tvContactedPersonMobNoVal.setTypeface(fontEng);
         }else if (selectedLanguage.equalsIgnoreCase("sindhi")){
             holder.tvQuestion.setTypeface(fontSindhi);
+            holder.tvQuestion.setTextSize(TypedValue.COMPLEX_UNIT_SP,24);
             holder.tvAnswer.setTypeface(fontSindhi);
-            holder.tvCountryVal.setTypeface(fontSindhi);
-            holder.tvFlightNoLabel.setTypeface(fontSindhi);
+            holder.tvAnswer.setTextSize(TypedValue.COMPLEX_UNIT_SP,24);
+            /* holder.tvCountryVal.setTypeface(fontSindhi);
+            holder.tvCountryVal.setTextSize(TypedValue.COMPLEX_UNIT_SP,20);
+           holder.tvFlightNoLabel.setTypeface(fontSindhi);
+            holder.tvFlightNoLabel.setTextSize(TypedValue.COMPLEX_UNIT_SP,24);
             holder.tvPassportNoVal.setTypeface(fontSindhi);
+            holder.tvPassportNoVal.setTextSize(TypedValue.COMPLEX_UNIT_SP,20);*/
             holder.tvContactedPersonVal.setTypeface(fontSindhi);
+            holder.tvContactedPersonVal.setTextSize(TypedValue.COMPLEX_UNIT_SP,20);
             holder.tvContactedPersonMobNoVal.setTypeface(fontSindhi);
+            holder.tvContactedPersonMobNoVal.setTextSize(TypedValue.COMPLEX_UNIT_SP,20);
         }else if (selectedLanguage.equalsIgnoreCase("urdu")){
             holder.tvQuestion.setTypeface(fontUrdu);
             holder.tvAnswer.setTypeface(fontUrdu);

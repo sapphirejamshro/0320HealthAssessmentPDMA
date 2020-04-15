@@ -33,6 +33,7 @@ import android.text.Spanned;
 import android.text.TextWatcher;
 import android.text.method.DigitsKeyListener;
 import android.text.style.ForegroundColorSpan;
+import android.text.style.RelativeSizeSpan;
 import android.util.DisplayMetrics;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -135,7 +136,6 @@ public class UserInformationFragment extends Fragment  implements GoogleApiClien
         commonCode = new CommonCode(activity);
         appSignatureHashHelper = new AppSignatureHashHelper(activity);
         hashKeyString = appSignatureHashHelper.getAppSignatures().get(0);
-        System.out.println("=====================hash key "+hashKeyString);
 
         googleApiClient = new GoogleApiClient.Builder(activity)
                 .addConnectionCallbacks(currentCtx)
@@ -171,8 +171,7 @@ public class UserInformationFragment extends Fragment  implements GoogleApiClien
         if (commonCode.isNetworkAvailable()) {
             getDistrictsMethod();
         }else {
-            setDistrictSpinnerAdapter();
-            commonCode.showErrorORSuccessAlert(activity,"error","Please Connect to Internet!",getActivity().getSupportFragmentManager(),null);
+            commonCode.showErrorORSuccessAlert(activity,"error","Please Connect to Internet!",getActivity().getSupportFragmentManager(),null,false);
         }
 //        activity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN|WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 //        keyboardview = (KeyboardView) view.findViewById(R.id.keyboard);
@@ -484,7 +483,8 @@ public class UserInformationFragment extends Fragment  implements GoogleApiClien
                 if(s.toString().length() > 0){
                     tvAgeError.setVisibility(View.GONE);
                 }
-                if(s.toString().length()>0 && s.toString().equalsIgnoreCase("0")){
+                if(s.toString().length()>0 && (s.toString().equalsIgnoreCase("0") || s.toString().equalsIgnoreCase("00")
+                  || s.toString().equalsIgnoreCase("000"))){
                     tvAgeError.setText("Age can't be 0");
                     tvAgeError.setVisibility(View.VISIBLE);
                 }
@@ -544,7 +544,7 @@ public class UserInformationFragment extends Fragment  implements GoogleApiClien
                         getTehsilsByDistrictMethod(districtIdString);
                     }else {
                         setTehsilAdapter();
-                        commonCode.showErrorORSuccessAlert(activity,"error","Please Connect to Internet!",getActivity().getSupportFragmentManager(),null);
+                        commonCode.showErrorORSuccessAlert(activity,"error","Please Connect to Internet!",getActivity().getSupportFragmentManager(),null,false);
                     }
                 }
             }
@@ -601,7 +601,7 @@ public class UserInformationFragment extends Fragment  implements GoogleApiClien
                             cursorPosition--;
                         }
 
-                    }else if(validStr.length() ==13){
+                    }else if(validStr.length() >=13){
                         String startStr = validStr.substring(0,5);
                         String secStartStr = validStr.substring(5,12);
                         String endStr = validStr.substring(12);
@@ -760,7 +760,7 @@ public class UserInformationFragment extends Fragment  implements GoogleApiClien
 
 
                     }else if (!isLocationEnabled()){
-                        showLocationAlert("Enable location","Please enable location to mark your attendance."
+                        showLocationAlert("Enable location","Please enable your location."
                                 ,"Ok","Cancel");
                         //Toast.makeText(activity,"Please turn on Location to mark your attendance",Toast.LENGTH_SHORT).show();
                     }else {
@@ -788,7 +788,7 @@ public class UserInformationFragment extends Fragment  implements GoogleApiClien
                         if (commonCode.isNetworkAvailable()) {
                             registerUser(userModel, language);
                         } else {
-                            commonCode.showErrorORSuccessAlert(activity, "error", "Please Connect to Internet!", getActivity().getSupportFragmentManager(), null);
+                            commonCode.showErrorORSuccessAlert(activity, "error", "Please Connect to Internet!", getActivity().getSupportFragmentManager(), null,false);
                         }
                     }
                 }
@@ -857,6 +857,9 @@ public class UserInformationFragment extends Fragment  implements GoogleApiClien
             }
         });
 
+        setDistrictSpinnerAdapter();
+
+
         return view;
     }
 
@@ -906,13 +909,14 @@ public class UserInformationFragment extends Fragment  implements GoogleApiClien
     private void setCustomFont() {
         Typeface fontEng = Typeface.createFromAsset(getActivity().getAssets(),"myriad_pro_regular.ttf");
         Typeface fontUrdu = Typeface.createFromAsset(getActivity().getAssets(),"notonastaliqurdu_regular.ttf");
-        Typeface fontSindhi = Typeface.createFromAsset(getActivity().getAssets(),"sindhi_fonts.ttf");
+        Typeface fontSindhi = Typeface.createFromAsset(getActivity().getAssets(),"myriad_pro_regular.ttf");
         // for mobile
 
         if (selectedLanguage.equalsIgnoreCase("sindhi")) {
             SpannableString spanStringMob = new SpannableString(activity.getResources().getString(R.string.mobile_no_text_sindhi));
             spanStringMob.setSpan(new CustomTypefaceSpan("",fontEng),0,6,Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
             spanStringMob.setSpan(new CustomTypefaceSpan("", fontSindhi), 8, spanStringMob.length() - 1, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            spanStringMob.setSpan(new RelativeSizeSpan(1.0f), 8,spanStringMob.length()-1, 0);
             spanStringMob.setSpan(new ForegroundColorSpan(Color.RED), spanStringMob.length() - 1, spanStringMob.length(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
             tvMobile.setText(spanStringMob);
             tvMobile.setPadding(8,20,8,8);
@@ -929,6 +933,7 @@ public class UserInformationFragment extends Fragment  implements GoogleApiClien
             SpannableString spanStringName = new SpannableString(activity.getResources().getString(R.string.name_text_sindhi));
             spanStringName.setSpan(new CustomTypefaceSpan("",fontEng),0,4,Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
             spanStringName.setSpan(new CustomTypefaceSpan("",fontSindhi),5,spanStringName.length()-1,Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            spanStringName.setSpan(new RelativeSizeSpan(1.0f), 5,spanStringName.length()-1, 0);
             spanStringName.setSpan(new ForegroundColorSpan(Color.RED),spanStringName.length()-1,spanStringName.length(),Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
             tvName.setText(spanStringName);
             tvName.setPadding(8,20,8,8);
@@ -944,6 +949,7 @@ public class UserInformationFragment extends Fragment  implements GoogleApiClien
             SpannableString spanStringAddress = new SpannableString(activity.getResources().getString(R.string.address_text_sindhi));
             spanStringAddress.setSpan(new CustomTypefaceSpan("",fontEng),0,7,Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
             spanStringAddress.setSpan(new CustomTypefaceSpan("",fontSindhi),8,spanStringAddress.length()-1,Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            spanStringAddress.setSpan(new RelativeSizeSpan(1.0f), 8,spanStringAddress.length()-1, 0);
             spanStringAddress.setSpan(new ForegroundColorSpan(Color.RED),spanStringAddress.length()-1,spanStringAddress.length(),Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
             tvAddress.setText(spanStringAddress);
             tvAddress.setPadding(8,20,8,8);
@@ -961,6 +967,8 @@ public class UserInformationFragment extends Fragment  implements GoogleApiClien
             SpannableString spanStringCNIC = new SpannableString(activity.getResources().getString(R.string.cnic_text_sindhi));
             spanStringCNIC.setSpan(new CustomTypefaceSpan("",fontEng),0,4,Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
             spanStringCNIC.setSpan(new CustomTypefaceSpan("",fontSindhi),6,spanStringCNIC.length()-1,Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            spanStringCNIC.setSpan(new RelativeSizeSpan(1.0f), 6,spanStringCNIC.length()-1, 0);
+
             //spanStringCNIC.setSpan(new ForegroundColorSpan(Color.RED),spanStringCNIC.length()-1,spanStringCNIC.length(),Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
             tvCNIC.setText(spanStringCNIC);
             tvCNIC.setPadding(8,20,8,8);
@@ -977,6 +985,7 @@ public class UserInformationFragment extends Fragment  implements GoogleApiClien
             SpannableString spanStringTehsil = new SpannableString(activity.getResources().getString(R.string.tehsil_text_sindhi));
             spanStringTehsil.setSpan(new CustomTypefaceSpan("", fontEng), 0, 4, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
             spanStringTehsil.setSpan(new CustomTypefaceSpan("", fontSindhi), 6, spanStringTehsil.length() - 1, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            spanStringTehsil.setSpan(new RelativeSizeSpan(1.0f), 6,spanStringTehsil.length()-1, 0);
             spanStringTehsil.setSpan(new ForegroundColorSpan(Color.RED), spanStringTehsil.length() - 1, spanStringTehsil.length(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
             tvTehsil.setText(spanStringTehsil);
             tvTehsil.setPadding(8,20,8,8);
@@ -993,6 +1002,7 @@ public class UserInformationFragment extends Fragment  implements GoogleApiClien
             SpannableString spanStringDistrict = new SpannableString(activity.getResources().getString(R.string.dist_text_sindhi));
             spanStringDistrict.setSpan(new CustomTypefaceSpan("", fontEng), 0, 8, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
             spanStringDistrict.setSpan(new CustomTypefaceSpan("", fontSindhi), 10, spanStringDistrict.length() - 1, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            spanStringDistrict.setSpan(new RelativeSizeSpan(1.0f), 10,spanStringDistrict.length()-1, 0);
             spanStringDistrict.setSpan(new ForegroundColorSpan(Color.RED), spanStringDistrict.length() - 1, spanStringDistrict.length(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
             tvDistrict.setText(spanStringDistrict);
             tvDistrict.setPadding(8,20,8,8);
@@ -1009,6 +1019,7 @@ public class UserInformationFragment extends Fragment  implements GoogleApiClien
             SpannableString spanStringAge = new SpannableString(activity.getResources().getString(R.string.age_sindhi));
             spanStringAge.setSpan(new CustomTypefaceSpan("", fontEng), 0, 3, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
             spanStringAge.setSpan(new CustomTypefaceSpan("", fontSindhi), 5, spanStringAge.length() - 1, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            spanStringAge.setSpan(new RelativeSizeSpan(1.0f), 5,spanStringAge.length()-1, 0);
             spanStringAge.setSpan(new ForegroundColorSpan(Color.RED), spanStringAge.length() - 1, spanStringAge.length(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
             tvAge.setText(spanStringAge);
             tvAge.setPadding(8,20,8,8);
@@ -1025,6 +1036,7 @@ public class UserInformationFragment extends Fragment  implements GoogleApiClien
             SpannableString spanStringGender = new SpannableString(activity.getResources().getString(R.string.gender_sindhi));
             spanStringGender.setSpan(new CustomTypefaceSpan("", fontEng), 0, 6, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
             spanStringGender.setSpan(new CustomTypefaceSpan("", fontSindhi), 8, spanStringGender.length() - 1, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            spanStringGender.setSpan(new RelativeSizeSpan(1.0f), 8,spanStringGender.length()-1, 0);
             spanStringGender.setSpan(new ForegroundColorSpan(Color.RED), spanStringGender.length() - 1, spanStringGender.length(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
             tvGender.setText(spanStringGender);
             spGender.setPadding(0,13,0,13);
@@ -1332,8 +1344,12 @@ public class UserInformationFragment extends Fragment  implements GoogleApiClien
                             JSONObject jsonObject = response.getJSONObject("data");
                             if (jsonObject.length()>0){
                                 JSONObject districtsObj = jsonObject.getJSONObject("districts");
-                                districtNameList.add("Select District");
-                                districtIdsList.add("Select District");
+                                if(!districtNameList.contains("Select District")){
+                                    districtNameList.add("Select District");
+                                }
+                                if(!districtIdsList.contains("Select District")){
+                                    districtIdsList.add("Select District");
+                                }
                                 for (int i=1; i<= districtsObj.length(); i++){
                                     if (!districtsObj.isNull(""+i)) {
                                         JSONObject innerObj = districtsObj.getJSONObject("" + i);
@@ -1349,7 +1365,7 @@ public class UserInformationFragment extends Fragment  implements GoogleApiClien
                     } catch (Exception e) {
                         e.printStackTrace();
                         progressDialog.dismiss();
-                        new CommonCode(activity).showErrorORSuccessAlert(activity,"error","Something went wrong, please try again!",getActivity().getSupportFragmentManager(),null);
+                        new CommonCode(activity).showErrorORSuccessAlert(activity,"error","Something went wrong, please try again!",getActivity().getSupportFragmentManager(),null,false);
                     }
                 }
             }
@@ -1357,7 +1373,9 @@ public class UserInformationFragment extends Fragment  implements GoogleApiClien
             @Override
             public void onError(VolleyError error) {
                 progressDialog.dismiss();
-                new CommonCode(activity).showErrorORSuccessAlert(activity,"error","Something went wrong, please check your internet connection.",getActivity().getSupportFragmentManager(),null);
+                if(getActivity() != null){
+                    new CommonCode(activity).showErrorORSuccessAlert(activity,"error","Something went wrong, please check your internet connection.",getActivity().getSupportFragmentManager(),null,false);
+                }
             }
         });
     }
@@ -1391,18 +1409,22 @@ public class UserInformationFragment extends Fragment  implements GoogleApiClien
                             if (jsonObject.length() > 0){
                                 JSONObject tehsilsObject = jsonObject.getJSONObject("district_id~"+districtId);
                                 if (tehsilsObject.length()>0){
-                                    int i=0;
+                                    int i=0, count=0;
                                     tehsilIdsList.add("Select Tehsil");
                                     tehsilNameList.add("Select Tehsil");
-                                    while (tehsilIdsList.size() != tehsilsObject.length()){
+                                    while (count != tehsilsObject.length()){
                                         i++;
                                         if (!tehsilsObject.isNull(""+i)){
                                             JSONObject innerObj = tehsilsObject.getJSONObject(""+i);
                                             if (innerObj.length()>0){
+                                                count++;
                                                 tehsilIdsList.add(innerObj.getString("taluka_id"));
                                                 tehsilNameList.add(innerObj.getString("taluka_name"));
+                                                System.out.println("=====taluka name "+innerObj.getString("taluka_name"));
+
                                             }
                                         }
+                                        System.out.println("==============sizes "+tehsilIdsList.size() +" ---- "+tehsilsObject.length());
                                     }
 
                                 }
@@ -1413,7 +1435,7 @@ public class UserInformationFragment extends Fragment  implements GoogleApiClien
                     } catch (Exception e) {
                         e.printStackTrace();
                         setTehsilAdapter();
-                        new CommonCode(activity).showErrorORSuccessAlert(activity,"error","Something went wrong, please try again!",getActivity().getSupportFragmentManager(),null);
+                        new CommonCode(activity).showErrorORSuccessAlert(activity,"error","Something went wrong, please try again!",getActivity().getSupportFragmentManager(),null,false);
                         progressDialog.dismiss();
                     }
 
@@ -1424,7 +1446,7 @@ public class UserInformationFragment extends Fragment  implements GoogleApiClien
             public void onError(VolleyError error) {
                 progressDialog.dismiss();
                 setTehsilAdapter();
-                new CommonCode(activity).showErrorORSuccessAlert(activity,"error","Something went wrong, please check your internet connection.",getActivity().getSupportFragmentManager(),null);
+                new CommonCode(activity).showErrorORSuccessAlert(activity,"error","Something went wrong, please check your internet connection.",getActivity().getSupportFragmentManager(),null,false);
             }
         });
     }
@@ -1474,16 +1496,16 @@ public class UserInformationFragment extends Fragment  implements GoogleApiClien
                             bundle.putString("userType",userType);
                             bundle.putString("screen","register");
                             bundle.putString("hashKey",hashKeyString);
-                            new CommonCode(activity).showErrorORSuccessAlert(activity,"success","Registration Successful! Enter OTP for verification",getActivity().getSupportFragmentManager(),bundle);
+                            new CommonCode(activity).showErrorORSuccessAlert(activity,"success","Registration Successful! Enter OTP for verification",getActivity().getSupportFragmentManager(),bundle,false);
                         }else if(statusDescription.length()>0
                                 && statusDescription.equalsIgnoreCase("Record already Exists")){
-                            new CommonCode(activity).showErrorORSuccessAlert(activity,"error","Record already Exists",getActivity().getSupportFragmentManager(),null);
+                            new CommonCode(activity).showErrorORSuccessAlert(activity,"error","Record already Exists",getActivity().getSupportFragmentManager(),null,false);
                         }
                         progressDialog.dismiss();
                     } catch (Exception e) {
                         e.printStackTrace();
                         progressDialog.dismiss();
-                        new CommonCode(activity).showErrorORSuccessAlert(activity,"error","Something went wrong, please try again!",getActivity().getSupportFragmentManager(),null);
+                        new CommonCode(activity).showErrorORSuccessAlert(activity,"error","Something went wrong, please try again!",getActivity().getSupportFragmentManager(),null,false);
                     }
 
                 }
@@ -1493,7 +1515,9 @@ public class UserInformationFragment extends Fragment  implements GoogleApiClien
             @Override
             public void onError(VolleyError error) {
                 progressDialog.dismiss();
-                new CommonCode(activity).showErrorORSuccessAlert(activity,"error","Something went wrong, please check your internet connection.",getActivity().getSupportFragmentManager(),null);
+                if(getActivity() != null){
+                    new CommonCode(activity).showErrorORSuccessAlert(activity,"error","Something went wrong, please check your internet connection.",getActivity().getSupportFragmentManager(),null,false);
+                }
             }
         });
     }
@@ -1514,7 +1538,7 @@ public class UserInformationFragment extends Fragment  implements GoogleApiClien
             tvMobileNoError.setVisibility(View.VISIBLE);
             isMobileNo = false;
         }
-        if (ageString.trim().length() == 0){
+        if (ageString.trim().length() == 0 || ageString.trim().equalsIgnoreCase("0") || ageString.trim().equalsIgnoreCase("00") || ageString.trim().equalsIgnoreCase("000")){
             tvAgeError.setText("Age is Required");
             tvAgeError.setVisibility(View.VISIBLE);
             isAge = false;
@@ -1764,7 +1788,9 @@ public class UserInformationFragment extends Fragment  implements GoogleApiClien
         super.onDestroy();
         disconnect();
         progressDialog.dismiss();
-        ((LockDrawer)getActivity()).unLockDrawer();
+        if (getActivity() != null) {
+            ((LockDrawer) getActivity()).unLockDrawer();
+        }
     }
 
     // Added By Hina Hussain on 31-March-2020
@@ -1837,9 +1863,6 @@ public class UserInformationFragment extends Fragment  implements GoogleApiClien
 
                 if (keypadHeight > 0) {
                     // keyboard is opened
-                    System.out.println("=====keyboard open");
-
-
                     if(edAge.hasFocus()){
                        // ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) spacingView.getLayoutParams();
                         //layoutParams.height = (10-(edAge.getHeight()/2));
@@ -1847,7 +1870,6 @@ public class UserInformationFragment extends Fragment  implements GoogleApiClien
                     }
 
                     if(edCnic.hasFocus()){
-                        System.out.println("=====edName::"+edCnic.getTop()+"----"+edCnic.getHeight()+" --- "+edCnic.getTop());
                         ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) spacingView.getLayoutParams();
                         layoutParams.height = (edCnic.getHeight()/2);
                         mainScrollView.smoothScrollTo(0,spacingView.getBottom());

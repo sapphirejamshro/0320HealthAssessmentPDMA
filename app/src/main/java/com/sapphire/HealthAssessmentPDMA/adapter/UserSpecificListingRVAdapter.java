@@ -3,7 +3,9 @@ package com.sapphire.HealthAssessmentPDMA.adapter;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +27,7 @@ import com.sapphire.HealthAssessmentPDMA.fragment.InformationTabFragment;
 import com.sapphire.HealthAssessmentPDMA.helper.CommonCode;
 import com.sapphire.HealthAssessmentPDMA.helper.MyDateFormatter;
 import com.sapphire.HealthAssessmentPDMA.interfaces.VolleyCallback;
+import com.sapphire.HealthAssessmentPDMA.sessionManagement.UserSession;
 import com.sapphire.HealthAssessmentPDMA.webService.GetAssessmentsDetailsService;
 
 import org.json.JSONArray;
@@ -43,11 +46,13 @@ public class UserSpecificListingRVAdapter extends RecyclerView.Adapter<UserSpeci
     private Context context;
     private ArrayList<UserSpecificListingRVAdapterBean> beanList;
     private ProgressDialog progressDialog;
+    private UserSession session;
 
     public UserSpecificListingRVAdapter(Context context,ArrayList<UserSpecificListingRVAdapterBean> beanList){
         this.context = context;
         this.beanList = beanList;
         progressDialog = new ProgressDialog(context);
+        session = new UserSession(context);
     }
 
 
@@ -63,6 +68,16 @@ public class UserSpecificListingRVAdapter extends RecyclerView.Adapter<UserSpeci
 
         UserSpecificListingRVAdapterBean bean = beanList.get(position);
         if(bean!=null){
+
+            Typeface fontEng = Typeface.createFromAsset(context.getAssets(),"myriad_pro_regular.ttf");
+            Typeface fontUrdu = Typeface.createFromAsset(context.getAssets(),"notonastaliqurdu_regular.ttf");
+
+
+            if (session.getSelectedLanguage().equalsIgnoreCase("urdu")){
+                holder.nameTV.setTypeface(fontUrdu);
+            }else{
+                holder.nameTV.setTypeface(fontEng,Typeface.BOLD);
+            }
 
             if(bean.getUserName()!=null){
                 holder.nameTV.setText(bean.getUserName());
@@ -118,7 +133,7 @@ public class UserSpecificListingRVAdapter extends RecyclerView.Adapter<UserSpeci
                         getAssessmentDetailsByAssessmentId(Integer.valueOf(beanList.get(position).getAssessmentId()),activity);
                     }
                     else{
-                        new CommonCode(context).showErrorORSuccessAlert(activity,"error","Something went wrong, please check your internet connection.",activity.getSupportFragmentManager(),null);
+                        new CommonCode(context).showErrorORSuccessAlert(activity,"error","Something went wrong, please check your internet connection.",activity.getSupportFragmentManager(),null,false);
                     }
 
                 }
@@ -171,7 +186,7 @@ public class UserSpecificListingRVAdapter extends RecyclerView.Adapter<UserSpeci
                     try {
                         String statusDescription = response.getString("statusDescription");
                         String countryId="",flightNo="",passportNo="", contactedPersonName="",assessmentDate="",
-                                contactedPersonMobNo="", selected_language="";
+                                contactedPersonMobNo="", selected_language="",scoringStatus="";
                         if (statusDescription.length()>0 && statusDescription.equalsIgnoreCase("Success")){
                             JSONObject jsonObject = response.getJSONObject("data");
                             if (jsonObject.length()>0){
@@ -203,7 +218,11 @@ public class UserSpecificListingRVAdapter extends RecyclerView.Adapter<UserSpeci
                                     }if (!assessmentObject.isNull("assessment_date")){
                                         assessmentDate = assessmentObject.getString("assessment_date");
                                     }
+                                    if (!assessmentObject.isNull("scoring_status") && assessmentObject.getString("scoring_status").length()>0){
+                                        scoringStatus = assessmentObject.getString("scoring_status");
+                                    }
                                 }
+                                System.out.println("==================scoring "+scoringStatus);
                                 String assessmentMessage = jsonObject.getString("assessment_message");
                                 JSONArray questionsArray = jsonObject.getJSONArray("questions_data");
 
@@ -218,12 +237,13 @@ public class UserSpecificListingRVAdapter extends RecyclerView.Adapter<UserSpeci
                                 bundle.putString("contactPersonName",contactedPersonName);
                                 bundle.putString("contactedPersonMobNo",contactedPersonMobNo);
                                 bundle.putString("assessment_date",assessmentDate);
+                                bundle.putString("scoringStatus",scoringStatus);
                                 Fragment userFragment = new InformationTabFragment();
                                 userFragment.setArguments(bundle);
                                 CommonCode.updateDisplay(userFragment,activity.getSupportFragmentManager());
                             }
                         }else {
-                            new CommonCode(activity).showErrorORSuccessAlert(activity,"error","Something went wrong, please try again!",activity.getSupportFragmentManager(),null);
+                            new CommonCode(activity).showErrorORSuccessAlert(activity,"error","Something went wrong, please try again!",activity.getSupportFragmentManager(),null,false);
                         }
                         if(progressDialog.isShowing()){
                             progressDialog.dismiss();
@@ -234,7 +254,7 @@ public class UserSpecificListingRVAdapter extends RecyclerView.Adapter<UserSpeci
                             progressDialog.dismiss();
                         }
                         System.out.println("=========error "+e);
-                        new CommonCode(activity).showErrorORSuccessAlert(activity,"error","Something went wrong, please try again!",activity.getSupportFragmentManager(),null);
+                        new CommonCode(activity).showErrorORSuccessAlert(activity,"error","Something went wrong, please try again!",activity.getSupportFragmentManager(),null,false);
 
                     }
                 }
@@ -245,7 +265,7 @@ public class UserSpecificListingRVAdapter extends RecyclerView.Adapter<UserSpeci
                 if(progressDialog.isShowing()){
                     progressDialog.dismiss();
                 }
-                new CommonCode(activity).showErrorORSuccessAlert(activity,"error","Something went wrong, please check your internet connection.",activity.getSupportFragmentManager(),null);
+                new CommonCode(activity).showErrorORSuccessAlert(activity,"error","Something went wrong, please check your internet connection.",activity.getSupportFragmentManager(),null,false);
             }
         });
     }

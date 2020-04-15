@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -20,23 +21,40 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-
             <TextView
                 android:id="@+id/tv_title_prevention_frag"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="PREVENTION"
-                android:textColor="@color/app_color_green"
+                android:text="@string/prevention_text"
+                android:textColor="@color/appColorWhite"
                 android:textStyle="bold"
                 android:textSize="24sp"
                 android:gravity="center"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="20dp"
+                android:padding="10dp"
+                android:textDirection="inherit"
+                android:background="@color/appColorBlack"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_prevention_header_frag"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:paddingBottom="5dp"
+                android:layout_marginTop="10dp"
+                android:overScrollMode="never"
+                android:scrollbars="none"
+                android:clipToPadding="false"
+                app:layout_constraintTop_toBottomOf="@id/tv_title_prevention_frag"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                />
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_prevention_frag"
                 android:layout_width="match_parent"
@@ -45,7 +63,7 @@
                 android:layout_marginTop="20dp"
                 android:overScrollMode="never"
                 android:scrollbars="none"
-                app:layout_constraintTop_toBottomOf="@+id/tv_title_prevention_frag"
+                app:layout_constraintTop_toBottomOf="@+id/rv_prevention_header_frag"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"

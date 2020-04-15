@@ -3,15 +3,21 @@ package com.sapphire.HealthAssessmentPDMA.activity;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.ClipboardManager;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.text.Editable;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextWatcher;
 import android.text.style.ForegroundColorSpan;
+import android.view.ActionMode;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -25,6 +31,8 @@ import com.android.volley.VolleyError;
 import com.sapphire.HealthAssessmentPDMA.AppSignature.AppSignatureHashHelper;
 import com.sapphire.HealthAssessmentPDMA.R;
 import com.sapphire.HealthAssessmentPDMA.helper.CommonCode;
+import com.sapphire.HealthAssessmentPDMA.helper.CustomEditText;
+import com.sapphire.HealthAssessmentPDMA.helper.CustomEdittextMobile;
 import com.sapphire.HealthAssessmentPDMA.helper.CustomTypefaceSpan;
 import com.sapphire.HealthAssessmentPDMA.interfaces.VolleyCallback;
 import com.sapphire.HealthAssessmentPDMA.sessionManagement.UserSession;
@@ -37,20 +45,22 @@ import org.json.JSONObject;
 
 public class SignInActivity extends AppCompatActivity {
 
-    EditText edMobileNo;
+    private EditText edMobileNo;
     private Button signInBtn, btnRegister;
     private TextView tvMobileNo,tvMobileNoError, tvHeader;;
     private TextWatcher mblTextWatcher;
     private String mobileNoString="", userIdString="",nameString="",cnicString=""
             ,genderString="", ageString="",districtIdString="",districtNameString,selectedLanguage="",
             tehsilNameString="",tehsilIdString="",latitude="",longitude="",userStatus="",userType="",
-            ucIdString="",addressString="",hashKeyString="";
+            ucIdString="",addressString="",hashKeyString="",otpExpireTime="";
     private Activity activity;
     private ProgressDialog progressDialog;
     private CommonCode commonCode;
     private ScrollView mainScrollView;
     private UserSession session;
     private AppSignatureHashHelper appSignatureHashHelper;
+    private Boolean isRequestSent = false;
+    private long lastClickTime = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,6 +81,7 @@ public class SignInActivity extends AppCompatActivity {
         SpannableString spannableString = new SpannableString(getResources().getString(R.string.provincial_management_authority));
         spannableString.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.darkGreenColor)),spannableString.length()-5,spannableString.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
         tvHeader.setText(spannableString);
+
         signInBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -78,9 +89,12 @@ public class SignInActivity extends AppCompatActivity {
                 commonCode.hideKeyboard(v);
                 if (isDataValid()) {
                     if (commonCode.isNetworkAvailable()){
-                        loginUserMethod(mobileNoString);
+                        if (!isRequestSent) {
+                            isRequestSent = true;
+                            loginUserMethod(mobileNoString);
+                        }
                     }else {
-                        commonCode.showErrorORSuccessAlert(activity,"error","Please Connect to Internet!",getSupportFragmentManager(),null);
+                        commonCode.showErrorORSuccessAlert(activity,"error","Please Connect to Internet!",getSupportFragmentManager(),null,false);
                     }
                 }
             }
@@ -110,30 +124,34 @@ public class SignInActivity extends AppCompatActivity {
                         if(str.equalsIgnoreCase("3")){
                             str = "+92"+str;
                             cursorPosition = cursorPosition+3;
-                            tvMobileNoError.setText("Mobile # is Invalid");
-                            tvMobileNoError.setVisibility(View.VISIBLE);
+                            /*tvMobileNoError.setText("Mobile # is Invalid");
+                            tvMobileNoError.setVisibility(View.VISIBLE);*/
                         }else{
                             str = "";
                             cursorPosition = 0;
-                            tvMobileNoError.setText("Mobile # is Required");
-                            tvMobileNoError.setVisibility(View.VISIBLE);
+                            /*tvMobileNoError.setText("Mobile # is Required");
+                            tvMobileNoError.setVisibility(View.VISIBLE);*/
                         }
-                    }else if (currentLength >= 3 && currentLength <13){
+                    }
+                    /*else if (currentLength >= 3 && currentLength <13){
                         tvMobileNoError.setText("Mobile # is Invalid");
                         tvMobileNoError.setVisibility(View.VISIBLE);
-                    }else if (currentLength == 0){
+                    }
+                    else if (currentLength == 0){
                         tvMobileNoError.setText("Mobile # is Required");
                         tvMobileNoError.setVisibility(View.VISIBLE);
-                    }else {
+                    } else {
                         tvMobileNoError.setVisibility(View.GONE);
-                    }
+                    }*/
                 }else{
                     if(currentLength == 3){
                         str = "";
                         cursorPosition = 0;
-                        tvMobileNoError.setText("Mobile # is Required");
-                        tvMobileNoError.setVisibility(View.VISIBLE);
-                    }else if (currentLength >= 3 && currentLength <13){
+                        /*tvMobileNoError.setText("Mobile # is Required");
+                        tvMobileNoError.setVisibility(View.VISIBLE);*/
+                    }
+
+                    /*else if (currentLength >= 3 && currentLength <13){
                         tvMobileNoError.setText("Mobile # is Invalid");
                         tvMobileNoError.setVisibility(View.VISIBLE);
                     }else if (currentLength == 0){
@@ -141,7 +159,7 @@ public class SignInActivity extends AppCompatActivity {
                         tvMobileNoError.setVisibility(View.VISIBLE);
                     }else {
                         tvMobileNoError.setVisibility(View.GONE);
-                    }
+                    }*/
                 }
 
                 edMobileNo.setText(str);
@@ -152,11 +170,53 @@ public class SignInActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
+                if(preLength == 0){
+                    tvMobileNoError.setText("Mobile # is Required");
+                    tvMobileNoError.setVisibility(View.VISIBLE);
+                } else if(preLength > 0 && preLength < 13){
+                    tvMobileNoError.setText("Mobile # is Invalid");
+                    tvMobileNoError.setVisibility(View.VISIBLE);
+                }else{
+                    tvMobileNoError.setVisibility(View.GONE);
+                }
 
             }
         };
 
-
+        edMobileNo.setCustomSelectionActionModeCallback(new ActionMode.Callback() {
+            public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+                System.out.println("=========menu "+menu);
+                menu.clear();
+                return false;
+            }
+            public void onDestroyActionMode(ActionMode mode) {
+            }
+            public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+                System.out.println("=========menu2 "+menu);
+                menu.clear();
+                System.out.println("=========menu22 "+menu);
+                return false;
+            }
+            public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+                System.out.println("=========menu3 "+item);
+                return false;
+            }
+        });
+        edMobileNo.setLongClickable(false);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            edMobileNo.setContextClickable(false);
+        }
+        edMobileNo.setOnLongClickListener(new View.OnLongClickListener()
+        {
+            public boolean onLongClick(View v)
+            {
+                return true;
+            }
+        });
+        edMobileNo.cancelLongPress();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            edMobileNo.cancelDragAndDrop();
+        }
         setCustomFont();
     }
 
@@ -256,6 +316,7 @@ public class SignInActivity extends AppCompatActivity {
                                 addressString = jsonObject.getString("address");
                                 cnicString = jsonObject.getString("cnic");
                                 selectedLanguage = jsonObject.getString("selected_language");
+                                otpExpireTime = jsonObject.getString("mobile_otp_expiry_date");
 
                                 if (!jsonObject.isNull("latitude")) {
                                     latitude = jsonObject.getString("latitude");
@@ -274,6 +335,7 @@ public class SignInActivity extends AppCompatActivity {
                                     bundle.putString("mobileNo",mobileNoString);
                                     bundle.putString("screen","VerifiedLogin");
                                     bundle.putString("hashKey",hashKeyString);
+                                    bundle.putString("otpExpireTime",otpExpireTime);
                                     Intent intent = new Intent(activity, NavigationDrawerActivity.class);
                                     intent.putExtras(bundle);
                                     activity.startActivity(intent);
@@ -297,6 +359,7 @@ public class SignInActivity extends AppCompatActivity {
                                     bundle.putString("userType",userType);
                                     bundle.putString("screen","SignInActivityNotVerified");
                                     bundle.putString("hashKey",hashKeyString);
+                                    bundle.putString("otpExpireTime",otpExpireTime);
 
                                     Intent intent = new Intent(activity, NavigationDrawerActivity.class);
                                     intent.putExtras(bundle);
@@ -308,13 +371,13 @@ public class SignInActivity extends AppCompatActivity {
                                 //getDistrictsMethod(districtIdString,tehsilIdString,userStatus);
                             }else {
                                 progressDialog.dismiss();
-                                commonCode.showErrorORSuccessAlert(activity,"error","Something went wrong. Please check your login details.",getSupportFragmentManager(),null);
+                                commonCode.showErrorORSuccessAlert(activity,"error","Something went wrong. Please check your login details.",getSupportFragmentManager(),null,false);
                             }
 
 
                         }else if (statusDescription.length()>0 && statusDescription.equalsIgnoreCase("User is not active against the provided mobile number")){
                             progressDialog.dismiss();
-                            commonCode.showErrorORSuccessAlert(activity,"error","User is not active against the provided mobile number.",getSupportFragmentManager(),null);
+                            commonCode.showErrorORSuccessAlert(activity,"error","User is not active against the provided mobile number.",getSupportFragmentManager(),null,false);
                         }else if (statusDescription.length()>0 && statusDescription.equalsIgnoreCase("Mobile number does not exist")){
                             //commonCode.showErrorORSuccessAlert(activity,"error","Mobile number does not exist.",getSupportFragmentManager(),null);
                             /*Intent intent = new Intent(activity,NavigationDrawerActivity.class) ;
@@ -323,12 +386,15 @@ public class SignInActivity extends AppCompatActivity {
                             startActivity(new Intent(activity,LanguageOptionSelectionActivity.class));
                             //activity.finish();
                         }
+                        isRequestSent = false;
                     } catch (JSONException e) {
                         e.printStackTrace();
                         progressDialog.dismiss();
-                        commonCode.showErrorORSuccessAlert(activity,"error","Something went wrong, please try again!",getSupportFragmentManager(),null);
+                        isRequestSent = false;
+                        commonCode.showErrorORSuccessAlert(activity,"error","Something went wrong, please try again!",getSupportFragmentManager(),null,false);
                     }
                 }else {
+                    isRequestSent = false;
                     System.out.println("===============no resp");
                 }
             }
@@ -336,7 +402,10 @@ public class SignInActivity extends AppCompatActivity {
             @Override
             public void onError(VolleyError error) {
                 progressDialog.dismiss();
-                commonCode.showErrorORSuccessAlert(activity,"error","Something went wrong, please check your internet connection.",getSupportFragmentManager(),null);
+                isRequestSent = false;
+                if (!isFinishing()) {
+                    commonCode.showErrorORSuccessAlert(activity, "error", "Something went wrong, please check your internet connection.", getSupportFragmentManager(), null,false);
+                }
             }
         });
 
@@ -370,7 +439,7 @@ public class SignInActivity extends AppCompatActivity {
                     } catch (Exception e) {
                         e.printStackTrace();
                         progressDialog.dismiss();
-                        commonCode.showErrorORSuccessAlert(activity,"error","Something went wrong, please try again!",getSupportFragmentManager(),null);
+                        commonCode.showErrorORSuccessAlert(activity,"error","Something went wrong, please try again!",getSupportFragmentManager(),null,false);
                     }
                 }
             }
@@ -378,7 +447,7 @@ public class SignInActivity extends AppCompatActivity {
             @Override
             public void onError(VolleyError error) {
                 progressDialog.dismiss();
-                commonCode.showErrorORSuccessAlert(activity,"error","Something went wrong, please check your internet connection.",getSupportFragmentManager(),null);
+                commonCode.showErrorORSuccessAlert(activity,"error","Something went wrong, please check your internet connection.",getSupportFragmentManager(),null,false);
             }
         });
     }
@@ -400,7 +469,6 @@ public class SignInActivity extends AppCompatActivity {
                                     String i=tehsilIdString;
 
                                         if (!tehsilsObject.isNull(""+i)){
-                                            System.out.println("=============inside if");
                                             JSONObject innerObj = tehsilsObject.getJSONObject(""+i);
                                             if (innerObj.length()>0){
                                                 tehsilNameString = (innerObj.getString("taluka_name"));
@@ -409,7 +477,7 @@ public class SignInActivity extends AppCompatActivity {
                                                     session.createSession(selectedLanguage);
                                                     session.createUserSession(userIdString, nameString, mobileNoString, ageString, genderString, districtNameString,
                                                             tehsilNameString, addressString, cnicString,latitude,longitude,userType);
-                                                    commonCode.showErrorORSuccessAlert(activity, "success", "Login Successfully", getSupportFragmentManager(), null);
+                                                    commonCode.showErrorORSuccessAlert(activity, "success", "Login Successfully", getSupportFragmentManager(), null,false);
                                                 }else {
                                                     //VerifyOTPFragment verifyOTPFragment = new VerifyOTPFragment();
                                                     Bundle bundle = new Bundle();
@@ -444,7 +512,7 @@ public class SignInActivity extends AppCompatActivity {
                         progressDialog.dismiss();
                     } catch (Exception e) {
                         e.printStackTrace();
-                        commonCode.showErrorORSuccessAlert(activity,"error","Something went wrong, please try again!",getSupportFragmentManager(),null);
+                        commonCode.showErrorORSuccessAlert(activity,"error","Something went wrong, please try again!",getSupportFragmentManager(),null,false);
                         progressDialog.dismiss();
                     }
 
@@ -454,7 +522,7 @@ public class SignInActivity extends AppCompatActivity {
             @Override
             public void onError(VolleyError error) {
                 progressDialog.dismiss();
-                commonCode.showErrorORSuccessAlert(activity,"error","Something went wrong, please check your internet connection.",getSupportFragmentManager(),null);
+                commonCode.showErrorORSuccessAlert(activity,"error","Something went wrong, please check your internet connection.",getSupportFragmentManager(),null,false);
             }
         });
     }

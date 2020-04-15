@@ -68,8 +68,17 @@ public class NavigationDrawerAdapter extends BaseAdapter {
                 /*SpannableString spannableString = new SpannableString(imgName.getText().toString());
                 spannableString.setSpan(new RelativeSizeSpan(0.f),0,spannableString.length(),0);
                 imgName.setText(spannableString, TextView.BufferType.SPANNABLE);
-                */Typeface fontSindhi = Typeface.createFromAsset(ctx.getAssets(),"sindhi_fonts.ttf");
+                */Typeface fontSindhi = Typeface.createFromAsset(ctx.getAssets(),"myriad_pro_regular.ttf");
                 imgName.setTypeface(fontSindhi);
+                imgName.setTextSize(22);
+                imgName.setPadding(5,20,5,45);
+                //imgName.setLineSpacing();
+                /*Typeface fontSindhi = Typeface.createFromAsset(ctx.getAssets(),"LateefRegOT.ttf");
+                spannableString.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), 0, spannableString.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                spannableString.setSpan(new RelativeSizeSpan(1.2f),0,spannableString.length(),0);
+                imgName.setText(spannableString, TextView.BufferType.SPANNABLE);
+                imgName.setTypeface(fontSindhi);
+                imgName.setPadding(5,20,5,45);*/
                 /*linearLayout.setPadding(0,14,0,-8);*/
             }else if (selectedLanguage.equalsIgnoreCase("urdu")){
                 Typeface fontUrdu = Typeface.createFromAsset(ctx.getAssets(),"notonastaliqurdu_regular.ttf");

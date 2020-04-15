@@ -8,6 +8,7 @@ import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
+import android.net.Network;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
@@ -52,7 +53,7 @@ public class CommonCode {
             inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
-    public void showErrorORSuccessAlert(final Activity activity, final String type,final String message, final FragmentManager fragmentManager, final  Bundle bundle){
+    public void showErrorORSuccessAlert(final Activity activity, final String type,final String message, final FragmentManager fragmentManager, final  Bundle bundle,final Boolean isRemoveFailure){
 
         final Dialog alertDialog = new Dialog(activity);
         alertDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -69,7 +70,11 @@ public class CommonCode {
                 close.setBackgroundResource(R.drawable.cross_btn_bg_custom_error_dialog);
             }
             close.setImageDrawable(activity.getResources().getDrawable(R.drawable.cross_icon));
-            title.setText("Failure");
+            if (isRemoveFailure){
+                title.setText("");
+            }else {
+                title.setText("Failure");
+            }
             done.setBackgroundColor(activity.getResources().getColor(R.color.requireRedColor));
             done.setText("OK");
         }else if(type.equalsIgnoreCase("success")){
@@ -153,22 +158,41 @@ public class CommonCode {
 
 
     }
-    // Added on 03-Jan-2020 By Sadaf Khowaja
+   /* // Added on 03-Jan-2020 By Sadaf Khowaja
     public boolean isNetworkAvailable() {
         boolean connected = false;
         ConnectivityManager connectivityManager = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        if(connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
-                connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED) {
-            //we are connected to a network
-            connected = true;
-        }
-        else if ( connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.DISCONNECTED
-                || connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.DISCONNECTED) {
 
-            connected = false;
+        if (connectivityManager != null) {
+            if(connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
+                    connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED) {
+                //we are connected to a network
+                connected = true;
+            }
+            else if ( connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.DISCONNECTED
+                    || connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.DISCONNECTED) {
+
+                connected = false;
+            }
         }
         return connected;
-    }
+    }*/
+
+   // Added By Hina Hussain on 7-April-2020
+   public boolean isNetworkAvailable() {
+       boolean connected = false;
+       ConnectivityManager connectivityManager = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+       if (connectivityManager != null) {
+           NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
+           if(activeNetwork!=null){
+               if(activeNetwork.getType()==ConnectivityManager.TYPE_WIFI || activeNetwork.getType()==ConnectivityManager.TYPE_MOBILE){
+                   connected = true;
+               }
+           }
+       }
+
+           return connected;
+   }
 
     public void showErrorORSuccessAlertWithBack(final Activity activity, final String type,final String message, final FragmentManager fragmentManager){
 
@@ -271,7 +295,6 @@ public class CommonCode {
     public static int dpToPixels(Context context,int dp){
         DisplayMetrics metrics = context.getResources().getDisplayMetrics();
         int densityDpi = (int)(metrics.density * 160f);
-        System.out.println("---@@## dpi "+densityDpi+", dp "+dp*(densityDpi/160));
         return dp*(densityDpi/160);
     }
 }

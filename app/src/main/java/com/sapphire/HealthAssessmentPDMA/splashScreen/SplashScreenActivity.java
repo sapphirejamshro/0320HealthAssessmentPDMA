@@ -13,11 +13,15 @@ import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
+import android.text.style.StyleSpan;
+import android.text.style.TypefaceSpan;
 import android.view.View;
 import android.widget.TextView;
 
 import com.sapphire.HealthAssessmentPDMA.R;
 import com.sapphire.HealthAssessmentPDMA.activity.SignInActivity;
+
+import static android.graphics.Typeface.BOLD;
 
 public class SplashScreenActivity extends AppCompatActivity {
 
@@ -160,8 +164,12 @@ public class SplashScreenActivity extends AppCompatActivity {
                     2 , Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             spannableString.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.appColorGreen)),spannableString.length() - 2,
                     spannableString.length() ,Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            spannableString.setSpan(new RelativeSizeSpan(1.2f),0,2,Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
-            spannableString.setSpan(new RelativeSizeSpan(1.2f),spannableString.length() - 2,spannableString.length(),Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            spannableString.setSpan(new StyleSpan(BOLD),22,33,Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            spannableString.setSpan(new RelativeSizeSpan(1.6f),0,2,Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            spannableString.setSpan(new RelativeSizeSpan(1.6f),spannableString.length() - 2,spannableString.length(),Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            spannableString.setSpan(new StyleSpan(BOLD),0,2,Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            spannableString.setSpan(new StyleSpan(BOLD),spannableString.length() - 2,spannableString.length(),Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+
             infoTV.setText(spannableString);
         }
     }

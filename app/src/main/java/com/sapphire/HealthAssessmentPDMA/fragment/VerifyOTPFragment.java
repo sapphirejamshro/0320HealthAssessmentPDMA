@@ -34,6 +34,7 @@ import com.sapphire.HealthAssessmentPDMA.BroadcastReceiver.SMSBroadcastReceiverA
 import com.sapphire.HealthAssessmentPDMA.R;
 import com.sapphire.HealthAssessmentPDMA.activity.NavigationDrawerActivity;
 import com.sapphire.HealthAssessmentPDMA.helper.CommonCode;
+import com.sapphire.HealthAssessmentPDMA.helper.MyDateFormatter;
 import com.sapphire.HealthAssessmentPDMA.interfaces.LockDrawer;
 import com.sapphire.HealthAssessmentPDMA.interfaces.VolleyCallback;
 import com.sapphire.HealthAssessmentPDMA.sessionManagement.UserSession;
@@ -42,6 +43,8 @@ import com.sapphire.HealthAssessmentPDMA.webService.RegisterUserService;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.concurrent.TimeUnit;
 
 
 public class VerifyOTPFragment extends Fragment implements SMSBroadcastReceiverAPI.OTPReceiveListener {
@@ -55,14 +58,16 @@ public class VerifyOTPFragment extends Fragment implements SMSBroadcastReceiverA
     private CommonCode commonCode;
     private String screenName="", userId="", name = "", mobileNo="",cnicString=""
             ,genderString="", ageString="",districtNameString="",
-            tehsilNameString, addressString="",latitude="",longitude="",userType="";
+            tehsilNameString, addressString="",latitude="",longitude="",userType="", otpExpireTime="";
     private CountDownTimer countDownTimer = null;
-    private Boolean isRequestSent = false;
+    private Boolean isRequestSent = false,isRegeneratePinClick = false;
     private ScrollView mainScrollView;
     private TextWatcher optCodeTextWatcher;
     private int totalDash = 4;
     SMSBroadcastReceiverAPI smsBroadcastReceiver;
     private String hashKey="", screenNameForOTPRegenerate="";
+    private boolean shouldCount = true;
+    private long milliseconds = 120000;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -74,14 +79,15 @@ public class VerifyOTPFragment extends Fragment implements SMSBroadcastReceiverA
         commonCode = new CommonCode(activity);
         init();
         addTextWatcher();
-        startTimer();
-        startSMSListener();
+        milliseconds = 120000;
+
       // Toast.makeText(activity,"hash I l  key "+appSignatureHashHelper.getAppSignatures().get(0),Toast.LENGTH_SHORT).show();
         if (getArguments() != null){
             screenName = getArguments().getString("screen");
             hashKey = getArguments().getString("hashKey");
             if (screenName != null && screenName.length()>0
                     && screenName.equalsIgnoreCase("register")){
+                startTimer(milliseconds);
                 screenNameForOTPRegenerate = "register";
                 name = getArguments().getString("name");
                 userId = getArguments().getString("userId");
@@ -96,6 +102,7 @@ public class VerifyOTPFragment extends Fragment implements SMSBroadcastReceiverA
                 longitude = getArguments().getString("longitude");
                 userType = getArguments().getString("user_type");
             }else if (screenName!= null && screenName.equalsIgnoreCase("SignInActivityNotVerified")){
+                startTimer(milliseconds);
                 screenNameForOTPRegenerate = "register";
                 name = getArguments().getString("name");
                 userId = getArguments().getString("userId");
@@ -109,22 +116,39 @@ public class VerifyOTPFragment extends Fragment implements SMSBroadcastReceiverA
                 latitude = getArguments().getString("latitude");
                 longitude = getArguments().getString("longitude");
                 userType = getArguments().getString("user_type");
-
+                otpExpireTime = getArguments().getString("otpExpireTime");
                 commonCode.hideKeyboard(view);
                 if (commonCode.isNetworkAvailable()) {
                     //screenName = "register"
                     regenerateOTP(mobileNo, "register",hashKey);
                 }else {
-                    commonCode.showErrorORSuccessAlert(activity,"error","Please Connect to Internet!",getActivity().getSupportFragmentManager(),null);
+                    commonCode.showErrorORSuccessAlert(activity,"error","Please Connect to Internet!",getActivity().getSupportFragmentManager(),null,false);
                 }
             }else {
                 commonCode.hideKeyboard(view);
                 screenNameForOTPRegenerate = "login";
                 mobileNo = getArguments().getString("mobileNo");
-                if (commonCode.isNetworkAvailable()) {
-                    regenerateOTP(mobileNo, "login",hashKey);
+                otpExpireTime = getArguments().getString("otpExpireTime");
+
+
+                if (commonCode.isNetworkAvailable() ) {
+                   // if (minutes >=2) {
+                    long currentTime = System.currentTimeMillis();
+                    long expiryTime = MyDateFormatter.stringToTimeStampWithTime(otpExpireTime).getTime();
+                    long minutes2 = TimeUnit.MILLISECONDS.toMinutes(expiryTime - currentTime);
+                    long seconds2 = TimeUnit.SECONDS.toSeconds((expiryTime - currentTime)/1000);
+                    System.out.println("==================current time " + currentTime+" -- "+expiryTime + " expire " + minutes2 + " --- sec " + seconds2);
+
+                  /*  if (seconds2 <= 0) {*/
+                        startTimer(milliseconds);
+                        regenerateOTP(mobileNo, "login", hashKey);
+                   /* }else {
+                        milliseconds = TimeUnit.SECONDS.toMillis(seconds2);
+                        startTimer(milliseconds);
+                    }*/
+                  //  }
                 }else {
-                    commonCode.showErrorORSuccessAlert(activity,"error","Please Connect to Internet!",getActivity().getSupportFragmentManager(),null);
+                    commonCode.showErrorORSuccessAlert(activity,"error","Please Connect to Internet!",getActivity().getSupportFragmentManager(),null,false);
                 }
             }
 
@@ -142,7 +166,7 @@ public class VerifyOTPFragment extends Fragment implements SMSBroadcastReceiverA
                             verifyOTPRegister(mobileNo, edOtpCode.getText().toString());
                         }
                     }else {
-                        commonCode.showErrorORSuccessAlert(activity,"error","Please Connect to Internet!",getActivity().getSupportFragmentManager(),null);
+                        commonCode.showErrorORSuccessAlert(activity,"error","Please Connect to Internet!",getActivity().getSupportFragmentManager(),null,false);
                     }
 
                 }else if (edOtpCode.getText().toString().length() == 0){
@@ -162,9 +186,10 @@ public class VerifyOTPFragment extends Fragment implements SMSBroadcastReceiverA
             public void onClick(View v) {
                 commonCode.hideKeyboard(view);
                 if (commonCode.isNetworkAvailable()) {
+                    isRegeneratePinClick = true;
                     regenerateOTP(mobileNo, screenNameForOTPRegenerate,hashKey);
                 }else {
-                    commonCode.showErrorORSuccessAlert(activity,"error","Please Connect to Internet!",getActivity().getSupportFragmentManager(),null);
+                    commonCode.showErrorORSuccessAlert(activity,"error","Please Connect to Internet!",getActivity().getSupportFragmentManager(),null,false);
                 }
             }
         });
@@ -187,19 +212,28 @@ public class VerifyOTPFragment extends Fragment implements SMSBroadcastReceiverA
 
 
 
-    private void startTimer() {
+    private void startTimer(long milliseconds) {
         disableRegenerateButton();
+        enableVerifyButton();
         // disable for two minutes
-        countDownTimer = new CountDownTimer(120000,1000) {
+        countDownTimer = null;
+        if(isRegeneratePinClick){
+            milliseconds = 120000;
+            isRegeneratePinClick = false;
+        }
+        countDownTimer = new CountDownTimer(milliseconds,1000) {
             @Override
             public void onTick(long millisUntilFinished) {
-                long minutes = (millisUntilFinished / 1000) / 60;
-                long seconds = (millisUntilFinished / 1000) % 60;
-                remainingTimeToResendOTPTV.setVisibility(View.VISIBLE);
-                if (seconds<10){
-                    remainingTimeToResendOTPTV.setText("You can Re-send OTP after "+minutes+":0"+seconds);
-                }else{
-                    remainingTimeToResendOTPTV.setText("You can Re-send OTP after "+minutes+":"+seconds);
+                if(shouldCount){
+                    long minutes = (millisUntilFinished / 1000) / 60;
+                    long seconds = (millisUntilFinished / 1000) % 60;
+
+                    remainingTimeToResendOTPTV.setVisibility(View.VISIBLE);
+                    if (seconds < 10) {
+                        remainingTimeToResendOTPTV.setText("You can Re-send OTP after " + minutes + ":0" + seconds);
+                    } else {
+                        remainingTimeToResendOTPTV.setText("You can Re-send OTP after " + minutes + ":" + seconds);
+                    }
                 }
                 //System.out.println("=====tick::"+millisUntilFinished/1000);
             }
@@ -207,13 +241,17 @@ public class VerifyOTPFragment extends Fragment implements SMSBroadcastReceiverA
             @Override
             public void onFinish() {
 
-                remainingTimeToResendOTPTV.setText("You can Re-send OTP after 0:00");
-                remainingTimeToResendOTPTV.setVisibility(View.GONE);
-                enableRegenerateButton();
-                if(countDownTimer!=null){
-                    countDownTimer.cancel();
+                if(shouldCount){
+                    remainingTimeToResendOTPTV.setText("You can Re-send OTP after 0:00");
+                    remainingTimeToResendOTPTV.setVisibility(View.GONE);
+                    disableVerifyButton();
+                    enableRegenerateButton();
+                    if(countDownTimer!=null){
+                        countDownTimer.cancel();
+                    }
+                    countDownTimer = null;
                 }
-                countDownTimer = null;
+
             }
         }.start();
 
@@ -266,6 +304,7 @@ public class VerifyOTPFragment extends Fragment implements SMSBroadcastReceiverA
                                     }else if (screenName.length()>0 && screenName.equalsIgnoreCase("VerifiedLogin")){
                                         if(countDownTimer!=null){
                                             countDownTimer.cancel();
+                                            countDownTimer.onFinish();
                                         }
                                         // Remove current Fragment
                                         Fragment userFrag = getActivity().getSupportFragmentManager().findFragmentByTag("VerifyOTPFragment");
@@ -283,6 +322,7 @@ public class VerifyOTPFragment extends Fragment implements SMSBroadcastReceiverA
                                                 tehsilNameString,addressString,cnicString,latitude,longitude,userType);
                                         if(countDownTimer!=null){
                                             countDownTimer.cancel();
+                                            countDownTimer.onFinish();
                                         }
                                         // Remove current Fragment
                                         Fragment userFrag = getActivity().getSupportFragmentManager().findFragmentByTag("VerifyOTPFragment");
@@ -298,12 +338,12 @@ public class VerifyOTPFragment extends Fragment implements SMSBroadcastReceiverA
 
 
                             }else if(statusDescription.contains("OTP does not match")){
-                                commonCode.showErrorORSuccessAlert(activity,"error","OTP code does not match",getActivity().getSupportFragmentManager(),null);
+                                commonCode.showErrorORSuccessAlert(activity,"error","OTP code does not match",getActivity().getSupportFragmentManager(),null,false);
                             }else if (statusDescription.length()>0 && statusDescription.equalsIgnoreCase("OTP has been Expired")){
-                                commonCode.showErrorORSuccessAlert(activity,"error","OTP code has been expired",getActivity().getSupportFragmentManager(),null);
+                                commonCode.showErrorORSuccessAlert(activity,"error","OTP code has been expired",getActivity().getSupportFragmentManager(),null,false);
                             }
                             else {
-                                commonCode.showErrorORSuccessAlert(activity,"error","OTP code already used",getActivity().getSupportFragmentManager(),null);
+                                commonCode.showErrorORSuccessAlert(activity,"error","OTP code already used",getActivity().getSupportFragmentManager(),null,false);
                             }
 
                             if(progressDialog.isShowing()){
@@ -316,7 +356,7 @@ public class VerifyOTPFragment extends Fragment implements SMSBroadcastReceiverA
                                 progressDialog.dismiss();
                             }
                             isRequestSent = false;
-                            commonCode.showErrorORSuccessAlert(activity,"error","Something went wrong, please try again!",getActivity().getSupportFragmentManager(),null);
+                            commonCode.showErrorORSuccessAlert(activity,"error","Something went wrong, please try again!",getActivity().getSupportFragmentManager(),null,false);
                         }
                 }else {
                     if(progressDialog.isShowing()){
@@ -324,9 +364,9 @@ public class VerifyOTPFragment extends Fragment implements SMSBroadcastReceiverA
                     }
                     isRequestSent = false;
                     if (userId.length()==0){
-                        commonCode.showErrorORSuccessAlert(activity,"error","User not found",getActivity().getSupportFragmentManager(),null);
+                        commonCode.showErrorORSuccessAlert(activity,"error","User not found",getActivity().getSupportFragmentManager(),null,false);
                     }else {
-                        commonCode.showErrorORSuccessAlert(activity,"error", "OTP code does not match",getActivity().getSupportFragmentManager(),null);
+                        commonCode.showErrorORSuccessAlert(activity,"error", "OTP code does not match",getActivity().getSupportFragmentManager(),null,false);
                     }
                 }
             }
@@ -342,7 +382,7 @@ public class VerifyOTPFragment extends Fragment implements SMSBroadcastReceiverA
                 }
                 else{*/
 
-                commonCode.showErrorORSuccessAlert(activity,"error","Something went wrong, please check your internet connection.",getActivity().getSupportFragmentManager(),null);
+                commonCode.showErrorORSuccessAlert(activity,"error","Something went wrong, please check your internet connection.",getActivity().getSupportFragmentManager(),null,false);
 //            }
             }
         });
@@ -361,15 +401,50 @@ public class VerifyOTPFragment extends Fragment implements SMSBroadcastReceiverA
 
     }
 
+    private void enableVerifyButton() {
+        btnVerifyOTP.setEnabled(true);
+        btnVerifyOTP.setClickable(true);
+        btnVerifyOTP.setBackgroundResource(R.drawable.btn_sign_in);
+
+    }
+
+    private void disableVerifyButton() {
+        btnVerifyOTP.setEnabled(false);
+        btnVerifyOTP.setClickable(false);
+        btnVerifyOTP.setBackgroundResource(R.drawable.btn_gray_bg);
+
+    }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if(countDownTimer!=null){
-            countDownTimer.cancel();
+        System.out.println("==============on destroy");
+        /*if(countDownTimer!=null){
+            System.out.println("==============on destroy if");
+            //countDownTimer.cancel();
+            countDownTimer.onFinish();
         }
-        ((LockDrawer)getActivity()).unLockDrawer();
+        countDownTimer = null;*/
+        shouldCount = false;
+        System.out.println("==============on destroy if "+countDownTimer);
+        if (getActivity() != null) {
+            ((LockDrawer) getActivity()).unLockDrawer();
+        }
     }
-    private void regenerateOTP(String mobileNo,String screenName, String hashKey){
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (activity != null){
+            if(smsBroadcastReceiver!=null){
+                activity.unregisterReceiver(smsBroadcastReceiver);
+                smsBroadcastReceiver = null;
+            }
+
+        }
+    }
+
+    private void regenerateOTP(String mobileNo, String screenName, String hashKey){
         new OTPService(activity).resendOTP(mobileNo,screenName,hashKey, new VolleyCallback() {
             @Override
             public void onSuccess(JSONObject response) {
@@ -378,20 +453,23 @@ public class VerifyOTPFragment extends Fragment implements SMSBroadcastReceiverA
                         String statusDescription = response.getString("statusDescription");
                         if (statusDescription != null && statusDescription.length()>0
                                 && statusDescription.equalsIgnoreCase("Success")){
-                            startTimer();
+                            if(isRegeneratePinClick){
+                                startTimer(milliseconds);
+                            }
+
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
-                        commonCode.showErrorORSuccessAlert(activity,"error","Something went wrong, please try again!",getActivity().getSupportFragmentManager(),null);
+                        commonCode.showErrorORSuccessAlert(activity,"error","Something went wrong, please try again!",getActivity().getSupportFragmentManager(),null,false);
                     }
                 }else{
-                    commonCode.showErrorORSuccessAlert(activity,"error","Something went wrong, please try again!",getActivity().getSupportFragmentManager(),null);
+                    commonCode.showErrorORSuccessAlert(activity,"error","Something went wrong, please try again!",getActivity().getSupportFragmentManager(),null,false);
                 }
             }
 
             @Override
             public void onError(VolleyError error) {
-                commonCode.showErrorORSuccessAlert(activity,"error","Something went wrong, please check your internet connection.",getActivity().getSupportFragmentManager(),null);
+                commonCode.showErrorORSuccessAlert(activity,"error","Something went wrong, please check your internet connection.",getActivity().getSupportFragmentManager(),null,false);
             }
         });
     }
@@ -465,6 +543,7 @@ public class VerifyOTPFragment extends Fragment implements SMSBroadcastReceiverA
     @Override
     public void onResume() {
         super.onResume();
+        startSMSListener();
         NavigationDrawerActivity.tvHeading.setText("VERIFICATION");
         edOtpCode.addTextChangedListener(optCodeTextWatcher);
         ((LockDrawer)getActivity()).lockDrawer();
@@ -493,11 +572,14 @@ public class VerifyOTPFragment extends Fragment implements SMSBroadcastReceiverA
             edOtpCode.setSelection(edOtpCode.getText().length());
                 //isAuthenticationLogin = false;
                 btnVerifyOTP.performClick();
-                activity.unregisterReceiver(smsBroadcastReceiver);
+                if(smsBroadcastReceiver!=null){
+                    activity.unregisterReceiver(smsBroadcastReceiver);
+                    smsBroadcastReceiver = null;
+                }
+
           //  }
         }
     }
-
     @Override
     public void onOTPTimeOut() {
 

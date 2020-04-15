@@ -152,6 +152,9 @@
             android:paddingRight="10dp"
             android:fontFamily="@font/myriad_pro_regular"
             android:maxLength="13"
+            android:longClickable="false"
+            android:contextClickable="false"
+
 
             />
     </androidx.cardview.widget.CardView>

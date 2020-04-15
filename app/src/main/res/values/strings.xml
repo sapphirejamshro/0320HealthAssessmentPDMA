@@ -26,9 +26,8 @@
 -->
 
 
-    <string name="second_splash_screen_text">\'\'Coronavirus disease (COVID-19) is characterized by mild
-    symptoms including cough, fever, breathing difficulty and body aches. Illness can be more severe
-    for some people and can lead pneumonia.,,</string>
+    <string name="second_splash_screen_text">\'\' Coronavirus disease (COVID-19) is characterized by
+    symptoms including cough, fever, breathing difficulty and body aches. \,\,</string>
     <string name="assesment_first_q">کیا آپ کو خشک کھانسی ہے؟</string>
     <string name="assesment_second_q">کیا آپ کے جسم میں درد ہے؟</string>
     <string name="assesment_third_q">کیا آپکو سانس لینے میں دشواری ہے؟</string>
@@ -78,7 +77,8 @@ but some of them are also known to affect humans.\n\nThe 2019 novel coronavirus 
 China at the end of 2019 and it has a new strain that has not been seen before in humans.</string>
 
 
-    <string name="country_text">Arrived From (کہاں سے پہنچے)</string>
+    <string name="country_text">Arrived From (کہاں سے پہنچے)*</string>
+    <string name="country_text1">Arrived From (کہاں سے پہنچے)</string>
     <string name="flight_text">Flight No. (پرواز نمبر)</string>
     <string name="passport_no">Passport No. (پاسپورٹ نمبر)</string>
 
@@ -101,23 +101,23 @@ China at the end of 2019 and it has a new strain that has not been seen before i
     <string name="fever_urdu">بخار</string>
 
     <string name="body_aches_sindhi">جسم ۾ سُور</string>
-    <string name="difficulty_in_breathing_sindhi">ساھه کڻڻ ۾ ڏکيائي</string>
+    <string name="difficulty_in_breathing_sindhi">ساھ کڻڻ ۾ ڏکيائي</string>
     <string name="cough_sindhi">کنگھه</string>
     <string name="fever_sindhi">بخار</string>
-    
-    
+
 
     <string name="mobile_no_sindhi">Mobile # (موبائل)<font color="red">*</font></string>
     <string name="age_sindhi">Age (عمر)<font color="red">*</font></string>
     <string name="gender_sindhi">Gender (جنس)<font color="red">*</font></string>
     <string name="mobile_no_text_sindhi">Mobile # (موبائل)<font color="red">*</font></string>
     <string name="name_text_sindhi">Name (نالو)<font color="red">*</font></string>
-    <string name="address_text_sindhi">Address (هاڻوڪو پتو)<font color="red">*</font></string>
+    <string name="address_text_sindhi">Address (ھاڻوڪو پتو)<font color="red">*</font></string>
     <string name="cnic_text_sindhi">CNIC (قومي سڃاڻپ ڪارڊ نمبر)</string>
-    <string name="city_text_sindhi">City (شهر)</string>
+    <string name="city_text_sindhi">City (شھر)</string>
     <string name="dist_text_sindhi">District (ضلعو)<font color="red">*</font></string>
     <string name="tehsil_text_sindhi">Tehsil (تعلقو)<font color="red">*</font></string>
-    <string name="country_text_sindhi">Arrived From (ڪٿان پهتو)</string>
+    <string name="country_text_sindhi">Arrived From (ڪٿان پھتو)*</string>
+    <string name="country_text_sindhi1">Arrived From (ڪٿان پھتو)</string>
     <string name="flight_text_sindhi">Flight No. (پرواز نمبر)</string>
     <string name="passport_no_sindhi">Passport No. (پاسپورٽ نمبر)</string>
 
@@ -128,16 +128,16 @@ China at the end of 2019 and it has a new strain that has not been seen before i
     <string name="age1_sindhi">Age (عمر)</string>
     <string name="gender1_sindhi">Gender (جنس)</string>
     <string name="dist_text1_sindhi">District (ضلعو)</string>
-    <string name="address_text1_sindhi">Address (هاڻوڪو پتو)</string>
+    <string name="address_text1_sindhi">Address (ھاڻوڪو پتو)</string>
 
 
     <string name="corona_awareness">CORONA \nAWARENESS</string>
     <string name="corona_awareness_urdu">کورونا معلومات</string>
-    <string name="corona_awareness_sindhi">ڪورونا آگاهي</string>
+    <string name="corona_awareness_sindhi">ڪورونا آگاھي</string>
 
     <string name="assessment_for_self">ASSESSMENT FOR \nMYSELF</string>
     <string name="assessment_for_self_urdu">اپنے لئے تشخیص</string>
-    <string name="assessment_for_self_sindhi">پنهنجي پرک</string>
+    <string name="assessment_for_self_sindhi">پنھنجي پرک</string>
 
     <string name="assessment_for_other">ASSESSMENT FOR \nOTHERS</string>
     <string name="assessment_for_other_urdu">دوسروں کے لئے تشخیص</string>
@@ -161,8 +161,60 @@ China at the end of 2019 and it has a new strain that has not been seen before i
 
     <string name="stay_safe_travel">STAY SAFE/TRAVEL</string>
     <string name="stay_safe_travel_urdu">سفر کی احتیاط</string>
-    <string name="stay_safe_travel_sindh">محفوظ رهو</string>
+    <string name="stay_safe_travel_sindh">محفوظ رھو</string>
+
+    <string name="quarantine">QUARANTINE</string>
+    <string name="quarantine_urdu">قرنطینہ</string>
+    <string name="quarantine_sindh">قرنطینہ</string>
+
+    <string name="monitor">MONITOR</string>
+    <string name="monitor_urdu">مانیٹر</string>
+    <string name="monitor_sindh">مانيٽر</string>
 
     <string name="login_text_confidentiality">Any information you share with us will be kept strictly confidential.\n\n آپ کی فراہم کردہ معلومات کو مکمل رازداری میں رکھا جائیگا۔</string>
 
+    <string name="howItSpreadText">The virus has been shown to spread mainly in close human-to-human contact</string>
+    <string name="howItSpreadTextUrdu">یہ بیماری ایک انسان کے دوسرے انسان سے زیادہ قریب رہنے سے ہوتی ہے۔</string>
+    <string name="howItSpreadTextSindhi">ھي بيماري ھڪ انسان کان ٻئ انسان جي تمام قريب رھڻ سان ٿيندي آھي۔</string>
+
+    <string name="isolation_heading_text">How to cope up with isolation stress</string>
+    <string name="isolation_heading_text_urdu">علیحدگی  میں تنہائی کے ذہنی دباوࣿ سے نمٹنے کی تدابیر</string>
+    <string name="isolation_heading_text_sindhi">عليدگي ۾ اڪيلائ جي ذھني دباءُ سان بھرڻ ٍ جون تدابيرون</string>
+
+    <string name="seek_medical_attention_heading_text">Seek Medical Attention Immediately When</string>
+    <string name="seek_medical_attention_heading_text_urdu">طبعی توجہ کے علامات</string>
+    <string name="seek_medical_attention_heading_text_sindhi">طبعي توجھ جون علامتون</string>
+
+    <string name="prevention_text">PREVENTION</string>
+    <string name="prevention_text_urdu">بچاؤ</string>
+    <string name="prevention_text_sindhi">بچاؤ</string>
+
+    <string name="quarantine_heading_text">How to Quarantine at Home</string>
+    <string name="quarantine_heading_text_urdu">طبعی قید کی ہدایات</string>
+    <string name="quarantine_heading_text_sindhi">طبعي قئيد جون ھدايتون</string>
+
+
+    <string name="monitorSymptomsText">**MONITOR YOUR SYMPTOMS DAILY**</string>
+    <string name="monitorSymptomsTextUrdu">**اپنے علامات کو ہر روز مانیٹر کریں**</string>
+    <string name="monitorSymptomsTextSindhi">**پنھنجي علامتن کي روزانو مانيٽر ڪريو**</string>
+
+    <string name="what_is_coronavirus_eng">WHAT IS CORONAVIRUS?</string>
+    <string name="coronavirus_des_eng">Coronaviruses are a group of viruses that cause a wide
+range of illness from the common cold to more severe diseases in humans. They mainly effect the
+respiratory track and include the diseases: SARS, MERS, and now COVID-19.</string>
+    <string name="covid_19_eng">COVID-19</string>
+    <string name="covid_19_des_eng">Is an infectious disease that is caused by SARS-CoV-2. The disease
+was first recognized in December 2019 in Wuhan (a city in the Hubei province of China). It has
+since rapidly spread worldwide resulting in what is now, a pandemic.</string>
+
+    <string name="what_is_coronavirus_urdu">کورونہ وائرس کیا ہے؟</string>
+    <string name="coronavirus_des_urdu"> کورونہ وائرس ایک جراثیم ہے جو انسانوں میں بیماری پیدا کرتا ہے- ان جراثیم سے گردوں اور سانس کی نالی میں بیماری ہوتی ہے جِن میں سارز، مَرس اور اب کووِڈ-۱۹ موجود ہیں-</string>
+    <string name="covid_19_urdu"> کووِڈ-۱۹</string>
+    <string name="covid_19_des_urdu">یہ بیماری سآرز کوو-۲ کے جراثیم سے ہوتی ہے- پہلی دفعہ یہ بیماری چین کے صوبےھوبئی کے شہر ووُھان میں دسمبر ۲۰۱۹ میں دریافت ہوئی اور پھر پوری دنیا میں بہت تیز رفتاری سے پھیل کر وبا وبائی بیماری بن گئی-</string>
+
+
+    <string name="what_is_coronavirus_sindhi">ڪرونا وائرس ڇا آھي؟</string>
+    <string name="coronavirus_des_sindhi">ڪرونا ھڪ جراسيم آھي جيڪو اسان ۾ بيماري پئدا ڪري ٿو ان جراسيم مان گردن ۽ ساھ جي نالي ۾ بيماري ٿيندي آھي جنھن مان سارز مرس ۽ ھاڻي ڪووڊ ،۱۹ مجود آھي-</string>
+    <string name="covid_19_sindhi">ڪووڊ،۱۹</string>
+    <string name="covid_19_des_sindhi">ھي بيماري سارز ڪووي ۲۰ جي جراسيم مان ٿيندي آھي پھريون ڀيرو چين جي صوبي ھو بئ جي شھر ووھان م ڊسمبر ۲۰۱۹ ۾ دريافت ٿيء پوء پوري دنيا ۾ وڏي تيز رافتاري سان پکڙجي وبائ بيماري ٻڻجي وئ-</string>
 </resources>

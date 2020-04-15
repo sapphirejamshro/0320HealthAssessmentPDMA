@@ -33,6 +33,7 @@ import android.text.Spanned;
 import android.text.TextWatcher;
 import android.text.method.DigitsKeyListener;
 import android.text.style.ForegroundColorSpan;
+import android.text.style.RelativeSizeSpan;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -161,8 +162,7 @@ public class OtherUserInformationFragment extends Fragment  implements GoogleApi
         if (commonCode.isNetworkAvailable()) {
             getDistrictsMethod();
         }else {
-            setDistrictSpinnerAdapter();
-            commonCode.showErrorORSuccessAlert(activity,"error","Please Connect to Internet!",getActivity().getSupportFragmentManager(),null);
+            commonCode.showErrorORSuccessAlert(activity,"error","Please Connect to Internet!",getActivity().getSupportFragmentManager(),null,false);
         }
         activity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         keyboardview = NavigationDrawerActivity.keyboardview;
@@ -175,6 +175,7 @@ public class OtherUserInformationFragment extends Fragment  implements GoogleApi
         scrollViewListener();
         addBackButtonAware();
         addOnEditorActionListeners();
+        setDistrictSpinnerAdapter();
 
         return view;
     } // end of OnCreateView
@@ -565,7 +566,8 @@ public class OtherUserInformationFragment extends Fragment  implements GoogleApi
                 if(s.toString().length() > 0){
                     tvAgeError.setVisibility(View.GONE);
                 }
-                if(s.toString().length()>0 && s.toString().equalsIgnoreCase("0")){
+                if(s.toString().length()>0 && (s.toString().equalsIgnoreCase("0") || s.toString().equalsIgnoreCase("00")
+                 || s.toString().equalsIgnoreCase("000"))){
                     tvAgeError.setText("Age can't be 0");
                     tvAgeError.setVisibility(View.VISIBLE);
                 }
@@ -610,7 +612,7 @@ public class OtherUserInformationFragment extends Fragment  implements GoogleApi
                             cursorPosition--;
                         }
 
-                    }else if(validStr.length() ==13){
+                    }else if(validStr.length() >=13){
                         String startStr = validStr.substring(0,5);
                         String secStartStr = validStr.substring(5,12);
                         String endStr = validStr.substring(12);
@@ -738,9 +740,6 @@ public class OtherUserInformationFragment extends Fragment  implements GoogleApi
                 if (districtIdString.equalsIgnoreCase("Select District")){
                     districtIdString = "";
                     districtNameString="";
-                    tehsilNameList.clear();
-                    tehsilIdsList.clear();
-                    setTehsilAdapter();
                 }else {
                     if (tvDistrictError.getVisibility() == View.VISIBLE){
 
@@ -750,9 +749,13 @@ public class OtherUserInformationFragment extends Fragment  implements GoogleApi
                         getTehsilsByDistrictMethod(districtIdString);
                     }else {
                         setTehsilAdapter();
-                        commonCode.showErrorORSuccessAlert(activity,"error","Please Connect to Internet!",getActivity().getSupportFragmentManager(),null);
+                        commonCode.showErrorORSuccessAlert(activity,"error","Please Connect to Internet!",getActivity().getSupportFragmentManager(),null,false);
                     }
                 }
+
+                tehsilNameList.clear();
+                tehsilIdsList.clear();
+                setTehsilAdapter();
             }
 
             @Override
@@ -819,11 +822,9 @@ public class OtherUserInformationFragment extends Fragment  implements GoogleApi
                 hideCustomKeyboard();
                 commonCode.hideKeyboard(view);
              // CommonCode.updateDisplay(new OtherAssessmentFragment(),getActivity().getSupportFragmentManager());
-
                 // Remove current Fragment
                 Fragment userFrag = getActivity().getSupportFragmentManager().findFragmentByTag("UserInformationFragment");
                 if (isDataValid()) {
-
                     if (ContextCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                             && ContextCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
@@ -831,7 +832,7 @@ public class OtherUserInformationFragment extends Fragment  implements GoogleApi
 
 
                     }else if (!isLocationEnabled()){
-                        showLocationAlert("Enable location","Please enable location to mark your attendance."
+                        showLocationAlert("Enable location","Please enable your location."
                                 ,"Ok","Cancel");
                         //Toast.makeText(activity,"Please turn on Location to mark your attendance",Toast.LENGTH_SHORT).show();
                     }else {
@@ -855,9 +856,10 @@ public class OtherUserInformationFragment extends Fragment  implements GoogleApi
                             language = selectedLanguage;
                         }
                         if (commonCode.isNetworkAvailable()) {
+                            submitBtn.setEnabled(false);
                             registerUser(userModel, language);
                         } else {
-                            commonCode.showErrorORSuccessAlert(activity, "error", "Please Connect to Internet!", getActivity().getSupportFragmentManager(), null);
+                            commonCode.showErrorORSuccessAlert(activity, "error", "Please Connect to Internet!", getActivity().getSupportFragmentManager(), null,false);
                         }
                     }
                 }
@@ -866,6 +868,14 @@ public class OtherUserInformationFragment extends Fragment  implements GoogleApi
     }
 
     private void addOnEditorActionListeners(){
+        edMobileNumber.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                edMobileNumber.clearFocus();
+                edAge.requestFocus();
+                return false;
+            }
+        });
         edCnic.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -920,12 +930,13 @@ public class OtherUserInformationFragment extends Fragment  implements GoogleApi
     private void setCustomFont() {
         Typeface fontEng = Typeface.createFromAsset(getActivity().getAssets(),"myriad_pro_regular.ttf");
         Typeface fontUrdu = Typeface.createFromAsset(getActivity().getAssets(),"notonastaliqurdu_regular.ttf");
-        Typeface fontSindhi = Typeface.createFromAsset(getActivity().getAssets(),"sindhi_fonts.ttf");
+        Typeface fontSindhi = Typeface.createFromAsset(getActivity().getAssets(),"myriad_pro_regular.ttf");
         // for mobile
         if (selectedLanguage.equalsIgnoreCase("sindhi")) {
             SpannableString spanStringMob = new SpannableString(activity.getResources().getString(R.string.mobile_no_text_sindhi));
             spanStringMob.setSpan(new CustomTypefaceSpan("",fontEng),0,6,Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
             spanStringMob.setSpan(new CustomTypefaceSpan("", fontSindhi), 8, spanStringMob.length() - 1, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            spanStringMob.setSpan(new RelativeSizeSpan(1.0f), 8,spanStringMob.length()-1, 0);
             spanStringMob.setSpan(new ForegroundColorSpan(Color.RED), spanStringMob.length() - 1, spanStringMob.length(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
             tvMobile.setText(spanStringMob);
             tvMobile.setPadding(8,20,8,8);
@@ -942,6 +953,7 @@ public class OtherUserInformationFragment extends Fragment  implements GoogleApi
             SpannableString spanStringName = new SpannableString(activity.getResources().getString(R.string.name_text_sindhi));
             spanStringName.setSpan(new CustomTypefaceSpan("",fontEng),0,4,Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
             spanStringName.setSpan(new CustomTypefaceSpan("",fontSindhi),5,spanStringName.length()-1,Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            spanStringName.setSpan(new RelativeSizeSpan(1.0f), 5,spanStringName.length()-1, 0);
             spanStringName.setSpan(new ForegroundColorSpan(Color.RED),spanStringName.length()-1,spanStringName.length(),Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
             tvName.setText(spanStringName);
             tvName.setPadding(8,20,8,8);
@@ -957,6 +969,7 @@ public class OtherUserInformationFragment extends Fragment  implements GoogleApi
             SpannableString spanStringAddress = new SpannableString(activity.getResources().getString(R.string.address_text_sindhi));
             spanStringAddress.setSpan(new CustomTypefaceSpan("",fontEng),0,7,Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
             spanStringAddress.setSpan(new CustomTypefaceSpan("",fontSindhi),8,spanStringAddress.length()-1,Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            spanStringAddress.setSpan(new RelativeSizeSpan(1.0f), 8,spanStringAddress.length()-1, 0);
             spanStringAddress.setSpan(new ForegroundColorSpan(Color.RED),spanStringAddress.length()-1,spanStringAddress.length(),Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
             tvAddress.setText(spanStringAddress);
             tvAddress.setPadding(8,20,8,8);
@@ -974,6 +987,8 @@ public class OtherUserInformationFragment extends Fragment  implements GoogleApi
             SpannableString spanStringCNIC = new SpannableString(activity.getResources().getString(R.string.cnic_text_sindhi));
             spanStringCNIC.setSpan(new CustomTypefaceSpan("",fontEng),0,4,Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
             spanStringCNIC.setSpan(new CustomTypefaceSpan("",fontSindhi),6,spanStringCNIC.length()-1,Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            spanStringCNIC.setSpan(new RelativeSizeSpan(1.0f), 6,spanStringCNIC.length()-1, 0);
+
             //spanStringCNIC.setSpan(new ForegroundColorSpan(Color.RED),spanStringCNIC.length()-1,spanStringCNIC.length(),Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
             tvCNIC.setText(spanStringCNIC);
             tvCNIC.setPadding(8,20,8,8);
@@ -990,6 +1005,7 @@ public class OtherUserInformationFragment extends Fragment  implements GoogleApi
             SpannableString spanStringTehsil = new SpannableString(activity.getResources().getString(R.string.tehsil_text_sindhi));
             spanStringTehsil.setSpan(new CustomTypefaceSpan("", fontEng), 0, 4, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
             spanStringTehsil.setSpan(new CustomTypefaceSpan("", fontSindhi), 6, spanStringTehsil.length() - 1, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            spanStringTehsil.setSpan(new RelativeSizeSpan(1.0f), 6,spanStringTehsil.length()-1, 0);
             spanStringTehsil.setSpan(new ForegroundColorSpan(Color.RED), spanStringTehsil.length() - 1, spanStringTehsil.length(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
             tvTehsil.setText(spanStringTehsil);
             tvTehsil.setPadding(8,20,8,8);
@@ -1006,6 +1022,7 @@ public class OtherUserInformationFragment extends Fragment  implements GoogleApi
             SpannableString spanStringDistrict = new SpannableString(activity.getResources().getString(R.string.dist_text_sindhi));
             spanStringDistrict.setSpan(new CustomTypefaceSpan("", fontEng), 0, 8, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
             spanStringDistrict.setSpan(new CustomTypefaceSpan("", fontSindhi), 10, spanStringDistrict.length() - 1, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            spanStringDistrict.setSpan(new RelativeSizeSpan(1.0f), 10,spanStringDistrict.length()-1, 0);
             spanStringDistrict.setSpan(new ForegroundColorSpan(Color.RED), spanStringDistrict.length() - 1, spanStringDistrict.length(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
             tvDistrict.setText(spanStringDistrict);
             tvDistrict.setPadding(8,20,8,8);
@@ -1022,6 +1039,7 @@ public class OtherUserInformationFragment extends Fragment  implements GoogleApi
             SpannableString spanStringAge = new SpannableString(activity.getResources().getString(R.string.age_sindhi));
             spanStringAge.setSpan(new CustomTypefaceSpan("", fontEng), 0, 3, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
             spanStringAge.setSpan(new CustomTypefaceSpan("", fontSindhi), 5, spanStringAge.length() - 1, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            spanStringAge.setSpan(new RelativeSizeSpan(1.0f), 5,spanStringAge.length()-1, 0);
             spanStringAge.setSpan(new ForegroundColorSpan(Color.RED), spanStringAge.length() - 1, spanStringAge.length(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
             tvAge.setText(spanStringAge);
             tvAge.setPadding(8,20,8,8);
@@ -1038,6 +1056,7 @@ public class OtherUserInformationFragment extends Fragment  implements GoogleApi
             SpannableString spanStringGender = new SpannableString(activity.getResources().getString(R.string.gender_sindhi));
             spanStringGender.setSpan(new CustomTypefaceSpan("", fontEng), 0, 6, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
             spanStringGender.setSpan(new CustomTypefaceSpan("", fontSindhi), 8, spanStringGender.length() - 1, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            spanStringGender.setSpan(new RelativeSizeSpan(1.0f), 8,spanStringGender.length()-1, 0);
             spanStringGender.setSpan(new ForegroundColorSpan(Color.RED), spanStringGender.length() - 1, spanStringGender.length(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
             tvGender.setText(spanStringGender);
             spGender.setPadding(0,13,0,13);
@@ -1326,8 +1345,12 @@ public class OtherUserInformationFragment extends Fragment  implements GoogleApi
                             JSONObject jsonObject = response.getJSONObject("data");
                             if (jsonObject.length()>0){
                                 JSONObject districtsObj = jsonObject.getJSONObject("districts");
-                                districtNameList.add("Select District");
-                                districtIdsList.add("Select District");
+                                if(!districtNameList.contains("Select District")){
+                                    districtNameList.add("Select District");
+                                }
+                                if(!districtIdsList.contains("Select District")){
+                                    districtIdsList.add("Select District");
+                                }
                                 for (int i=1; i<= districtsObj.length(); i++){
                                     if (!districtsObj.isNull(""+i)) {
                                         JSONObject innerObj = districtsObj.getJSONObject("" + i);
@@ -1343,7 +1366,7 @@ public class OtherUserInformationFragment extends Fragment  implements GoogleApi
                     } catch (Exception e) {
                         e.printStackTrace();
                         progressDialog.dismiss();
-                        new CommonCode(activity).showErrorORSuccessAlert(activity,"error","Something went wrong, please try again!",getActivity().getSupportFragmentManager(),null);
+                        new CommonCode(activity).showErrorORSuccessAlert(activity,"error","Something went wrong, please try again!",getActivity().getSupportFragmentManager(),null,false);
                     }
                 }
             }
@@ -1351,7 +1374,10 @@ public class OtherUserInformationFragment extends Fragment  implements GoogleApi
             @Override
             public void onError(VolleyError error) {
                 progressDialog.dismiss();
-                new CommonCode(activity).showErrorORSuccessAlert(activity,"error","Something went wrong, please check your internet connection.",getActivity().getSupportFragmentManager(),null);
+                if(getActivity() != null){
+                    new CommonCode(activity).showErrorORSuccessAlert(activity,"error","Something went wrong, please check your internet connection.",getActivity().getSupportFragmentManager(),null,false);
+                }
+
             }
         });
     }
@@ -1385,14 +1411,19 @@ public class OtherUserInformationFragment extends Fragment  implements GoogleApi
                             if (jsonObject.length() > 0){
                                 JSONObject tehsilsObject = jsonObject.getJSONObject("district_id~"+districtId);
                                 if (tehsilsObject.length()>0){
-                                    int i=0;
-                                    tehsilIdsList.add("Select Tehsil");
-                                    tehsilNameList.add("Select Tehsil");
-                                    while (tehsilIdsList.size() != tehsilsObject.length()){
+                                    int i=0, count=0;
+                                    if(!tehsilNameList.contains("Select Tehsil")) {
+                                        tehsilNameList.add("Select Tehsil");
+                                    }
+                                    if(!tehsilIdsList.contains("Select Tehsil")){
+                                        tehsilIdsList.add("Select Tehsil");
+                                    }
+                                    while (count != tehsilsObject.length()){
                                         i++;
                                         if (!tehsilsObject.isNull(""+i)){
                                             JSONObject innerObj = tehsilsObject.getJSONObject(""+i);
                                             if (innerObj.length()>0){
+                                                count++;
                                                 tehsilIdsList.add(innerObj.getString("taluka_id"));
                                                 tehsilNameList.add(innerObj.getString("taluka_name"));
                                             }
@@ -1407,7 +1438,7 @@ public class OtherUserInformationFragment extends Fragment  implements GoogleApi
                     } catch (Exception e) {
                         e.printStackTrace();
                         setTehsilAdapter();
-                        new CommonCode(activity).showErrorORSuccessAlert(activity,"error","Something went wrong, please try again!",getActivity().getSupportFragmentManager(),null);
+                        new CommonCode(activity).showErrorORSuccessAlert(activity,"error","Something went wrong, please try again!",getActivity().getSupportFragmentManager(),null,false);
                         progressDialog.dismiss();
                     }
 
@@ -1418,7 +1449,7 @@ public class OtherUserInformationFragment extends Fragment  implements GoogleApi
             public void onError(VolleyError error) {
                 progressDialog.dismiss();
                 setTehsilAdapter();
-                new CommonCode(activity).showErrorORSuccessAlert(activity,"error","Something went wrong, please check your internet connection.",getActivity().getSupportFragmentManager(),null);
+                new CommonCode(activity).showErrorORSuccessAlert(activity,"error","Something went wrong, please check your internet connection.",getActivity().getSupportFragmentManager(),null,false);
             }
         });
     }
@@ -1460,33 +1491,41 @@ public class OtherUserInformationFragment extends Fragment  implements GoogleApi
                                }
                                session.addOtherUserInfo(ucIdString,userType);
                             }
-                            commonCode.showErrorORSuccessAlert(activity, "success", "User information added Successfully", getActivity().getSupportFragmentManager(), null);
+                            commonCode.showErrorORSuccessAlert(activity, "success", "User information added Successfully", getActivity().getSupportFragmentManager(), null,false);
                             //CommonCode.updateDisplay(new PreviousAssessmentFragment(),getActivity().getSupportFragmentManager());
 
                            // new CommonCode(activity).showErrorORSuccessAlert(activity,"success","Registration Successful! Enter OTP for verification",getActivity().getSupportFragmentManager(),bundle);
                         }else if(statusDescription.length()>0
                                 && statusDescription.equalsIgnoreCase("Record already Exists")){
-                            new CommonCode(activity).showErrorORSuccessAlert(activity,"error","Record already Exists",getActivity().getSupportFragmentManager(),null);
+                            new CommonCode(activity).showErrorORSuccessAlert(activity,"error","Record already Exists",getActivity().getSupportFragmentManager(),null,false);
                         }
                         else{
-                            new CommonCode(activity).showErrorORSuccessAlert(activity,"error","Something went wrong, please try again!",getActivity().getSupportFragmentManager(),null);
+                            new CommonCode(activity).showErrorORSuccessAlert(activity,"error","Something went wrong, please try again!",getActivity().getSupportFragmentManager(),null,false);
                         }
                         progressDialog.dismiss();
                     } catch (Exception e) {
                         e.printStackTrace();
-
                         progressDialog.dismiss();
-                        new CommonCode(activity).showErrorORSuccessAlert(activity,"error","Something went wrong, please try again!",getActivity().getSupportFragmentManager(),null);
+                        new CommonCode(activity).showErrorORSuccessAlert(activity,"error","Something went wrong, please try again!",getActivity().getSupportFragmentManager(),null,false);
                     }
 
+                }
+                if(submitBtn != null){
+                    submitBtn.setEnabled(true);
                 }
 
             }
 
             @Override
             public void onError(VolleyError error) {
+                if(submitBtn != null){
+                    submitBtn.setEnabled(true);
+                }
                 progressDialog.dismiss();
-                new CommonCode(activity).showErrorORSuccessAlert(activity,"error","Something went wrong, please check your internet connection.",getActivity().getSupportFragmentManager(),null);
+
+                if(getActivity() != null){
+                    new CommonCode(activity).showErrorORSuccessAlert(activity,"error","Something went wrong, please check your internet connection.",getActivity().getSupportFragmentManager(),null,false);
+                }
             }
         });
     }
@@ -1512,7 +1551,7 @@ public class OtherUserInformationFragment extends Fragment  implements GoogleApi
             tvAgeError.setVisibility(View.VISIBLE);
             isAge = false;
         }
-        if(ageString.trim().equalsIgnoreCase("0")){
+        if(ageString.trim().equalsIgnoreCase("0") || ageString.trim().equalsIgnoreCase("00") || ageString.trim().equalsIgnoreCase("000")){
             tvAgeError.setText("Age can't be 0");
             tvAgeError.setVisibility(View.VISIBLE);
             isAge = false;
@@ -1833,7 +1872,6 @@ public class OtherUserInformationFragment extends Fragment  implements GoogleApi
 
                 if (keypadHeight > 0) {
                     // keyboard is opened
-                    System.out.println("=====keyboard open");
 
                     if(edAge.hasFocus()){
                         /*ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) viewSpacing.getLayoutParams();
@@ -1850,7 +1888,6 @@ public class OtherUserInformationFragment extends Fragment  implements GoogleApi
 
                     if(edCnic.hasFocus()){
                         NavigationDrawerActivity.layoutBottomButtons.setVisibility(View.GONE);
-                        System.out.println("=====edName::"+edCnic.getTop()+"----"+edCnic.getHeight()+" --- "+edCnic.getTop());
                         ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) viewSpacing.getLayoutParams();
                         layoutParams.height = 20+(edCnic.getHeight()/2);
                         mainScrollView.smoothScrollTo(0,viewSpacing.getBottom());

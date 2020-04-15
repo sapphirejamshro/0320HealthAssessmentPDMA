@@ -36,7 +36,7 @@ public class PreventionEngFragment extends Fragment {
         init();
 
         beanList = new ArrayList<>();
-        beanList.add(new PreventionRVAdapterBean(R.mipmap.prevention_screen_icon_1,R.string.cover_mouth_eng_text));
+       /* beanList.add(new PreventionRVAdapterBean(R.mipmap.prevention_screen_icon_1,R.string.cover_mouth_eng_text));
         beanList.add(new PreventionRVAdapterBean(R.mipmap.prevention_screen_icon_5,R.string.dispose_tissue_eng_text));
         beanList.add(new PreventionRVAdapterBean(R.mipmap.prevention_screen_icon_2,R.string.wash_hands_or_sanitize_eng_text));
         beanList.add(new PreventionRVAdapterBean(R.mipmap.prevention_screen_icon_6,R.string.concern_with_dr_eng_text));
@@ -44,8 +44,8 @@ public class PreventionEngFragment extends Fragment {
         beanList.add(new PreventionRVAdapterBean(R.mipmap.prevention_screen_icon_7,R.string.stay_at_home_eng_text));
         beanList.add(new PreventionRVAdapterBean(R.mipmap.prevention_screen_icon_4,R.string.avoid_huging_eng_text));
         beanList.add(new PreventionRVAdapterBean(R.mipmap.prevention_screen_icon_8,R.string.avoid_touching_t_zone_eng_text));
-
-        preventionEngRVAdapter = new PreventionRVAdapter(activity,beanList,true);
+*/
+        //preventionEngRVAdapter = new PreventionRVAdapter(activity,beanList,true);
         preventionEngRV.setHasFixedSize(true);
         preventionEngRV.setLayoutManager(new GridLayoutManager(activity,2));
         preventionEngRV.setAdapter(preventionEngRVAdapter);

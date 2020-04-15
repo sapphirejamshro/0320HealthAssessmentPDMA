@@ -44,19 +44,24 @@ public class AwarenessFragment extends Fragment {
             awarenessBeanList.add(new AwarenessBean(activity.getResources().getString(R.string.corona_novel),R.mipmap.novel_corona_virus_icon));
             awarenessBeanList.add(new AwarenessBean(activity.getResources().getString(R.string.symptoms),R.mipmap.symptoms_icon));
             awarenessBeanList.add(new AwarenessBean(activity.getResources().getString(R.string.prevention),R.mipmap.preventation_icon));
-            awarenessBeanList.add(new AwarenessBean(activity.getResources().getString(R.string.stay_safe_travel),R.mipmap.stay_safe_travel_icon));
+            //awarenessBeanList.add(new AwarenessBean(activity.getResources().getString(R.string.stay_safe_travel),R.mipmap.stay_safe_travel_icon));
+            awarenessBeanList.add(new AwarenessBean(activity.getResources().getString(R.string.quarantine),R.mipmap.quarantine_icon));
+            awarenessBeanList.add(new AwarenessBean(activity.getResources().getString(R.string.monitor),R.mipmap.monitor_icon));
         }else if (selectedLanguage.equalsIgnoreCase("Sindhi")){
             awarenessBeanList.add(new AwarenessBean(activity.getResources().getString(R.string.corona_novel_sindh),R.mipmap.novel_corona_virus_icon));
             awarenessBeanList.add(new AwarenessBean(activity.getResources().getString(R.string.symptoms_sindh),R.mipmap.symptoms_icon));
             awarenessBeanList.add(new AwarenessBean(activity.getResources().getString(R.string.prevention_sindh),R.mipmap.preventation_icon));
-            awarenessBeanList.add(new AwarenessBean(activity.getResources().getString(R.string.stay_safe_travel_sindh),R.mipmap.stay_safe_travel_icon));
+            //awarenessBeanList.add(new AwarenessBean(activity.getResources().getString(R.string.stay_safe_travel_sindh),R.mipmap.stay_safe_travel_icon));
+            awarenessBeanList.add(new AwarenessBean(activity.getResources().getString(R.string.quarantine_sindh),R.mipmap.quarantine_icon));
+            awarenessBeanList.add(new AwarenessBean(activity.getResources().getString(R.string.monitor_sindh),R.mipmap.monitor_icon));
 
         }else if (selectedLanguage.equalsIgnoreCase("Urdu")){
             awarenessBeanList.add(new AwarenessBean(activity.getResources().getString(R.string.corona_novel_urdu),R.mipmap.novel_corona_virus_icon));
             awarenessBeanList.add(new AwarenessBean(activity.getResources().getString(R.string.symptoms_urdu),R.mipmap.symptoms_icon));
             awarenessBeanList.add(new AwarenessBean(activity.getResources().getString(R.string.prevention_urdu),R.mipmap.preventation_icon));
-            awarenessBeanList.add(new AwarenessBean(activity.getResources().getString(R.string.stay_safe_travel_urdu),R.mipmap.stay_safe_travel_icon));
-
+//            awarenessBeanList.add(new AwarenessBean(activity.getResources().getString(R.string.stay_safe_travel_urdu),R.mipmap.stay_safe_travel_icon));
+            awarenessBeanList.add(new AwarenessBean(activity.getResources().getString(R.string.quarantine_urdu),R.mipmap.quarantine_icon));
+            awarenessBeanList.add(new AwarenessBean(activity.getResources().getString(R.string.monitor_urdu),R.mipmap.monitor_icon));
         }
         awarenessAdapter  = new AwarenessAdapter(activity,awarenessBeanList,true);
         gridView.setAdapter(awarenessAdapter);
@@ -75,7 +80,7 @@ public class AwarenessFragment extends Fragment {
                     } else if (awarenessAdapter.getName(position).equalsIgnoreCase("Prevention")) {
                         String selectedLanguage = new UserSession(activity).getSelectedLanguage();
                         if (selectedLanguage.equalsIgnoreCase("en")) {
-                            CommonCode.updateDisplay(new PreventionEngFragment(), getActivity().getSupportFragmentManager());
+                            CommonCode.updateDisplay(new PreventaionFragment(), getActivity().getSupportFragmentManager());
 
                         } else if (selectedLanguage.equalsIgnoreCase("Urdu")) {
                             CommonCode.updateDisplay(new PreventaionFragment(), getActivity().getSupportFragmentManager());
@@ -84,8 +89,14 @@ public class AwarenessFragment extends Fragment {
                             CommonCode.updateDisplay(new PreventaionFragment(), getActivity().getSupportFragmentManager());
                         }
 //                    CommonCode.updateDisplay(new PreventaionFragment(),getActivity().getSupportFragmentManager());
-                    } else if (awarenessAdapter.getName(position).equalsIgnoreCase("Stay Safe/Travel")) {
+                    } /*else if (awarenessAdapter.getName(position).equalsIgnoreCase("Stay Safe/Travel")) {
                         CommonCode.updateDisplay(new StaySafeTravelFragment(), getActivity().getSupportFragmentManager());
+                    }*/
+                    else if (awarenessAdapter.getName(position).equalsIgnoreCase(activity.getResources().getString(R.string.quarantine))){
+                        CommonCode.updateDisplay(new QuarantineFragment(),getActivity().getSupportFragmentManager());
+
+                    }else if (awarenessAdapter.getName(position).equalsIgnoreCase(activity.getResources().getString(R.string.monitor))){
+                        CommonCode.updateDisplay(new MonitorFragment(),getActivity().getSupportFragmentManager());
                     }
                 }else if (selectedLanguage.equalsIgnoreCase("Sindhi")){
                     if (awarenessAdapter.getName(position).equalsIgnoreCase(activity.getResources().getString(R.string.corona_novel_sindh))){
@@ -96,8 +107,14 @@ public class AwarenessFragment extends Fragment {
                         CommonCode.updateDisplay(new PreventaionFragment(),getActivity().getSupportFragmentManager());
 
 //                    CommonCode.updateDisplay(new PreventaionFragment(),getActivity().getSupportFragmentManager());
-                    }else if (awarenessAdapter.getName(position).equalsIgnoreCase(activity.getResources().getString(R.string.stay_safe_travel_sindh))){
+                    }/*else if (awarenessAdapter.getName(position).equalsIgnoreCase(activity.getResources().getString(R.string.stay_safe_travel_sindh))){
                         CommonCode.updateDisplay(new StaySafeTravelFragment(),getActivity().getSupportFragmentManager());
+                    }*/
+                    else if (awarenessAdapter.getName(position).equalsIgnoreCase(activity.getResources().getString(R.string.quarantine_sindh))){
+                        CommonCode.updateDisplay(new QuarantineFragment(),getActivity().getSupportFragmentManager());
+
+                    }else if (awarenessAdapter.getName(position).equalsIgnoreCase(activity.getResources().getString(R.string.monitor_sindh))){
+                        CommonCode.updateDisplay(new MonitorFragment(),getActivity().getSupportFragmentManager());
                     }
                 }else if (selectedLanguage.equalsIgnoreCase("urdu")){
                     if (awarenessAdapter.getName(position).equalsIgnoreCase(activity.getResources().getString(R.string.corona_novel_urdu))){
@@ -108,8 +125,14 @@ public class AwarenessFragment extends Fragment {
                         CommonCode.updateDisplay(new PreventaionFragment(),getActivity().getSupportFragmentManager());
 
 //                    CommonCode.updateDisplay(new PreventaionFragment(),getActivity().getSupportFragmentManager());
-                    }else if (awarenessAdapter.getName(position).equalsIgnoreCase(activity.getResources().getString(R.string.stay_safe_travel_urdu))){
+                    }/*else if (awarenessAdapter.getName(position).equalsIgnoreCase(activity.getResources().getString(R.string.stay_safe_travel_urdu))){
                         CommonCode.updateDisplay(new StaySafeTravelFragment(),getActivity().getSupportFragmentManager());
+                    }*/
+                    else if (awarenessAdapter.getName(position).equalsIgnoreCase(activity.getResources().getString(R.string.quarantine_urdu))){
+                        CommonCode.updateDisplay(new QuarantineFragment(),getActivity().getSupportFragmentManager());
+
+                    }else if (awarenessAdapter.getName(position).equalsIgnoreCase(activity.getResources().getString(R.string.monitor_urdu))){
+                        CommonCode.updateDisplay(new MonitorFragment(),getActivity().getSupportFragmentManager());
                     }
                 }
             }

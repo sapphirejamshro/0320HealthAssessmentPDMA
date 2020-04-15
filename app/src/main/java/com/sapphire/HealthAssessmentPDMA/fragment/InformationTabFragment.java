@@ -32,7 +32,8 @@ public class InformationTabFragment extends Fragment {
     private ScrollView mainScrollView;
     private Bundle userBundle,assessmentBundle,questionBundle;
     String userObj="", assessmentObj="", questionArr="",assessmentMessage="", flightNo="",
-            passportNo="",countryId="", contactPersonName="",contactPersonMobNo="",assessmentDate="";
+            passportNo="",countryId="", contactPersonName="",contactPersonMobNo="",
+            assessmentDate="",scoringStatus="";
     private Fragment viewUserDetailsFragment,viewAssessmentsFragment,actionFragment;
 
     public InformationTabFragment() {
@@ -66,6 +67,7 @@ public class InformationTabFragment extends Fragment {
         contactPersonName = getArguments().getString("contactPersonName");
         contactPersonMobNo = getArguments().getString("contactedPersonMobNo");
         assessmentDate = getArguments().getString("assessment_date");
+        scoringStatus = getArguments().getString("scoringStatus");
 
         viewUserDetailsFragment = new ViewUserDetailsFragment();
         viewAssessmentsFragment = new AssessmentFragment();
@@ -83,6 +85,8 @@ public class InformationTabFragment extends Fragment {
         assessmentBundle.putString("assessmentObj",assessmentObj);
         assessmentBundle.putString("assessmentMessage",assessmentMessage);
         assessmentBundle.putString("assessment_date",assessmentDate);
+        assessmentBundle.putString("scoringStatus",scoringStatus);
+        System.out.println("=========scoringStatus11 "+scoringStatus);
 
         viewUserDetailsFragment.setArguments(userBundle);
         updateFragment(viewUserDetailsFragment);

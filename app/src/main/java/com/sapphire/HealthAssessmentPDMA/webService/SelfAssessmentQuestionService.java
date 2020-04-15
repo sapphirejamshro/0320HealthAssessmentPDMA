@@ -128,7 +128,6 @@ public class SelfAssessmentQuestionService {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        System.out.println("==================json obj "+jsonObject);
        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
                 RESTApiURLs.ADD_ASSESSMENT_DATA, jsonObject, new Response.Listener<JSONObject>() {
             @Override
