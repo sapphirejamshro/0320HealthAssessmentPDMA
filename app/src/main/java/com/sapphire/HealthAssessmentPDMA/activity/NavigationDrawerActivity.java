@@ -1,5 +1,6 @@
 package com.sapphire.HealthAssessmentPDMA.activity;
 
+import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -58,6 +59,8 @@ import androidx.fragment.app.FragmentManager;
 import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
@@ -132,6 +135,7 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
         imageButtonHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                itemAnimation(v);
                 Fragment f = getSupportFragmentManager().findFragmentByTag(OtherAssessmentFragment.class.getSimpleName());
                 if(f != null && f.isVisible()){
                     showLogoutDialog("Are you sure, you want to go Home Screen?","Confirmation","HomeScreen");
@@ -152,6 +156,7 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
         imageButtonProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                itemAnimation(v);
                 Fragment f = getSupportFragmentManager().findFragmentByTag(OtherAssessmentFragment.class.getSimpleName());
                 if(f != null && f.isVisible()){
                     showLogoutDialog("Are you sure, you want to go to Track Assessment Screen?","Confirmation","TrackAssessmentScreen");
@@ -184,6 +189,7 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
                     return;
                 }
                 lastClickTime =  SystemClock.elapsedRealtime();
+                itemAnimation(v);
                 Toast.makeText(getApplicationContext(),"In Progress",Toast.LENGTH_SHORT).show();
             }
         });
@@ -194,6 +200,7 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
                     return;
                 }
                 lastClickTime =  SystemClock.elapsedRealtime();
+                itemAnimation(v);
                 Toast.makeText(getApplicationContext(),"In Progress",Toast.LENGTH_SHORT).show();
             }
         });
@@ -708,4 +715,19 @@ public class NavigationDrawerActivity extends AppCompatActivity implements Navig
         });
     }
 
+    private void itemAnimation(View view){
+        final ValueAnimator anim = ValueAnimator.ofFloat(0.8f, 1f);
+        anim.setDuration(100);
+        final View finalView = view;
+        anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                finalView.setScaleX((Float) animation.getAnimatedValue());
+                finalView.setScaleY((Float) animation.getAnimatedValue());
+            }
+        });
+        anim.setRepeatCount(0);
+        //anim.setRepeatMode(ValueAnimator.REVERSE);
+        anim.start();
+    }
 }

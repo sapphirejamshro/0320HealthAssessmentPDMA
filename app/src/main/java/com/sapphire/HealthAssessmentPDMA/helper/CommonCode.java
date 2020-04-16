@@ -12,12 +12,15 @@ import android.net.Network;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -34,6 +37,7 @@ import com.sapphire.HealthAssessmentPDMA.fragment.VerifyOTPFragment;
 public class CommonCode {
 
     private Context context;
+    private String addressString = "";
 
     public CommonCode(Context context) {
         this.context = context;
@@ -41,6 +45,12 @@ public class CommonCode {
 
     public static void updateDisplay(Fragment fragment, FragmentManager fragmentManager){
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        if (fragment.getClass().getSimpleName().equalsIgnoreCase("DashboardFragment") ||
+                fragment.getClass().getSimpleName().equalsIgnoreCase("InformationTabFragment")){
+            fragmentTransaction.setCustomAnimations(0, 0, R.anim.enter_from_left, R.anim.exit_to_right);
+        }else {
+            fragmentTransaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right);
+        }
         fragmentTransaction.replace(R.id.fragmentDefault,fragment,fragment.getClass().getSimpleName());
         fragmentTransaction.addToBackStack(fragment.getClass().getSimpleName());
         fragmentTransaction.commit();
@@ -296,5 +306,80 @@ public class CommonCode {
         DisplayMetrics metrics = context.getResources().getDisplayMetrics();
         int densityDpi = (int)(metrics.density * 160f);
         return dp*(densityDpi/160);
+    }
+
+    // Added By Hina Hussain on 15-April-2020
+    public void allowedNameCharacters(BackPressAwareEdittext edName,String selectedLanguage) {
+
+         String allowCharSetEngName = "ABCDEFGHIGKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 ";
+         String allowCharSetUrduName = " ا ب پ ت ٹ ث ج چ ح خ د ڈ ذ ر ڑ ز ژ س ش م ص ض ل ن ھ ط ی ک ہ و ع غ ے ف ق ۃ ّظ ي گ آ ء ء ۂ ں ئ ؤ ‏ۓ ١٢٣٤۵٦۷٨٩۰1234567890 ";
+         String allowCharSetSindhiName = " اآ ب ٻ ڀ ت ٿ ٽ ٺ ث پ ج ڄ ڃ چ ڇ ح خ د ڌ ڏ ڊ ڍ ذ ر ڙ زس ش ص ض ط ظ ع غ ف ڦ قق ڪ ک گ ڳ ڱ ل م ن ڻ و ه ي ۾ ؤ ھ ئ ء ۽١٢٣٤۵٦۷٨٩۰1234567890  ";
+          String inputString = "";
+         if(selectedLanguage.equalsIgnoreCase("en")){
+             inputString = allowCharSetEngName;
+         }
+         else if(selectedLanguage.equalsIgnoreCase("Urdu")){
+             inputString = allowCharSetUrduName;
+         }
+         else if(selectedLanguage.equalsIgnoreCase("Sindhi")){
+             inputString = allowCharSetSindhiName;
+         }
+
+        final String finalInputString = inputString;
+        InputFilter filter = new InputFilter() {
+
+            @Override
+            public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+                System.out.println("======source::"+source);
+
+                if (source != null && !finalInputString.contains(("" + source))) {
+                    return "";
+                }
+                return null;
+            }
+        };
+        edName.setFilters(new InputFilter[] { filter });
+
+    }
+
+    public void allowedAddressCharacters(final BackPressAwareEdittext edAddress, String selectedLanguage) {
+
+
+       String allowCharSetEngAddr = ".,#ABCDEFGHIGKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 ";
+
+        String allowCharSetUrduAddr = " ا ب پ ت ٹ ث ج چ ح خ د ڈ ذ ر ڑ ز ژ س ش م ص ض ل ن ھ ط ی ک ہ و ع غ ے ف ق ۃ ّظ ي گ آ ء ء ۂ ں ئ ؤ ‏ۓ .,#١٢٣٤۵٦۷٨٩۰1234567890 ";
+        String allowCharSetSindhiAddr = " اآ ب ٻ ڀ ت ٿ ٽ ٺ ث پ ج ڄ ڃ چ ڇ ح خ د ڌ ڏ ڊ ڍ ذ ر ڙ زس ش ص ض ط ظ ع غ ف ڦ قق ڪ ک گ ڳ ڱ ل م ن ڻ و ه ي ۾ ؤ ھ ئ ء ۽١٢٣٤۵٦۷٨٩۰1234567890.,#  ";
+        String inputString = "";
+        if(selectedLanguage.equalsIgnoreCase("en")){
+            inputString = allowCharSetEngAddr;
+        }
+        else if(selectedLanguage.equalsIgnoreCase("Urdu")){
+            inputString = allowCharSetUrduAddr;
+        }
+        else if(selectedLanguage.equalsIgnoreCase("Sindhi")){
+            inputString = allowCharSetSindhiAddr;
+        }
+
+        final String finalInputString = inputString;
+        InputFilter filter = new InputFilter() {
+
+            @Override
+            public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+
+                if (source != null && !finalInputString.contains(("" + source))) {
+                    return "";
+                }
+                else if(source!=null && (source.toString().equalsIgnoreCase(".") || source.toString().equalsIgnoreCase("#")
+                 || source.toString().equalsIgnoreCase(","))){
+                    if(edAddress.getText().toString().length()==0){
+                        return "";
+                    }
+                }
+
+                return null;
+            }
+        };
+        edAddress.setFilters(new InputFilter[] { filter });
+
     }
 }

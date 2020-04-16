@@ -120,6 +120,7 @@ public class OtherUserInformationFragment extends Fragment  implements GoogleApi
     private OtherUserInformationFragment currentCtx;
     private String latitude="", longitude="";
     private View viewKeyboard, viewSpacing;
+    private Boolean isAddrFirstFocus = true;
 
     public OtherUserInformationFragment() {
         // Required empty public constructor
@@ -157,6 +158,9 @@ public class OtherUserInformationFragment extends Fragment  implements GoogleApi
         if (session != null && session.getSelectedLanguage().length()>0){
             selectedLanguage = session.getSelectedLanguage();
         }
+        // Added By Hina on 15-April-2020
+        commonCode.allowedNameCharacters(edName,selectedLanguage);
+        commonCode.allowedAddressCharacters(edAddress,selectedLanguage);
 
         setTehsilAdapter();
         if (commonCode.isNetworkAvailable()) {
@@ -508,9 +512,20 @@ public class OtherUserInformationFragment extends Fragment  implements GoogleApi
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(edName.hasFocus()){
 
-                if(s.toString().length()>0){
-                    tvNameError.setVisibility(View.GONE);
+                    if(s.toString().trim().length()==0){
+                        tvNameError.setText("Name is Required");
+                        tvNameError.setVisibility(View.VISIBLE);
+                    }
+                    else if(s.toString().trim().length()>0 && s.toString().trim().length()<3){
+                        tvNameError.setText("Name should be 3 characters long");
+                        tvNameError.setVisibility(View.VISIBLE);
+                    }
+
+                    else{
+                        tvNameError.setVisibility(View.GONE);
+                    }
                 }
 
                 //Removed by Kamran on 30-Mar-2020
@@ -537,10 +552,24 @@ public class OtherUserInformationFragment extends Fragment  implements GoogleApi
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
+                     if(edAddress.hasFocus()){
+                    if(s.toString().trim().length()==0){
+                        if(!isAddrFirstFocus){
+                            tvAddressError.setText("Address is Required");
+                            tvAddressError.setVisibility(View.VISIBLE);
 
-                if(s.toString().length() > 0){
-                    tvAddressError.setVisibility(View.GONE);
-                }
+                        }
+                        isAddrFirstFocus = false;
+                    }
+                    else if(s.toString().trim().length()>0 && s.toString().trim().length()<3){
+                        tvAddressError.setText("Address should be 3 characters long");
+                        tvAddressError.setVisibility(View.VISIBLE);
+                    }
+                    else{
+                        tvAddressError.setVisibility(View.GONE);
+                    }
+              }
+
                 //Removed by Kamran on 30-Mar-2020
                 /*if (s.toString().trim().length() == 0){
                     tvAddressError.setVisibility(View.VISIBLE);
@@ -1537,6 +1566,11 @@ public class OtherUserInformationFragment extends Fragment  implements GoogleApi
             tvNameError.setVisibility(View.VISIBLE);
             isName = false;
         }
+        else if(nameString.trim().length()>0 && nameString.trim().length()<3){
+            tvNameError.setText("Name should be 3 characters long");
+            tvNameError.setVisibility(View.VISIBLE);
+            isName = false;
+        }
         if (mobileNoString.trim().length() == 0){
             tvMobileNoError.setText("Mobile # is Required");
             tvMobileNoError.setVisibility(View.VISIBLE);
@@ -1568,6 +1602,11 @@ public class OtherUserInformationFragment extends Fragment  implements GoogleApi
         }
         if (addressString.trim().length() == 0){
             tvAddressError.setText("Address is Required");
+            tvAddressError.setVisibility(View.VISIBLE);
+            isAddress = false;
+        }
+        else if(addressString.trim().length()>0 && addressString.trim().length()<3){
+            tvAddressError.setText("Address should be 3 characters long");
             tvAddressError.setVisibility(View.VISIBLE);
             isAddress = false;
         }

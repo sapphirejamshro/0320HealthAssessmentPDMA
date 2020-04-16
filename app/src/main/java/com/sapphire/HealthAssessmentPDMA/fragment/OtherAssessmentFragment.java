@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -21,6 +20,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import android.os.SystemClock;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.SpannableString;
@@ -50,13 +50,11 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
 import com.sapphire.HealthAssessmentPDMA.R;
 import com.sapphire.HealthAssessmentPDMA.activity.NavigationDrawerActivity;
-import com.sapphire.HealthAssessmentPDMA.activity.SignInActivity;
 import com.sapphire.HealthAssessmentPDMA.helper.BackPressAwareAutoTextview;
 import com.sapphire.HealthAssessmentPDMA.helper.BackPressAwareEdittext;
 import com.sapphire.HealthAssessmentPDMA.helper.CommonCode;
@@ -70,7 +68,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -116,6 +113,7 @@ public class OtherAssessmentFragment extends Fragment {
     private AutoCompleteTextView commonAutoCompleteTv;
     private HashMap<String,String> countryMap;
     private int screenHeight = 0;
+    private long lastClickYesBtn = 0,lastClickNoBtn = 0,lastClickSubmitBtn;
 
     public OtherAssessmentFragment() {
 
@@ -154,6 +152,9 @@ public class OtherAssessmentFragment extends Fragment {
         optionListQuest8 = new ArrayList<>();
         selectedLanguage = new UserSession(activity).getSelectedLanguage();
         commonCode = new CommonCode(activity);
+        // Added By Hina on 15-April-2020
+        commonCode.allowedNameCharacters(edName,selectedLanguage);
+
         if(commonCode.isNetworkAvailable()){
             getAssessmentQuestions();
         }
@@ -179,6 +180,10 @@ public class OtherAssessmentFragment extends Fragment {
         btnYes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(SystemClock.elapsedRealtime()-lastClickYesBtn<500){
+                    return;
+                }
+                lastClickYesBtn = SystemClock.elapsedRealtime();
                 viewEmptyNo.setVisibility(View.GONE);
                 cardViewBackButton.setVisibility(View.VISIBLE);
 
@@ -249,6 +254,10 @@ public class OtherAssessmentFragment extends Fragment {
         btnNo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(SystemClock.elapsedRealtime()-lastClickNoBtn<500){
+                    return;
+                }
+                lastClickNoBtn = SystemClock.elapsedRealtime();
                 hideCustomKeyboard();
                 commonCode.hideKeyboard(v);
                 cardViewBackButton.setVisibility(View.VISIBLE);
@@ -301,6 +310,10 @@ public class OtherAssessmentFragment extends Fragment {
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(SystemClock.elapsedRealtime()-lastClickSubmitBtn<500){
+                    return;
+                }
+                lastClickSubmitBtn = SystemClock.elapsedRealtime();
                 hideCustomKeyboard();
                 commonCode.hideKeyboard(v);
                 if(optionListQuest8==null || optionListQuest8.size()==0){
@@ -1390,11 +1403,20 @@ public class OtherAssessmentFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(s.toString()==null || s.toString().equalsIgnoreCase("") || s.toString().isEmpty()){
-                    //tvNameError.setVisibility(View.VISIBLE);
-                }
-                else {
-                    tvNameError.setVisibility(View.GONE);
+                if(edName.hasFocus()){
+
+                    if(s.toString()==null || s.toString().equalsIgnoreCase("") || s.toString().isEmpty()
+                            || s.toString().trim().length()==0){
+                        tvNameError.setText("Name is required.");
+                        tvNameError.setVisibility(View.VISIBLE);
+                    }
+                    else if(s.toString().trim().length()>0 && s.toString().trim().length()<3){
+                        tvNameError.setText("Name should be 3 characters long.");
+                        tvNameError.setVisibility(View.VISIBLE);
+                    }
+                    else {
+                        tvNameError.setVisibility(View.GONE);
+                    }
                 }
 
             }
@@ -1526,6 +1548,12 @@ public class OtherAssessmentFragment extends Fragment {
         if(edName.getText().toString().trim()==null || edName.getText().toString().trim().isEmpty() ||
                 edName.getText().toString().trim().equalsIgnoreCase("")){
             isNameValid = false;
+            tvNameError.setText("Name is required.");
+            tvNameError.setVisibility(View.VISIBLE);
+        }
+        else if(edName.getText().toString().trim().length()>0 && edName.getText().toString().trim().length()<3){
+            isNameValid = false;
+            tvNameError.setText("Name should be 3 characters long.");
             tvNameError.setVisibility(View.VISIBLE);
         }
 

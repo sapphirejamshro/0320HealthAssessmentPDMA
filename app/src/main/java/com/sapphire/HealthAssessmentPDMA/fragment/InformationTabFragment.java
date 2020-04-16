@@ -127,7 +127,10 @@ public class InformationTabFragment extends Fragment {
 
     private void updateFragment(Fragment fragment){
         FragmentManager fm = getActivity().getSupportFragmentManager();
+
         FragmentTransaction ft = fm.beginTransaction();
+        ft.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right);
+
         ft.replace(R.id.tabs_content_infoTab,fragment);
         ft.commit();
     }

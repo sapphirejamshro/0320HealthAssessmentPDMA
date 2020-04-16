@@ -158,6 +158,9 @@
                     android:textIsSelectable="false"
                     app:isCopyPasteDisabled="true"
                     android:imeOptions="actionDone"
+                    android:textSelectHandle="@drawable/custom_ed_pointer"
+                    android:textSelectHandleRight="@drawable/custom_ed_pointer"
+                    android:textSelectHandleLeft="@drawable/custom_ed_pointer"
                     />
 
             </androidx.cardview.widget.CardView>

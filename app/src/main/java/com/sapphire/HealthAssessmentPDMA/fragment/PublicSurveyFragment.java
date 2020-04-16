@@ -8,14 +8,13 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
-import android.graphics.Rect;
 import android.graphics.Typeface;
-import android.inputmethodservice.InputMethodService;
 import android.inputmethodservice.Keyboard;
 import android.inputmethodservice.KeyboardView;
 import android.media.AudioManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.SpannableString;
@@ -44,13 +43,11 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
@@ -65,13 +62,11 @@ import com.sapphire.HealthAssessmentPDMA.interfaces.VolleyCallback;
 import com.sapphire.HealthAssessmentPDMA.sessionManagement.UserSession;
 import com.sapphire.HealthAssessmentPDMA.webService.LocationService;
 import com.sapphire.HealthAssessmentPDMA.webService.SelfAssessmentQuestionService;
-import com.sapphire.HealthAssessmentPDMA.webService.UserService;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -117,6 +112,7 @@ public class PublicSurveyFragment extends Fragment {
     private AutoCompleteTextView commonAutoCompleteTv;
     private HashMap<String,String> countryMap;
     private int screenHeight = 0;
+    private long lastClickYesBtn = 0,lastClickNoBtn = 0,lastClickSubmitBtn;
 
     public PublicSurveyFragment() {
         // Required empty public constructor
@@ -149,6 +145,9 @@ public class PublicSurveyFragment extends Fragment {
         optionListQuest8 = new ArrayList<>();
         selectedLanguage = new UserSession(activity).getSelectedLanguage();
         commonCode = new CommonCode(activity);
+        // Added By Hina on 15-April-2020
+        commonCode.allowedNameCharacters(edName,selectedLanguage);
+
         if(commonCode.isNetworkAvailable()){
             getAssessmentQuestions();
         }
@@ -173,6 +172,11 @@ public class PublicSurveyFragment extends Fragment {
         btnYes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // 0.5 sec
+                if(SystemClock.elapsedRealtime()-lastClickYesBtn<500){
+                    return;
+                }
+                lastClickYesBtn = SystemClock.elapsedRealtime();
                 viewEmptyNo.setVisibility(View.GONE);
                 cardViewBackButton.setVisibility(View.VISIBLE);
 
@@ -245,6 +249,10 @@ public class PublicSurveyFragment extends Fragment {
         btnNo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(SystemClock.elapsedRealtime()-lastClickNoBtn<500){
+                    return;
+                }
+                lastClickNoBtn = SystemClock.elapsedRealtime();
                 hideCustomKeyboard();
                 commonCode.hideKeyboard(v);
                 cardViewBackButton.setVisibility(View.VISIBLE);
@@ -297,6 +305,10 @@ public class PublicSurveyFragment extends Fragment {
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(SystemClock.elapsedRealtime()-lastClickSubmitBtn<500){
+                    return;
+                }
+                lastClickSubmitBtn = SystemClock.elapsedRealtime();
                 hideCustomKeyboard();
                 commonCode.hideKeyboard(v);
                 if(optionListQuest8==null || optionListQuest8.size()==0){
@@ -1347,11 +1359,20 @@ public class PublicSurveyFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(s.toString()==null || s.toString().equalsIgnoreCase("") || s.toString().isEmpty()){
-                    //tvNameError.setVisibility(View.VISIBLE);
-                }
-                else {
-                    tvNameError.setVisibility(View.GONE);
+                if(edName.hasFocus()){
+
+                    if(s.toString()==null || s.toString().equalsIgnoreCase("") || s.toString().isEmpty()
+                            || s.toString().trim().length()==0){
+                        tvNameError.setText("Name is required.");
+                        tvNameError.setVisibility(View.VISIBLE);
+                    }
+                    else if(s.toString().trim().length()>0 && s.toString().trim().length()<3){
+                        tvNameError.setText("Name should be 3 characters long.");
+                        tvNameError.setVisibility(View.VISIBLE);
+                    }
+                    else {
+                        tvNameError.setVisibility(View.GONE);
+                    }
                 }
 
             }
@@ -1488,6 +1509,12 @@ public class PublicSurveyFragment extends Fragment {
         if(edName.getText().toString().trim()==null || edName.getText().toString().trim().isEmpty() ||
                 edName.getText().toString().trim().equalsIgnoreCase("")){
             isNameValid = false;
+            tvNameError.setText("Name is required.");
+            tvNameError.setVisibility(View.VISIBLE);
+        }
+        else if(edName.getText().toString().trim().length()>0 && edName.getText().toString().trim().length()<3){
+            isNameValid = false;
+            tvNameError.setText("Name should be 3 characters long.");
             tvNameError.setVisibility(View.VISIBLE);
         }
 

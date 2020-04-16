@@ -1,5 +1,6 @@
 package com.sapphire.HealthAssessmentPDMA.fragment;
 
+import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.os.Bundle;
 
@@ -8,6 +9,8 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 
 import com.sapphire.HealthAssessmentPDMA.R;
@@ -70,8 +73,9 @@ public class AwarenessFragment extends Fragment {
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                System.out.println("=====================in list listener");
 
-
+                itemAnimation(view,position);
                 if (selectedLanguage.equalsIgnoreCase("en")) {
                     if (awarenessAdapter.getName(position).equalsIgnoreCase(activity.getResources().getString(R.string.corona_novel))) {
                         CommonCode.updateDisplay(new NovelCoronaVirusDetails(), getActivity().getSupportFragmentManager());
@@ -145,4 +149,14 @@ public class AwarenessFragment extends Fragment {
         gridView = view.findViewById(R.id.gridView_awarenessFrag);
     }
 
+    private void itemAnimation(View view, int position){
+        Animation anim = AnimationUtils.loadAnimation(activity,R.anim.gridview_dashboard);
+
+        // By default all grid items will animate together and will look like the gridview is
+        // animating as a whole. So, experiment with incremental delays as below to get a
+        // wave effect.
+        anim.setStartOffset(position * 10);
+        view.setAnimation(anim);
+        anim.start();
+    }
 }

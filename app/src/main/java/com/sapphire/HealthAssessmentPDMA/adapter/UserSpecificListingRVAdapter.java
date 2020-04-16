@@ -1,5 +1,6 @@
 package com.sapphire.HealthAssessmentPDMA.adapter;
 
+import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -9,6 +10,8 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -68,7 +71,7 @@ public class UserSpecificListingRVAdapter extends RecyclerView.Adapter<UserSpeci
 
         UserSpecificListingRVAdapterBean bean = beanList.get(position);
         if(bean!=null){
-
+            itemAnimation(holder.itemView,position,context);
             Typeface fontEng = Typeface.createFromAsset(context.getAssets(),"myriad_pro_regular.ttf");
             Typeface fontUrdu = Typeface.createFromAsset(context.getAssets(),"notonastaliqurdu_regular.ttf");
 
@@ -128,6 +131,7 @@ public class UserSpecificListingRVAdapter extends RecyclerView.Adapter<UserSpeci
                     bundle.putParcelableArrayList("UserSpecificList", userSpecificList);
                     bundle.putString("userName",userName);
                     userFragment.setArguments(bundle);*/
+                    itemClickAnimation(v);
                     AppCompatActivity activity = (AppCompatActivity) context;
                     if(new CommonCode(context).isNetworkAvailable()){
                         getAssessmentDetailsByAssessmentId(Integer.valueOf(beanList.get(position).getAssessmentId()),activity);
@@ -270,4 +274,32 @@ public class UserSpecificListingRVAdapter extends RecyclerView.Adapter<UserSpeci
         });
     }
 
+    private void itemAnimation(View view,int position,Context ctx){
+        Animation anim = AnimationUtils.loadAnimation(ctx,R.anim.left_right);
+
+        // By default all grid items will animate together and will look like the gridview is
+        // animating as a whole. So, experiment with incremental delays as below to get a
+        // wave effect.
+        anim.setStartOffset(position * 250);
+//            anim.setStartOffset((position % dashboardBeanList.size()) * 500);
+
+        view.setAnimation(anim);
+        anim.start();
+    }
+
+    private void itemClickAnimation(View view){
+        final ValueAnimator anim = ValueAnimator.ofFloat(0.8f, 1f);
+        anim.setDuration(100);
+        final View finalView = view;
+        anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                finalView.setScaleX((Float) animation.getAnimatedValue());
+                finalView.setScaleY((Float) animation.getAnimatedValue());
+            }
+        });
+        anim.setRepeatCount(0);
+        //anim.setRepeatMode(ValueAnimator.REVERSE);
+        anim.start();
+    }
 }

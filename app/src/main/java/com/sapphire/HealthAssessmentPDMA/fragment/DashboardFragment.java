@@ -14,6 +14,10 @@ import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LinearInterpolator;
+import android.view.animation.RotateAnimation;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
@@ -103,15 +107,19 @@ public class DashboardFragment extends Fragment {
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
                 String gridName = adapter.getName(position);
                 if(SystemClock.elapsedRealtime()-lastClickTime<2500){
                     return;
                 }
                 lastClickTime = SystemClock.elapsedRealtime();
+                itemAnimation(view,position);
                 if(gridName!=null){
                     if (selectedLanguage.equalsIgnoreCase("en")) {
+
                         if (gridName.equalsIgnoreCase("Assessment for \nMyself")) {
                             checkAssessmentAllowedMethod(Integer.valueOf(new UserSession(activity).getUserId()));
+                            //startAnimation(position);
                         } else if (gridName.equalsIgnoreCase("Track \nAssessment")) {
                             Fragment publicListing = new PublicListingFragment();
                             Bundle b = new Bundle();
@@ -317,4 +325,58 @@ public class DashboardFragment extends Fragment {
         });
     }
 
+    public void startAnimation(final int pos) {
+
+
+       /* brackets.setVisibility(View.VISIBLE);
+        RotateAnimation rotate = new RotateAnimation(0, 180, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+        rotate.setDuration(2000);
+        rotate.setInterpolator(new LinearInterpolator());
+        rotate.setRepeatCount(Animation.INFINITE);
+        brackets.startAnimation(rotate);*/
+        Animation anim = AnimationUtils.loadAnimation(activity, R.anim.gridview_dashboard);
+        anim.setAnimationListener(new Animation.AnimationListener() {
+
+            @Override
+            public void onAnimationEnd(Animation arg0) {
+                Animation anim = AnimationUtils.loadAnimation(activity, R.anim.gridview_dashboard);
+                anim.setAnimationListener(this);
+                gridView.getChildAt(pos).startAnimation(anim);
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation arg0) {
+                // TODO Auto-generated method stub
+                System.out.println("====================is repeating");
+                Animation anim = AnimationUtils.loadAnimation(activity, R.anim.gridview_dashboard);
+                anim.setAnimationListener(this);
+                gridView.getChildAt(pos).startAnimation(anim);
+            }
+
+            @Override
+            public void onAnimationStart(Animation arg0) {
+                // TODO Auto-generated method stub
+                Animation anim = AnimationUtils.loadAnimation(activity, R.anim.gridview_dashboard);
+                anim.setAnimationListener(this);
+                gridView.getChildAt(pos).startAnimation(anim);
+            }
+
+        });
+
+        gridView.getChildAt(pos).setAnimation(anim);
+        gridView.getChildAt(pos).startAnimation(anim);
+        gridView.getChildAt(pos).bringToFront();
+    }
+
+    private void itemAnimation(View view, int position){
+        Animation anim = AnimationUtils.loadAnimation(activity,R.anim.gridview_dashboard);
+
+        // By default all grid items will animate together and will look like the gridview is
+        // animating as a whole. So, experiment with incremental delays as below to get a
+        // wave effect.
+        anim.setStartOffset(position * 50);
+        view.setAnimation(anim);
+        anim.start();
+    }
 }

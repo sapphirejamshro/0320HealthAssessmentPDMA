@@ -9,6 +9,8 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -58,11 +60,23 @@ public class DashboardAdapter extends BaseAdapter {
         if(view==null)
         {
             LayoutInflater inflater = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
             if (selectedLanguage.equalsIgnoreCase("en")) {
                 view = inflater.inflate(R.layout.dashboard_gridview_layout, null);
             }else {
                 view = inflater.inflate(R.layout.dashboard_gridview_layout_sindhi_urdu, null);
             }
+
+            Animation anim = AnimationUtils.loadAnimation(ctx,R.anim.left_right);
+
+            // By default all grid items will animate together and will look like the gridview is
+            // animating as a whole. So, experiment with incremental delays as below to get a
+            // wave effect.
+            anim.setStartOffset(position * 250);
+//            anim.setStartOffset((position % dashboardBeanList.size()) * 500);
+
+            view.setAnimation(anim);
+            anim.start();
             ImageView img = view.findViewById(R.id.cat_img_DashbGridLayout);
             final TextView imgName = view.findViewById(R.id.cat_name_txt_DashbGridLayout);
             gridView = DashboardFragment.view.findViewById(R.id.gridView_dashboard);

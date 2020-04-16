@@ -27,6 +27,7 @@ import androidx.fragment.app.Fragment;
 
 import android.provider.Settings;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.text.InputType;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -125,6 +126,9 @@ public class UserInformationFragment extends Fragment  implements GoogleApiClien
     private View viewKeyboard;
     private AppSignatureHashHelper appSignatureHashHelper;
     private String hashKeyString ="";
+    private Boolean isAddrFirstFocus = true;
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
@@ -166,6 +170,9 @@ public class UserInformationFragment extends Fragment  implements GoogleApiClien
             edMobileNumber.setEnabled(false);
             edMobileNumber.setBackgroundResource((R.drawable.ed_disable_bg));
         }
+        // Added By Hina on 15-April-2020
+        commonCode.allowedNameCharacters(edName,selectedLanguage);
+        commonCode.allowedAddressCharacters(edAddress,selectedLanguage);
 
         setTehsilAdapter();
         if (commonCode.isNetworkAvailable()) {
@@ -427,8 +434,19 @@ public class UserInformationFragment extends Fragment  implements GoogleApiClien
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-                if(s.toString().length() > 0){
-                    tvNameError.setVisibility(View.GONE);
+                if(edName.hasFocus()){
+
+                    if(s.toString().trim().length()==0){
+                        tvNameError.setText("Name is required");
+                        tvNameError.setVisibility(View.VISIBLE);
+                    }
+                    else if(s.toString().trim().length()>0 && s.toString().trim().length()<3){
+                        tvNameError.setText("Name should be 3 characters long");
+                        tvNameError.setVisibility(View.VISIBLE);
+                    }
+                    else {
+                        tvNameError.setVisibility(View.GONE);
+                    }
                 }
 
                 //Removed By kamran on 30-Mar-2020
@@ -454,8 +472,23 @@ public class UserInformationFragment extends Fragment  implements GoogleApiClien
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-                if(s.toString().length() > 0){
-                    tvAddressError.setVisibility(View.GONE);
+                if(edAddress.hasFocus()){
+                    if(s.toString().trim().length()==0){
+                        if(!isAddrFirstFocus){
+                            tvAddressError.setText("Address is Required");
+                            tvAddressError.setVisibility(View.VISIBLE);
+
+                        }
+                        isAddrFirstFocus = false;
+
+                    }
+                    else if(s.toString().trim().length()>0 && s.toString().trim().length()<3){
+                        tvAddressError.setText("Address should be 3 characters long");
+                        tvAddressError.setVisibility(View.VISIBLE);
+                    }
+                    else{
+                        tvAddressError.setVisibility(View.GONE);
+                    }
                 }
                 //Removed by Kamran on 30-Mar-2020
                 /*if (s.toString().trim().length() == 0){
@@ -1420,11 +1453,9 @@ public class UserInformationFragment extends Fragment  implements GoogleApiClien
                                                 count++;
                                                 tehsilIdsList.add(innerObj.getString("taluka_id"));
                                                 tehsilNameList.add(innerObj.getString("taluka_name"));
-                                                System.out.println("=====taluka name "+innerObj.getString("taluka_name"));
 
                                             }
                                         }
-                                        System.out.println("==============sizes "+tehsilIdsList.size() +" ---- "+tehsilsObject.length());
                                     }
 
                                 }
@@ -1529,6 +1560,11 @@ public class UserInformationFragment extends Fragment  implements GoogleApiClien
             tvNameError.setVisibility(View.VISIBLE);
             isName = false;
         }
+        else if(nameString.trim().length()>0 && nameString.trim().length()<3){
+            tvNameError.setText("Name should be 3 characters long");
+            tvNameError.setVisibility(View.VISIBLE);
+            isName = false;
+        }
         if (mobileNoString.trim().length() == 0){
             tvMobileNoError.setText("Mobile # is Required");
             tvMobileNoError.setVisibility(View.VISIBLE);
@@ -1560,6 +1596,11 @@ public class UserInformationFragment extends Fragment  implements GoogleApiClien
         }
         if (addressString.trim().length() == 0){
             tvAddressError.setText("Address is Required");
+            tvAddressError.setVisibility(View.VISIBLE);
+            isAddress = false;
+        }
+        else if(addressString.trim().length()>0 && addressString.trim().length()<3){
+            tvAddressError.setText("Address should be 3 characters long");
             tvAddressError.setVisibility(View.VISIBLE);
             isAddress = false;
         }

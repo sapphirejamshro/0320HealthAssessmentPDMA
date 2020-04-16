@@ -3,13 +3,13 @@ package com.sapphire.HealthAssessmentPDMA.activity;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.SystemClock;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -20,6 +20,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ScrollView;
@@ -34,6 +35,7 @@ import com.sapphire.HealthAssessmentPDMA.helper.CommonCode;
 import com.sapphire.HealthAssessmentPDMA.helper.CustomEditText;
 import com.sapphire.HealthAssessmentPDMA.helper.CustomEdittextMobile;
 import com.sapphire.HealthAssessmentPDMA.helper.CustomTypefaceSpan;
+import com.sapphire.HealthAssessmentPDMA.helper.TouchListenerMobileNo;
 import com.sapphire.HealthAssessmentPDMA.interfaces.VolleyCallback;
 import com.sapphire.HealthAssessmentPDMA.sessionManagement.UserSession;
 import com.sapphire.HealthAssessmentPDMA.webService.LocationService;
@@ -45,7 +47,7 @@ import org.json.JSONObject;
 
 public class SignInActivity extends AppCompatActivity {
 
-    private EditText edMobileNo;
+    private CustomEdittextMobile edMobileNo;
     private Button signInBtn, btnRegister;
     private TextView tvMobileNo,tvMobileNoError, tvHeader;;
     private TextWatcher mblTextWatcher;
@@ -149,6 +151,9 @@ public class SignInActivity extends AppCompatActivity {
                         cursorPosition = 0;
                         /*tvMobileNoError.setText("Mobile # is Required");
                         tvMobileNoError.setVisibility(View.VISIBLE);*/
+                    }else if(cursorPosition == 3 ){
+                        str = str.substring(0,3)+"3"+str.substring(3);
+                        cursorPosition++;
                     }
 
                     /*else if (currentLength >= 3 && currentLength <13){
@@ -213,10 +218,33 @@ public class SignInActivity extends AppCompatActivity {
                 return true;
             }
         });
-        edMobileNo.cancelLongPress();
+//        edMobileNo.cancelLongPress();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             edMobileNo.cancelDragAndDrop();
         }
+
+        /*edMobileNo.setOnTouchListener(new TouchListenerMobileNo(activity,edMobileNo,(InputMethodManager)
+                activity.getSystemService(Context.INPUT_METHOD_SERVICE)));*/
+
+
+        edMobileNo.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(hasFocus){
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            edMobileNo.setOnTouchListener(new TouchListenerMobileNo(activity,edMobileNo,(InputMethodManager)
+                                    activity.getSystemService(Context.INPUT_METHOD_SERVICE)));
+
+                        }
+                    },1200);
+                }else{
+                    edMobileNo.clearFocus();
+                    edMobileNo.setOnFocusChangeListener(null);
+                }
+            }
+        });
         setCustomFont();
     }
 
@@ -263,6 +291,15 @@ public class SignInActivity extends AppCompatActivity {
         if (progressDialog!=null && progressDialog.isShowing()){
             progressDialog.dismiss();
         }
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                edMobileNo.setOnTouchListener(new TouchListenerMobileNo(activity,edMobileNo,(InputMethodManager)
+                        activity.getSystemService(Context.INPUT_METHOD_SERVICE)));
+
+            }
+        },1200);
+
     }
 
     @Override
@@ -272,6 +309,8 @@ public class SignInActivity extends AppCompatActivity {
         if (progressDialog!=null && progressDialog.isShowing()){
             progressDialog.dismiss();
         }
+        commonCode.hideKeyboard(edMobileNo);
+        edMobileNo.setOnTouchListener(null);
     }
 
     private Boolean isDataValid(){
@@ -529,12 +568,10 @@ public class SignInActivity extends AppCompatActivity {
 
     @SuppressLint("ClickableViewAccessibility")
     private void scrollViewListener() {
-
         mainScrollView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 commonCode.hideKeyboard(v);
-
                 if (edMobileNo.hasFocus()) {
                     edMobileNo.clearFocus();
                 }
