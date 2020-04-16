@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="howToCopeUpWithIsolationStressListUrdu">
+        <item>مستقل خبریں اور بیماری کے متعلق ویڈیوز نہ دیکھئیے</item>
+        <item>روز ورزش کیجئیے</item>
+        <item>صحت مند غذا کھائیے اور پانی زیادہ پیجئے</item>
+        <item>جن سرگرمیوں سے آپ کو سکون ملے ان میں حصہ لیجئیے</item>
+        <item>رات کی نیند پوری کیجئیے</item>
+    </string-array>
+
+    <string-array name="howToCopeUpWithIsolationStressListSindhi">
+        <item>لگاتار خبرون ۽ بيماري متعلق ويڊيوز نه ڏسو</item>
+        <item>روزانه ورزش ڪريو</item>
+        <item>صحت مند خوراک کائوء پاڻي گھڻو پيو</item>
+        <item>جن سرگرمين سان اوھان کي سڪون ملي انھن ۾ حصو وٺو</item>
+        <item>رات واري ننڊ پوري ڪريو</item>
+    </string-array>
+</resources>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="quarantineList">
+        <item>Do not leave your house</item>
+        <item>Isolate yourself from the rest of the occupants of your house. Make sure you are in a room that is well-ventilated and comfortable.</item>
+        <item>Your bathroom should be separate from the rest of the occupants.</item>
+        <item>Do not have any visitors.</item>
+        <item>When you have to interact with members of the house maintain a distance of at least 1m while using gloves and a mask.</item>
+        <item>Make sure to wash your hands with soap very regularly, when soap and water are not available use hand sanitizer.</item>
+        <item>Disinfect and clean all surfaces you frequently use. Such as: phone, tablet, laptop, tv and ac remotes, light switches, door knobs, tables and countertops, toilets, faucets, and sinks.</item>
+        <item>Make sure you do not share any dishes, glasses, cutlery, towels, or clothes with any of the other occupants of your house.</item>
+
+    </string-array>
+</resources>

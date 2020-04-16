@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="howItSpreadList">
+
+        <item>It can be transmitted through respiratory droplets (cough/sneeze) to another human up to about 1m away.</item>
+        <item>The droplets enter mainly through the nose or mouth.</item>
+
+    </string-array>
+</resources>

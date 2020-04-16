@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/linearLayoutItemDescriptionLvSymptomsAdapterItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginRight="5dp"
+        android:paddingBottom="0dp"
+        android:weightSum="7"
+        android:visibility="visible"
+        android:orientation="vertical"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        >
+        <TextView
+            android:id="@+id/tvPrecautionPoint1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Stay at home and avoid contact with others."
+            android:textSize="18sp"
+            android:paddingEnd="24dp"
+            android:paddingRight="24dp"
+            android:textColor="@color/appColorBlack"
+            android:fontFamily="@font/myriad_pro_regular"
+            android:layout_marginTop="10dp"
+            android:drawableLeft="@drawable/ic_warning_red_colored"
+            android:drawableStart="@drawable/ic_warning_red_colored"
+            android:drawablePadding="16dp"
+            android:gravity="center_vertical"
+            />
+        <View
+            android:id="@+id/viewLinePoint1"
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginRight="24dp"
+            android:layout_marginTop="10dp"
+            android:paddingEnd="24dp"
+            android:paddingRight="24dp"
+            android:background="@drawable/line_gradient"
+             />
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

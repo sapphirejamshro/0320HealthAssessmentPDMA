@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="seekMedicalAttentionUrdu">
+
+        <item>سانس لینےمیں دُشواری</item>
+        <item>سینے میں مسلسل تکلیف</item>
+        <item>غنودگی یا گھبراہٹ</item>
+        <item>ہونٹ یا چہرے کا نیلا پن</item>
+    </string-array>
+
+    <string-array name="seekMedicalAttentionMonitorUrdu">
+
+        <item>سانس لینےمیں دُشواری</item>
+        <item>سینے میں مسلسل تکلیف</item>
+        <!--<item>غنودگی یا گھبراہٹ</item>-->
+        <item>ہونٹ یا چہرے کا نیلا پن</item>
+    </string-array>
+</resources>

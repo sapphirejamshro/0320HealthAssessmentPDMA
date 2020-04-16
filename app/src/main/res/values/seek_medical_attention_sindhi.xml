@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="seekMedicalAttentionSindhi">
+
+        <item>ساھ کڻڻ ۾ ڏکيائي</item>
+        <item>سيني ۾ مسلسل تڪليف</item>
+        <item>غنو دڱي يا ڱبراھٽ</item>
+        <item>چپن يا چھري جو زرد ٿيڻ</item>
+    </string-array>
+
+
+    <string-array name="seekMedicalAttentionMonitorSindhi">
+
+        <item>ساھ کڻڻ ۾ ڏکيائي</item>
+        <item>سيني ۾ مسلسل تڪليف</item>
+        <!--<item>غنو دڱي يا ڱبراهٽ</item>-->
+        <item>چپن يا چھري جو زرد ٿيڻ</item>
+    </string-array>
+</resources>

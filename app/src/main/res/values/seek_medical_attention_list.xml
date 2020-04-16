@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="seekMedicalAttention">
+
+        <item>Trouble Breathing</item>
+        <item>Persistent Pain in Chest </item>
+        <item>Confusion or Inability to Arouse </item>
+        <item>Bluish Lips/Face</item>
+    </string-array>
+
+    <string-array name="seekMedicalAttentionMonitor">
+
+        <item>Trouble Breathing</item>
+        <item>Persistent Pain in Chest </item>
+        <!--<item>Confusion or Inability to Arouse </item>-->
+        <item>Bluish Lips/Face</item>
+    </string-array>
+</resources>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="howToCopeUpWithIsolationStressList">
+        <item>Don’t constantly watch the news, videos, related content about the pandemic. This can cause stress</item>
+        <item>Exercise regularly</item>
+        <item>Eat healthy and keep yourself well hydrated</item>
+        <item>Find an activity that relaxes you and makes you happy</item>
+        <item>Get plenty of rest and sleep</item>
+    </string-array>
+</resources>

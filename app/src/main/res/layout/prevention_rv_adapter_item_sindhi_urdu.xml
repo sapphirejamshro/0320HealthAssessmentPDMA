@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:id="@+id/ll_main_container_prevention_adapter_item"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:weightSum="10"
+    >
+
+
+
+    <TextView
+        android:id="@+id/tv_text_prevention_rv_adapter_item"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="9"
+        android:text="@string/dispose_tissue_text"
+        android:textColor="@color/appColorBlack"
+        android:textSize="18sp"
+        android:fontFamily="@font/notonastaliqurdu_regular"
+        android:includeFontPadding="false"
+        android:layout_marginEnd="0dp"
+        android:layout_marginRight="0dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:paddingRight="5dp"
+        android:paddingLeft="5dp"
+        android:paddingStart="5dp"
+        android:paddingEnd="5dp"
+        android:layout_gravity="top"
+        android:layout_marginStart="15dp"
+        android:layout_marginLeft="15dp"
+        android:textDirection="inherit"
+        />
+    <ImageView
+        android:id="@+id/imgV_icon_prevention_rv_adapter_item"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:src="@drawable/ic_dot_bullet"
+        android:visibility="visible"
+        android:layout_gravity="top"
+        android:layout_marginTop="26dp"
+        android:paddingBottom="10dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginRight="15dp"
+        />
+</LinearLayout>

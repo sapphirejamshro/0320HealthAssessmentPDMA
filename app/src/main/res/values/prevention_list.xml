@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="preventionList">
+
+        <item>Wash your hands regularly, with soap, throughout the day for about 20&#8211;30 seconds.</item>
+        <item>Make sure to wash your hands when coming from a public space, before eating, after blowing your nose, coughing, or sneezing.</item>
+        <item>When unable to use water and soap, use hand sanitizer. The sanitizer must contain at least 60% alcohol.</item>
+        <item>Avoid contact with people who are sick.</item>
+        <item>Maintain a 1m distance when meeting someone.</item>
+        <item>Stay at home if you feel unwell</item>
+        <item>Use proper hygiene when coughing and sneezing. Blow into a tissue or into your elbow and dispose of your waste in the garbage right away.</item>
+        <item>Wear a facemask if you are sick or if taking care of people who are sick.</item>
+        <item>Disinfect items/surfaces you frequently use. Such as: phone, tablet, laptop, tv and ac remotes, light switches, door knobs, tables and countertops, toilets, faucets, and sinks.</item>
+    </string-array>
+</resources>
